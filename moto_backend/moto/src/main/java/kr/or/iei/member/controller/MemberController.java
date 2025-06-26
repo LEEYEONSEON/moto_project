@@ -18,6 +18,13 @@ public class MemberController {
 	
 	public void test() {
 		System.out.println("안녕 난 모투야");
+		System.out.println("안녕 난 모투야");
+		System.out.println("안녕 난 모투야");
+		System.out.println("안녕 난 모투야");
+		System.out.println("안녕 난 모투야");
+		System.out.println("안녕 난 모투야");
+		System.out.println("안녕 난 모투야");
+		System.out.println("안녕 난 모투야");
 	}
 	
 	
