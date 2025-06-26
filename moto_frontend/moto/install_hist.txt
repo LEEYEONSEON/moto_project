@@ -1,0 +1,10 @@
+2025-06-26 이연선
+
+npm install                                     => 리액트 프로젝트에 필요한 기본 패키지 설치
+npm install react-router-dom                    => 컴포넌트 전환을 위한 Router 사용을 위해 설치
+npm install axios                               => 서버에 HTTP 비동기 요청을 보내기 위해 설치
+npm install sweetalert2 --force                 => 사용자에게 보여줄 알림창 (리액트 19버전과 호환되지 않아, 강제 설치)
+
+npm install zustand                             => 로그인 정보와 같은 애플리케이션 전역에 영향을 주는 상태를 관리하기 위해 설치
+npm install history --force                     => 컴포넌트 외부(인터셉터)에서, 컴포넌트 전환을 위해 설치
+npm install @toast-ui/react-editor --force      => 게시글 작성, 수정 시 게시글 본문 작성을 위해 설치
