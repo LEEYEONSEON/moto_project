@@ -16,5 +16,9 @@ public class MemberController {
 	@Autowired
 	private MemberService service;
 	
+	public void test() {
+		System.out.println("안녕 난 모투야");
+	}
+	
 	
 }
