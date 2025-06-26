@@ -26,6 +26,7 @@ public class MemberController {
 		System.out.println("안녕 난 모투야");
 		System.out.println("안녕 난 모투야");
 		System.out.println("king971423@gmail.com gitGub 연결완료 및 커밋 후 push 성공!");
+		System.out.println("찐막");
 	}
 	
 	
