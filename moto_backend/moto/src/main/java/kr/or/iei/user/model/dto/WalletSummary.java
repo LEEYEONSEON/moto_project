@@ -1,4 +1,4 @@
-package kr.or.iei.member.model.dto;
+package kr.or.iei.user.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

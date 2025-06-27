@@ -1,8 +1,5 @@
-<<<<<<< HEAD:moto_backend/moto/src/main/java/kr/or/iei/member/model/dto/User.java
-package kr.or.iei.member.model.dto;
-=======
 package kr.or.iei.user.model.dto;
->>>>>>> master:moto_backend/moto/src/main/java/kr/or/iei/user/model/dto/User.java
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
