@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-function WalletPage({ userId }) {
+function WalletPage({}) {
   const [wallet, setWallet] = useState(null);
   const [transactions, setTransactions] = useState([]);
   const [filters, setFilters] = useState({});
   const [loading, setLoading] = useState(false); // 실제 fetch 안 하니까 false
+
+  
 
   useEffect(() => {
 

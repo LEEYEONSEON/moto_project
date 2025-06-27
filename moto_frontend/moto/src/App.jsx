@@ -6,6 +6,7 @@ import './App.css'
 import PageMain from './component/PageMain';
 import Sidebar from './component/common/Sidebar';
 import { Route, Routes } from 'react-router-dom';
+import WalletPage from './component/common/WalletPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       <Route path='/' element={<PageMain />} />
       <Route path='/join' element={<Join />} />
       <Route path='/login' element={<Login/>} />
+      <Route path="/watchlists/:userId" element={<WalletPage/>}/>
       </Routes>
       </main>
       <Footer/>

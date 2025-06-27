@@ -23,6 +23,7 @@ const navigate = useNavigate();
     return (
         <div className="side-menu" style={{ textAlign: "center", backgroundColor: "rgb(44, 44, 44)", width: "13%", Height:"692px" }}>
             
+            {/* 세부 사이드바 버튼 */}
              <div className="menu-item" style={{ paddingBottom: "40px", paddingTop: "20px" }}>
                     <button
                         type="button"
@@ -33,6 +34,7 @@ const navigate = useNavigate();
                         </svg>
                     </button>
                 </div>
+                {/* 로그인 한 회원 아이디 || 로그인 없을시 로그인 화면으로 전환하는 url */}
             <div className="menu-item" style={{ paddingBottom: "40px" }}>
                 {
                     loginMember 
@@ -41,6 +43,7 @@ const navigate = useNavigate();
                 }
             </div>
 
+                {/* 메인 홈버튼 */}
             <div className="menu-item" style={{ paddingBottom: "40px" }}>
                 <Link to={"/"}>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="#e3e3e3" style={{ width: "36px", height: "36px" }}>
@@ -49,6 +52,7 @@ const navigate = useNavigate();
                 </Link>
             </div>
 
+                {/* 포트폴리오 */}
             <div className="menu-item" style={{ paddingBottom: "40px" }}>
                 <Link to={"/users/me"}>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="#e3e3e3" style={{ width: "36px", height: "36px" }}>
@@ -57,6 +61,7 @@ const navigate = useNavigate();
                 </Link>
             </div>
 
+                {/* 관심종목 */}
             <div className="menu-item" style={{ paddingBottom: "40px" }}>
                 <Link to={"/users/me/portfolio/:filter"}>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="#e3e3e3" style={{ width: "36px", height: "36px" }}>
@@ -64,7 +69,7 @@ const navigate = useNavigate();
                     </svg>
                 </Link>
             </div>
-
+                {/* 검색 */}
             <div className="menu-item" style={{ paddingBottom: "40px" }}>
                 <Link to={""}>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="#e3e3e3" style={{ width: "36px", height: "36px" }}>
@@ -73,14 +78,16 @@ const navigate = useNavigate();
                 </Link>
             </div>
 
+                {/* 지갑 */}
             <div className="menu-item" style={{ paddingBottom: "40px" }}>
-                <Link to={"/watchlists/:memberId"}>
+                <Link to={"/watchlists/" + loginMember.userId}>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="#e3e3e3" style={{ width: "36px", height: "36px" }}>
                         <path d="M240-160q-66 0-113-47T80-320v-320q0-66 47-113t113-47h480q66 0 113 47t47 113v320q0 66-47 113t-113 47H240Zm0-480h480q22 0 42 5t38 16v-21q0-33-23.5-56.5T720-720H240q-33 0-56.5 23.5T160-640v21q18-11 38-16t42-5Zm-74 130 445 108q9 2 18 0t17-8l139-116q-11-15-28-24.5t-37-9.5H240q-26 0-45.5 13.5T166-510Z"/>
                     </svg>
                 </Link>
             </div>
 
+                {/* 로그아웃 */}
             <div className="menu-item" style={{ paddingBottom: "40px" }}>
                 <Link to={"/auth/login"} onClick={logout}>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="#e3e3e3" style={{ width: "18px", height: "18px" }}>
