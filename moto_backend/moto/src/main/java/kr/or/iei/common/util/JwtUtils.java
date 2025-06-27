@@ -13,7 +13,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
-import kr.or.iei.member.model.dto.Member;
+import kr.or.iei.user.model.dto.User;
 
 @Component
 public class JwtUtils {
@@ -78,7 +78,7 @@ public class JwtUtils {
 	//토큰 검증
 	public Object validateToken(String token) {
 		
-		Member m = new Member();
+		User m = new User();
 		
 		try {
 			//1. 토큰 해석을 위한 암호화 키 세팅
@@ -96,7 +96,7 @@ public class JwtUtils {
 			int memberLevel = (int) claims.get("memberLevel");
 			
 			m.setUserId(memberId);
-			m.setMemberLevel(memberLevel);
+			m.setUserRole(memberLevel+"");
 			
 		}catch(SignatureException e) { // 발급 토큰과 요청 토큰 불일치
 			return HttpStatus.UNAUTHORIZED; //401 코드 
