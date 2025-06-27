@@ -11,6 +11,7 @@ function App() {
   return (
     <div className='wrap'>
       <Header/>
+      
       <main className='content' style={{display:"flex"}}>
       <Sidebar/>
       <Routes>
