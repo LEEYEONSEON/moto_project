@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 import kr.or.iei.asset.model.dao.AssetDao;
 import kr.or.iei.asset.model.dto.Asset;
+import kr.or.iei.common.annotation.NoTokenCheck;
 
 @Service
 public class AssetService {
@@ -22,6 +23,7 @@ public class AssetService {
 	@Value("${finnhub.api.key}") private String finnHubApiKey;
 	private final RestTemplate rt = new RestTemplate(); //외부 REST API에 GET/POST 요청을 보낼 때 쓰이는 HTTP 클라이언트
 	
+	@NoTokenCheck
 	public ArrayList<Asset> selectAllAsset() {
 		ArrayList<Asset> assetList = new ArrayList<>(); //기본 가산 정보 가져와 담을 리스트 객체
 		

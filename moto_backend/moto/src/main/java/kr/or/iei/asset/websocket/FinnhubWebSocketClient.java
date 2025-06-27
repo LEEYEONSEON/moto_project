@@ -1,27 +1,30 @@
 package kr.or.iei.asset.websocket;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import kr.or.iei.asset.controller.AssetSseController;
+
+
+import kr.or.iei.asset.controller.PriceBroadcaster;
 import kr.or.iei.asset.model.dto.Asset;
 import kr.or.iei.asset.model.service.AssetService;
+import kr.or.iei.common.annotation.NoTokenCheck;
 
 import java.net.URI;
 
 public class FinnhubWebSocketClient extends WebSocketClient {
 	
-	private final AssetSseController sseController;
+	private final PriceBroadcaster priceStream;
 	private final AssetService service;
 	
-	@Autowired
-    public FinnhubWebSocketClient(URI serverUri, AssetSseController sseController, AssetService service) {
+	
+    public FinnhubWebSocketClient(URI serverUri, PriceBroadcaster priceStream, AssetService service) {
         super(serverUri);
-        this.sseController = sseController;
+        this.priceStream = priceStream;
         this.service = service;
     }
 
     @Override
+    @NoTokenCheck
     public void onOpen(ServerHandshake handshake) {
         System.out.println("✅ 연결됨!");
 
@@ -35,16 +38,19 @@ public class FinnhubWebSocketClient extends WebSocketClient {
     }
 
     @Override
+    @NoTokenCheck
     public void onMessage(String message) {
-    	sseController.broadcastPrice(message);  // 시세 프론트로 전달
+    	priceStream.broadcast(message);  // 시세 프론트로 전달
     }
 
     @Override
+    @NoTokenCheck
     public void onClose(int code, String reason, boolean remote) {
         System.out.println("❌ 연결 종료: " + reason);
     }
 
     @Override
+    @NoTokenCheck
     public void onError(Exception ex) {
         System.out.println("⚠️ 에러 발생: " + ex.getMessage());
     }
