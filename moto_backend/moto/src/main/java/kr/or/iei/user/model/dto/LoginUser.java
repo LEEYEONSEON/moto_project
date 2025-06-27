@@ -1,4 +1,4 @@
-package kr.or.iei.member.model.dto;
+package kr.or.iei.user.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,9 +7,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class LoginMember {
-	
-	private Member member;
+public class LoginUser {
+	private User user;
 	private String accessToken;
 	private String refreshToken;
 }

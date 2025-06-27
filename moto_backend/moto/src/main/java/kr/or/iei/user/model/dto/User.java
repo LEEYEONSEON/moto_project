@@ -1,4 +1,4 @@
-package kr.or.iei.member.model.dto;
+package kr.or.iei.user.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Member {
+public class User {
 	private String userNo;			//시퀀스 기반 내부 고유 식별자
 	private String userId;			//사용자 고유 ID (중복 불가, 로그인용)
 	private String userNickname;	//사용자 닉네임
@@ -18,5 +18,6 @@ public class Member {
 	private String userPostLikeCount;	//활동 인기 지표
 	private String userCommentLikeCount;//활동 인기 지표
 	private String userSanctionCount;	//신고 제재 누적용
-	private int memberLevel;
+	private String userSocialType;	//로그인 방식 구분
+	private String userProfileImg;	//프로필 이미지 경로
 }

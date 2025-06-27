@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.or.iei.user.model.dao.UserDao">
+  
+  <!-- 아이디 중복 체크 -->
+	<select id="chkUserId" 
+	parameterType="string" 
+	resultType="_int">
+	select count(*)
+	  from tbl_user
+	 where user_id = #{_parameter}
+	</select>
+  
+  <!-- 이메일 중복 체크 -->
+	<select id="chkUserEmail" 
+	parameterType="string" 
+	resultType="_int">
+	select count(*)
+	  from tbl_user
+	 where user_email = #{_parameter}
+	</select>
+	
+	<!-- 회원가입 -->
+	<insert id="insertUser"
+	parameterType="User">
+	insert into tbl_user
+		(
+		user_no,
+		user_id,
+		user_nickname,
+		user_email,
+		user_password,
+		user_role,
+		user_join_date,
+		user_post_like_count,
+		user_comment_like_count,
+		user_sanction_count,
+		user_social_type
+		)
+	values 
+		(
+		seq_user_no.nextval, 
+		#{userId},
+		#{userNickname},
+		#{userEmail},
+		#{userPassword},
+		default,
+		sysdate,
+		default,
+		default,
+		default,
+		'LOCAL'
+		)
+	</insert>
+	
+	<!-- 로그인 -->
+	<select id="userLogin"
+	parameterType="string"
+	resultType="User">
+	select user_id as userId,
+		   user_password as userPassword,
+		   user_role as userRole
+	  from tbl_user
+	 where user_id = #{_parameter}
+	</select>
+</mapper>
