@@ -29,21 +29,10 @@ export default function Header () {
 //헤더 중앙 메뉴
 function MainNavi () {
     return (
-        <nav className="nav">
-            <ul>
-                 <li>
-                    <Link to="/board/list">게시판</Link>
-                 </li>
-                 <li>
-                    <Link to="#">메뉴2</Link>
-                 </li>
-                 <li>
-                    <Link to="#">메뉴3</Link>
-                 </li>
-                 <li>
-                    <Link to="#">메뉴4</Link>
-                 </li>
-            </ul>
+        <nav className="searchWindow">
+            <div>
+                <input type="text" placeholder="종목을 검색하세요"></input>
+            </div>
         </nav>
     );
 }
@@ -90,7 +79,7 @@ function HeaderLink () {
                         <Link to="/member">{loginMember.memberId}</Link>
                     </li>
                     <li>
-                        <Link to="#" onClick={logout}>로그아웃</Link>
+                        <Link to="/logout" onClick={logout}>로그아웃</Link>
                     </li>                
                 </>
                 :
