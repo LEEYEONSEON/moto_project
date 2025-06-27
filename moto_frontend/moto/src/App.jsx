@@ -1,24 +1,26 @@
 import Header from './component/common/Header';
 import Footer from './component/common/Footer';
+import { Route, Routes } from 'react-router-dom';
+
+import Join from  './component/user/Join';
+import Login from './component/user/Login';
 
 import './App.css'
 
 function App() {
 
-  console.log("안녕 난 모투야");
-  console.log("안녕 난 모투야");
-  console.log("안녕 난 모투야");
-  console.log("안녕 난 모투야");
-  console.log("안녕 난 모투야");
-  console.log("안녕 난 모투야");
-  console.log("king971423@gmail.com react-gitgub 연동 및 커밋완료 & push까지 !")
-  console.log("해치우자;;");
-  
+
   
   return (
     <div className='wrap'>
       <Header/>
-
+      <main className='content'>
+          <Routes>
+            
+            <Route path='/join' element={<Join />} />
+            <Route path='/login' element={<Login/>} />
+          </Routes>
+        </main>
       <Footer/>
     </div>
 
