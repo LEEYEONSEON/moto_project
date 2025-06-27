@@ -1,6 +1,7 @@
 import Header from './component/common/Header';
 import Footer from './component/common/Footer';
-
+import Join from './component/user/Join'
+import Login from './component/user/Login'
 import './App.css'
 import PageMain from './component/PageMain';
 import Sidebar from './component/common/Sidebar';
@@ -14,7 +15,8 @@ function App() {
       <Sidebar/>
       <Routes>
       <Route path='/' element={<PageMain />} />
-      
+      <Route path='/join' element={<Join />} />
+      <Route path='/login' element={<Login/>} />
       </Routes>
       </main>
       <Footer/>
