@@ -2,22 +2,13 @@ import Header from './component/common/Header';
 import Footer from './component/common/Footer';
 
 import './App.css'
+import Main from './component/Main';
 
 function App() {
-
-  console.log("안녕 난 모투야");
-  console.log("안녕 난 모투야");
-  console.log("안녕 난 모투야");
-  console.log("안녕 난 모투야");
-  console.log("안녕 난 모투야");
-  console.log("안녕 난 모투야");
-  console.log("king971423@gmail.com react-gitgub 연동 및 커밋완료 & push까지 !")
-  console.log("해치우자;;");
-  
   return (
     <div className='wrap'>
       <Header/>
-
+      <Main />
       <Footer/>
     </div>
 
