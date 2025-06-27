@@ -17,7 +17,7 @@ export default function Header () {
         <header className="header">
             <div>
                 <div className="logo">
-                    <Link to="#">MoTo</Link>
+                    <Link to="/">MoTo</Link>
                 </div>
                 <MainNavi />
                 <HeaderLink />
