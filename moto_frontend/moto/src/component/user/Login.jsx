@@ -47,7 +47,6 @@ export default function Login() {
       setKakaoMember(loginUser.user);
 
       setIsLogined(true);
-      setLoginMember(loginUser.user);
       navigate("/");
     })
     .catch((err) => {

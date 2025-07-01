@@ -1,6 +1,8 @@
 package kr.or.iei.post.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -21,7 +23,9 @@ public interface PostDao {
 
 	ArrayList<Post> selectPostList(PageInfo pageInfo);
 
-	ArrayList<PostFile> selectPostFileList(int postNo);
+	ArrayList<PostFile> selectPostFileList(ArrayList<Integer> postNoArr);
+
+	
 
 	
 

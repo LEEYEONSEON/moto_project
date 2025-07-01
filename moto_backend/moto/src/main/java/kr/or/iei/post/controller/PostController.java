@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import kr.or.iei.common.model.dto.ResponseDTO;
 import kr.or.iei.common.util.FileUtil;
 import kr.or.iei.post.model.dto.Post;
@@ -24,7 +22,7 @@ import kr.or.iei.post.model.service.PostService;
 import kr.or.iei.user.model.dto.User;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin("http://localhost:5173")
 @RequestMapping("/post")
 public class PostController {
 
@@ -84,6 +82,7 @@ public class PostController {
 			
 			HashMap<String, Object> postMap = service.selectPostList(reqPage);
 			res = new ResponseDTO(HttpStatus.OK, "", postMap , "");
+			System.out.println(postMap.get("postInfo"));
 			
 		} catch (Exception e) {
 			e.printStackTrace();

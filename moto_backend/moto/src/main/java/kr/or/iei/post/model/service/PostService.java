@@ -12,6 +12,7 @@ import kr.or.iei.common.util.PageUtil;
 import kr.or.iei.post.model.dao.PostDao;
 import kr.or.iei.post.model.dto.Post;
 import kr.or.iei.post.model.dto.PostFile;
+import kr.or.iei.post.model.dto.PostInfo;
 
 @Service
 public class PostService {
@@ -55,28 +56,32 @@ public class PostService {
 		
 		ArrayList<PostFile> postFileList = new ArrayList<>();
 		
+		PostInfo postInfo = new PostInfo();
+		
 		// postFile 가져오기
-		if(postList != null) {			
+		if(postList != null) {
+			
+			
+			
 			for(int i=0; i<postList.size(); i++) {
 				Post post = postList.get(i);
-				PostFile postFile = new PostFile();
-				postFile.setPostNo(post.getPostNo());
 				
-				ArrayList<PostFile> postFiles = dao.selectPostFileList(post.getPostNo());
+				ArrayList<Integer> postNoArr = new ArrayList<>();
+				postNoArr.add(post.getPostNo());
+				System.out.println(postNoArr);
+				ArrayList<PostFile> postFiles = dao.selectPostFileList(postNoArr);
+				System.out.println(postFiles);
 				if(postFiles != null && !postFiles.isEmpty()) {
-					postFileList.addAll(postFiles);
-					
+				postFileList.addAll(postFiles);
+				postInfo.setFileList(postFileList);
+				postInfo.setPostList(postList);
 				}
 			}
 		
-		
-			
-			
 			HashMap<String, Object> postMap = new HashMap<String,Object>();
 			postMap.put("pageInfo", pageInfo);
-			postMap.put("postList", postList);
-			postMap.put("postFileList", postFileList);
-			System.out.println(postFileList);
+			postMap.put("postInfo", postInfo);
+			
 			return postMap;
 		}
 		

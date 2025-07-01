@@ -6,12 +6,14 @@ import Swal from "sweetalert2";
 
 export default function PostWrite(){
 
-    const [content, setContent] = useState();
+        const [content, setContent] = useState();
         const [uploadFile, setUploadFile] = useState([]);
-    
         const axiosInstance = createInstance();
         const {loginMember} = useUserStore();
-        console.log(loginMember);
+        
+        if(loginMember != null){
+            const userNo = loginMember.userNo;
+        }
     
          const uploadFileEl = useRef(false);
          const serverUrl = import.meta.env.VITE_BACK_SERVER;

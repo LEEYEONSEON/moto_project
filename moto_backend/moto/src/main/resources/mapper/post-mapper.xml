@@ -41,8 +41,8 @@
 	 (
 	 seq_post_img_no.nextval,
 	 #{postNo},
-	 #{imgPath},
-	 #{imgName},
+	 #{postImgPath},
+	 #{postImgName},
 	 default,
 	 default
 	 
@@ -69,7 +69,8 @@
 	 		post_content as postContent,
 	 		post_date as postDate,
 	 		post_comment_cnt as postComment_cnt,
-	 		post_like_cnt as postLikeCnt
+	 		post_like_cnt as postLikeCnt,
+	 		(select user_nickname as userNickname from tbl_user where user_no = a.user_no) as userNickname
 	 	from (
 	 	select rownum rnum, a.*
 	 		from (
@@ -87,18 +88,27 @@
 	 
 	 </select>
 	 
-	 <!-- 해당 게시글 파일 정보 조회 -->
-	 <select id="selectPostFileList"
-	 parameterType="int"
-	 resultType="PostFile">
 	 
-	 select post_no as postNo,
-	 		post_img_path as postImgPath,
-	 		post_img_name as postImgName
-	 	from tbl_post_image
-	 	where post_no = #{postNo}	
-	 		
-	 
-	 </select>
+<!-- 해당 게시글들의 파일 정보 전체 조회 -->
+<select id="selectPostFileList"
+        parameterType="map"
+        resultType="PostFile">
+    	SELECT post_img_no AS postImgNo,
+          	 post_no AS postNo,
+          	 post_img_path AS postImgPath,
+           	 post_img_name AS postImgName
+    	  FROM tbl_post_image
+    	  where post_no in
+    	  <foreach collection="postNoArr"
+    	  		   item="no"
+    	  		   open="("
+    	  		   separator=","
+    	  		   close=")">
+    	  
+    	  #{no}
+    	  		   
+    	  </foreach>
+</select>
+
 	  
 </mapper>
