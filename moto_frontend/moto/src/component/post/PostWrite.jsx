@@ -11,7 +11,7 @@ export default function PostWrite(){
     
         const axiosInstance = createInstance();
         const {loginMember} = useUserStore();
-        const userNo = loginMember.userNo;
+        console.log(loginMember);
     
          const uploadFileEl = useRef(false);
          const serverUrl = import.meta.env.VITE_BACK_SERVER;

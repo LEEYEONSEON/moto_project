@@ -51,7 +51,7 @@ export default function PostView(){
                     style={{ height: "50px", width: "50px" }}
                   />
                 </td>
-                <td>{loginMember.userNickname}</td>
+                
               </tr>
             </thead>
             <tbody>
