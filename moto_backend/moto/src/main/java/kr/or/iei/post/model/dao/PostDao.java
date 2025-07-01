@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import kr.or.iei.common.model.dto.PageInfo;
 import kr.or.iei.post.model.dto.Post;
 import kr.or.iei.post.model.dto.PostFile;
 
@@ -15,5 +16,13 @@ public interface PostDao {
 	int insertPost(Post post);
 
 	int insertPostFile(PostFile file);
+
+	int selectPostListCnt();
+
+	ArrayList<Post> selectPostList(PageInfo pageInfo);
+
+	ArrayList<PostFile> selectPostFileList();
+
+	
 
 }

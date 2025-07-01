@@ -1,12 +1,15 @@
 package kr.or.iei.post.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -72,4 +75,21 @@ public class PostController {
 		return new ResponseEntity<ResponseDTO>(res,res.getHttpStatus());
 		
 	}
+	
+	@GetMapping("/getList/{reqPage}")
+	public ResponseEntity<ResponseDTO> selectPostList(@PathVariable int reqPage){
+		ResponseDTO res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "게시글 조회 중, 오류가 발생하였습니다.", false, "error");
+		
+		try {
+			
+			HashMap<String, Object> postMap = service.selectPostList(reqPage);
+			res = new ResponseDTO(HttpStatus.OK, "", postMap , "");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus());
+	}
+	
 }

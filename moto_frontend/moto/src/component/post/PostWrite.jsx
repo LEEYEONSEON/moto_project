@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import createInstance from "../../axios/Interceptor";
 import useUserStore from "../../store/useUserStore";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function PostWrite(){
 
@@ -19,7 +20,17 @@ export default function PostWrite(){
 
         // 모달을 여는 함수
         function openModal() {
-        document.getElementById("modal").style.display = "flex";
+            if(loginMember !=null){
+                document.getElementById("modal").style.display = "flex";
+            }else{
+                Swal.fire({
+                    title : "알림",
+                    text:"로그인후 이용 가능합니다.",
+                    icon: "warning",
+                    confirmButtonText:"확인"
+                });
+                navigate("/login");
+            }
         }
     
         // 모달을 닫는 함수
@@ -78,26 +89,29 @@ export default function PostWrite(){
 
     return (
         <>
-        <div className="notice-write" style={{width:"500px", height:"100px"}}>
+        <div className="notice-write" style={{width:"500px", height:"100px" }}>
                 <form onSubmit={function(e){
                     e.preventDefault();
                     uploadPost();
                     
                 }}>
-                <table >
+                <table style={{border:"1", background:"white", borderRadius:"5px", width:"300px", marginLeft:"200px"}}>
                     <thead>
                     <tr>
-                        <td><img src={
-                                loginMember.userProfileImg
-                                ? serverUrl + "/user/profile" + loginMember.userProfileImg.substring(0,8) + loginMember.userProfileImg
-                                : "/images/default_img.png"
+                        <td><img src={loginMember
+                                ?
+                                    loginMember.userProfileImg
+                                    ? serverUrl + "/user/profile" + loginMember.userProfileImg.substring(0,8) + loginMember.userProfileImg
+                                    : "/images/default_img.png"
+                                :"/images/default_img.png"
                                 } style={{height:"50px", width:"50px"}}/>
                         </td>
                         <td>
                             <div>
                                 {/* 게시글 작성 버튼 */}
                                 
-                                <input type="text" placeholder="무엇을 생각하고 계신가요?" style={{width:"170px", height:"30px"}} onClick={openModal}/>
+                                <input type="text" id="write" placeholder="무엇을 생각하고 계신가요?" style={{width:"170px", height:"30px",border:"none", }} onClick={openModal}/>
+                                
 
                             {/* 모달 */}
                             <div id="modal" style={styles.modalOverlay}>
@@ -126,7 +140,7 @@ export default function PostWrite(){
                                     vote
                                 </div>
                                 <div>
-                                    <h4>첨부파일 목록</h4>
+                                    <h4 style={{textAlign:"left"}}>첨부파일 목록</h4>
                                     {uploadFile.map(function(file,index){
                                         function deleteFile(){
                                             const newUploadFile = uploadFile.filter(function(fFile, findex){
@@ -156,8 +170,10 @@ export default function PostWrite(){
                             
                                 </div>
                             </div>
-                            </div>
+                            </div> 
+                            
                         </td>
+                        
                     </tr>
                     </thead>
                     <tbody>

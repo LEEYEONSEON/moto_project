@@ -49,5 +49,55 @@
 	 )
 	 
 	 </insert>
+	 
+	 <!-- 게시글 전체 갯수 조회 -->
+	 <select id="selectPostListCnt"
+	 resultType="int">
+	 
+	 select count(*)
+	 	from tbl_post
+	 
+	 </select>
+	 
+	 <!-- 게시글 목록 조회 -->
+	 <select id="selectPostList"
+	 parameterType="PageInfo"
+	 resultType="Post">
+	 
+	 select post_no as postNo,
+	 		user_no as userNo,
+	 		post_content as postContent,
+	 		post_date as postDate,
+	 		post_comment_cnt as postComment_cnt,
+	 		post_like_cnt as postLikeCnt
+	 	from (
+	 	select rownum rnum, a.*
+	 		from (
+	 		select post_no,
+	 			   user_no,
+	 			   post_content,
+	 			   post_date,
+	 			   post_comment_cnt,
+	 			   post_like_cnt
+	 		  from tbl_post
+	 		  order by post_date desc
+	 		)a
+	 	)a
+	 	where rnum between #{start} and #{end}	
+	 
+	 </select>
+	 
+	 <!-- 해당 게시글 파일 정보 조회 -->
+	 <select id="selectPostFileList"
+	 parameterType="PostFile"
+	 resultType="PostFile">
+	 
+	 select post_img_path as postImgPath,
+	 		post_img_name as postImgName
+	 	from tbl_post_image
+	 	where post_no = #{postNo}	
+	 		
+	 
+	 </select>
 	  
 </mapper>

@@ -12,7 +12,7 @@ public class Post {
 	private int postNo;
 	private String postContent;
 	private String postDate;
-	private int commentCnt;
+	private int postCommentCnt;
 	private int postLikeCnt;
 	private String userNo;
 }
