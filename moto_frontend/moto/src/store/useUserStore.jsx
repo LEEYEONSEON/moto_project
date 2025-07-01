@@ -21,6 +21,7 @@ const useUserStore = create(
                     isLogined : loginChk
                 })
             },
+            //일반 로그인 멤버 정보
             loginMember : null,
             setLoginMember : function(memberObj){
                 set({
@@ -38,7 +39,21 @@ const useUserStore = create(
                 set({
                     refreshToken : refreshToken
                 })
-            }
+            },
+             // 카카오 로그인 관련 정보 저장 객체
+            kakaoMember: null,
+            // kakaoMember 전체 덮어쓰기
+            setKakaoMember: function(memberObj){
+                set({
+                    kakaoMember : memberObj
+                })
+            },
+            tokenExpiresIn: null,
+            setTokenExpiresIn: (seconds) => set({ tokenExpiresIn: seconds }),
+
+            refreshTokenExpiresIn: null,
+            setRefreshTokenExpiresIn: (seconds) => set({ refreshTokenExpiresIn: seconds })
+
         })  
     )
 );

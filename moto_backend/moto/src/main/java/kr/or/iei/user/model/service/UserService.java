@@ -41,7 +41,7 @@ public class UserService {
 
 	public LoginUser userLogin(User user) {
 		User chkUser = dao.userLogin(user.getUserId()); //아이디로 회원 정보 조회
-		
+		System.out.println(chkUser.getUserNo());
 		//아이디 잘못 입력하여, chkMember가 null인 경우 비밀번호 검증 불필요
 		if(chkUser == null) {
 			return null;
