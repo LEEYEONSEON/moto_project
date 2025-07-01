@@ -9,7 +9,7 @@ export default function Main() {
       <div style={{ flex: 1, padding: "20px", color: "white" }}>
         <Routes>
           <Route path="/" element={<div>메인페이지</div>} />
-          <Route path="/users/me/wallet" element={<WalletPage />} />
+          <Route path="/user/me/wallet" element={<WalletPage />} />
         </Routes>
       </div>
     </section>

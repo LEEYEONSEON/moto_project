@@ -20,4 +20,9 @@ public class WalletPageDto {
     public void setTotalCount(int totalCount) {
         this.totalRecords = totalCount;
     }
+
+	public void setTotalPage(int totalPage) {
+		// TODO Auto-generated method stub
+		
+	}
 }

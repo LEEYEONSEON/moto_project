@@ -5,8 +5,11 @@ import { customHistory } from "../common/history";
 
 // 외부 컴포넌트에서 서버 요청 시 사용할 axios 인스턴스 생성 함수
 export default function createInstance() {
-	const instance = axios.create();
-	return setInterceptors(instance);
+	const instance = axios.create({
+    baseURL: import.meta.env.VITE_BACK_SERVER || 'http://localhost:4000', // 여기에 백엔드 주소 지정
+  });
+
+  return setInterceptors(instance);
 }
 
 // axios 인스턴스에 인터셉터 설정 (요청/응답 가로채기)
@@ -20,7 +23,7 @@ function setInterceptors(instance) {
 
 		   //스토리지에 저장된 accessToken 요청 헤더에 포함시키기.
 		   if(accessToken != null){
-				config.headers['Authorization'] = accessToken;
+				config.headers['Authorization'] = `Bearer ${accessToken}`;
 		   }
 
 
