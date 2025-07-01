@@ -52,8 +52,8 @@ public class PostController {
 					String filePath = fileUtil.uploadFile(mFile, "/board/");	//파일 업로드
 					
 					PostFile file = new PostFile();	
-					file.setImgName(mFile.getOriginalFilename());	// 사용자가 업로드한 기존 img명
-					file.setImgPath(filePath);						// 서버 저장 이미지명
+					file.setPostImgName(mFile.getOriginalFilename());	// 사용자가 업로드한 기존 img명
+					file.setPostImgPath(filePath);						// 서버 저장 이미지명
 					
 					fileList.add(file);
 

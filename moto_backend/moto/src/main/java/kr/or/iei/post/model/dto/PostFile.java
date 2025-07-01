@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 public class PostFile {
 
 	private int postImgNo;
-	private String imgPath;
-	private String imgName;
+	private String postImgPath;
+	private String postImgName;
 	private int postNo;
 	private String postImgUploadDate;
 	private int postImgFileOrder;

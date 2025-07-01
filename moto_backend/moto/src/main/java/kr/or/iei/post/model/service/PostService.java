@@ -61,20 +61,22 @@ public class PostService {
 				Post post = postList.get(i);
 				PostFile postFile = new PostFile();
 				postFile.setPostNo(post.getPostNo());
-				System.out.println(postFile.getPostNo());
 				
-				postFileList.add(postFile);
+				ArrayList<PostFile> postFiles = dao.selectPostFileList(post.getPostNo());
+				if(postFiles != null && !postFiles.isEmpty()) {
+					postFileList.addAll(postFiles);
+					
+				}
 			}
 		
-		postFileList = dao.selectPostFileList();
-		System.out.println(postFileList);
+		
 			
 			
 			HashMap<String, Object> postMap = new HashMap<String,Object>();
 			postMap.put("pageInfo", pageInfo);
 			postMap.put("postList", postList);
 			postMap.put("postFileList", postFileList);
-			
+			System.out.println(postFileList);
 			return postMap;
 		}
 		

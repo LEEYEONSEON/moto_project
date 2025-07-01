@@ -21,7 +21,7 @@ public interface PostDao {
 
 	ArrayList<Post> selectPostList(PageInfo pageInfo);
 
-	ArrayList<PostFile> selectPostFileList();
+	ArrayList<PostFile> selectPostFileList(int postNo);
 
 	
 

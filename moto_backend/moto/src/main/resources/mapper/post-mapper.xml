@@ -89,10 +89,11 @@
 	 
 	 <!-- 해당 게시글 파일 정보 조회 -->
 	 <select id="selectPostFileList"
-	 parameterType="PostFile"
+	 parameterType="int"
 	 resultType="PostFile">
 	 
-	 select post_img_path as postImgPath,
+	 select post_no as postNo,
+	 		post_img_path as postImgPath,
 	 		post_img_name as postImgName
 	 	from tbl_post_image
 	 	where post_no = #{postNo}	
