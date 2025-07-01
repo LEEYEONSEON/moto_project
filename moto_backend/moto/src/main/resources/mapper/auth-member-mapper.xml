@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace =  "kr.or.iei.common.oauth.model.dao.OAuthUserDao">
+  
+  	<!-- 소셜 로그인 -->
+	<!-- 소셜로그인시 이메일로 회원조회 -->
+	<select id = "findByEmail"
+			parameterType = "String"
+			resultType = "User">
+	select user_no as userNo,
+			user_id as userId,
+			user_nickname as userNickname,
+			user_email as userEmail,
+		   user_password as userPassword,
+		   user_role as userRole,
+		   user_join_date as userJoinDate,
+		   user_post_like_count as userPostLikeCount,
+		   user_comment_like_count as userCommentLikeCount,
+		   user_sanction_count as userSanctionCount,
+		   user_social_type as userSocialType,
+		   user_profile_img as userProfileImg
+	  from tbl_user
+	 where user_email = #{_parameter}		
+				
+	</select>
+	
+	<update id = "updateUser"
+			parameterType = "User">
+		update tbl_user
+		set user_nickname = #{userNickname}
+		where user_email = #{userEmail}
+	
+	</update>
+	<insert id = "insertUser"
+			parameterType = "User">
+		insert into tbl_user
+		(
+		user_no,
+		user_id,
+		user_nickname,
+		user_email,
+		user_role,
+		user_join_date,
+		user_post_like_count,
+		user_comment_like_count,
+		user_sanction_count,
+		user_social_type
+		)
+	values 
+		(
+		seq_user_no.nextval, 
+		#{userId},
+		#{userNickname},
+		#{userEmail},
+		default,
+		sysdate,
+		default,
+		default,
+		default,
+		'KAKAO'
+		)		
+	</insert>
+</mapper>

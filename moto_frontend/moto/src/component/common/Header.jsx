@@ -49,8 +49,7 @@ function HeaderLink () {
     const setLoginMember = props.setLoginMember;
     */
 
-    const {isLogined, setIsLogined, loginMember, setLoginMember, setAccessToken, setRefreshToken} = useUserStore();
-
+    const {isLogined, setIsLogined, loginMember, kakaoMember, setLoginMember, setAccessToken, setRefreshToken, setKakaoMember, setTokenExpiresIn, setRefreshTokenExpiresIn} = useUserStore();
     const navigate = useNavigate();
 
     //로그아웃 Link 클릭 시, 동작 함수
@@ -65,33 +64,37 @@ function HeaderLink () {
         setIsLogined(false);
         setAccessToken(null);
         setRefreshToken(null);
-
+        setLoginMember(null);
+        setKakaoMember(null);
+        setTokenExpiresIn(null);
+        setRefreshTokenExpiresIn(null);
         navigate('/login');
     }
 
 
     return (
         <ul className="user-menu" >
-             {
-                isLogined ?
-                <>
-                    <li>
-                        <Link to="/member">{loginMember.memberId}</Link>
-                    </li>
-                    <li>
-                        <Link to="/logout" onClick={logout}>로그아웃</Link>
-                    </li>                
-                </>
-                :
-                <>
-                    <li>
-                        <Link to="/login">로그인</Link>
-                    </li>
-                    <li>
-                        <Link to="/join">회원가입</Link>
-                    </li>
-                </>
-             }
+            {isLogined ? (
+            <>
+                {loginMember ? (
+                <li>
+                    <Link to="/member">{loginMember.userId}</Link>
+                </li>
+                ) : (
+                <li>
+                    <Link to="/member">{kakaoMember.userId}</Link>
+                </li>
+                )}
+                <li>
+                <a href="#" onClick={logout}>로그아웃</a>
+                </li>
+            </>
+            ) : (
+            <>
+                <li><Link to="/login">로그인</Link></li>
+                <li><Link to="/join">회원가입</Link></li>
+            </>
+            )}
         </ul>
     );
 }
