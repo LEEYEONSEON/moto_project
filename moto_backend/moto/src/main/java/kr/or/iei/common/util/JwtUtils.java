@@ -28,7 +28,7 @@ public class JwtUtils {
 	
 	
 	//AccessToken 발급 메소드
-	public String createAccessToken(String memberId, int memberLevel) {
+	public String createAccessToken(String userId, int userRole) {
 		//1. 내부에서 사용할 방식으로, 정의한 key 변환
 		SecretKey key = Keys.hmacShaKeyFor(jwtSecretKey.getBytes());
 		
@@ -44,15 +44,15 @@ public class JwtUtils {
 								 .issuedAt(startTime)					//시작시간
 								 .expiration(expireTime)				//만료시간
 								 .signWith(key)							//암호화 서명
-								 .claim("memberId", memberId)			//토큰 포함 정보(key ~ value 형태)
-								 .claim("memberLevel", memberLevel)		//토큰 포함 정보(key ~ value 형태)
+								 .claim("userId", userId)			//토큰 포함 정보(key ~ value 형태)
+								 .claim("userRole", userRole)		//토큰 포함 정보(key ~ value 형태)
 								 .compact();							//생성
 		
 		return accessToken;
 	}
 	
 	//RefreshToken 발급 메소드
-	public String createRefreshToken(String memberId, int memberLevel) {
+	public String createRefreshToken(String userId, int userRole) {
 		//1. 내부에서 사용할 방식으로, 정의한 key 변환
 		SecretKey key = Keys.hmacShaKeyFor(jwtSecretKey.getBytes());
 		
@@ -68,8 +68,8 @@ public class JwtUtils {
 								 .issuedAt(startTime)					//시작시간
 								 .expiration(expireTime)				//만료시간
 								 .signWith(key)							//암호화 서명
-								 .claim("memberId", memberId)			//토큰 포함 정보(key ~ value 형태)
-								 .claim("memberLevel", memberLevel)		//토큰 포함 정보(key ~ value 형태)
+								 .claim("userId", userId)			//토큰 포함 정보(key ~ value 형태)
+								 .claim("userRole", userRole)		//토큰 포함 정보(key ~ value 형태)
 								 .compact();							//생성
 		
 		return refreshToken;
@@ -92,11 +92,11 @@ public class JwtUtils {
 										 .getPayload();
 			
 			//3. 토큰에서 데이터 추출
-			String memberId = (String) claims.get("memberId");
-			int memberLevel = (int) claims.get("memberLevel");
+			String userId = (String) claims.get("userId");
+			int userRole = (int) claims.get("userRole");
 			
-			m.setUserId(memberId);
-			m.setUserRole(memberLevel+"");
+			m.setUserId(userId);
+			m.setUserRole(userRole+"");
 			
 		}catch(SignatureException e) { // 발급 토큰과 요청 토큰 불일치
 			return HttpStatus.UNAUTHORIZED; //401 코드 

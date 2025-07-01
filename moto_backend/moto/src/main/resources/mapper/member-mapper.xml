@@ -54,25 +54,23 @@
 	</insert>
 	
 	<!-- 로그인 -->
-   <select id="userLogin"
-   parameterType="string"
-   resultType="User">
-   select user_no as userNo,
-         user_id as userId,
-         user_nickname as userNickname,
-         user_email as userEmail,
-         user_password as userPassword,
-         user_role as userRole,
-         user_join_date as userJoinDate,
-         user_post_like_count as userPostLikeCount,
-         user_comment_like_count as userCommentLikeCount,
-         user_sanction_count as userSanctionCount,
-         user_social_type as userSocialType,
-         user_profile_img as userProfileImg
-     from tbl_user
-    where user_id = #{_parameter}
-   </select>
-	
-	
-	
+	<select id="userLogin"
+	parameterType="string"
+	resultType="User">
+	select user_no as userNo,
+			user_id as userId,
+			user_nickname as userNickname,
+			user_email as userEmail,
+		   user_password as userPassword,
+		   user_role as userRole,
+		   user_join_date as userJoinDate,
+		   user_post_like_count as userPostLikeCount,
+		   user_comment_like_count as userCommentLikeCount,
+		   user_sanction_count as userSanctionCount,
+		   user_social_type as userSocialType,
+		   user_profile_img as userProfileImg
+	  from tbl_user
+	 where user_id = #{_parameter}
+	</select>
+
 </mapper>
