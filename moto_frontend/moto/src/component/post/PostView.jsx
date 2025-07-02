@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import createInstance from "../../axios/Interceptor";
 import useUserStore from "../../store/useUserStore";
 import PageNavi from "../common/PageNavi";
-import PostWrite from "./PostWrite";
 
 function PostView() {
   const [reqPage, setReqPage] = useState(1);
@@ -114,13 +113,15 @@ function PostView() {
 
               return (
                 <div key={"post" + index}>
-                    
+                  
                     <span>{post.userNickname}</span> {/* 사용자 닉네임 */} 
-                    <span class="material-symbols-outlined" onClick={function(){
-                      
-                    }}>
-                      dehaze
-                    </span>
+                    {
+                      loginMember.userNo == post.userNo  
+                      ?<span class="material-symbols-outlined" onClick={function(e){
+                          
+                      }}>dehaze</span>
+                      :""
+                    }
                     <br />
                     <span>{post.postContent}</span> {/* 게시글 내용 */}
                   
