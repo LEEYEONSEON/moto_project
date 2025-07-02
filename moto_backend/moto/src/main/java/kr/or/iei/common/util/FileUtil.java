@@ -46,7 +46,7 @@ public class FileUtil {
 		
 		//savePath => /editor/
 		savePath = uploadPath + savePath + serverDirectory + File.separator;
-		//  "C:/Temp/react"  + "/editor/" + "20250624" + "/"
+		//  "D:/Temp/react"  + "/editor/" + "20250624" + "/"
 		
 		//파일 업로드 처리
 		BufferedOutputStream bos = null;
@@ -68,3 +68,5 @@ public class FileUtil {
 		return serverFileName;
 	}
 }
+
+
