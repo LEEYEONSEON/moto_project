@@ -15,7 +15,7 @@ import kr.or.iei.user.model.service.WalletService;
 
 @RestController
 @RequestMapping("/users/{userId}/wallet")
-@CrossOrigin("*")  // 필요 시 추가
+@CrossOrigin("http://localhost:5173")
 public class WalletController {
 
     @Autowired

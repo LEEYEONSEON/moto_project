@@ -47,7 +47,6 @@ export default function Login() {
       setKakaoMember(loginUser.user);
 
       setIsLogined(true);
-      setLoginMember(loginUser.user);
       navigate("/");
     })
     .catch((err) => {
@@ -115,6 +114,7 @@ export default function Login() {
             options.url = serverUrl + '/user/login';
             options.method = 'post'; //로그인(일치하는 회원을 조회) == 조회 == GET == 로그인과 같은 민감한 정보일때에는 기존과 같이 POST로
             options.data = user;
+            options.withCredentials = true; // 세션 쿠키를 클라이언트에 저장하도록 설정
 
             axiosInstance(options)
             .then(function(res){

@@ -10,7 +10,8 @@ import Sidebar from './component/common/Sidebar';
 import { Route, Routes } from 'react-router-dom';
 import WalletPage from './component/common/WalletPage';
 import { UserProvider } from "./component/common/UserContext";
-import Mypage from './component/user/Mypage';
+import MypageInfo from './component/user/MypageInfo';
+import MypageMain from './component/user/MypageMain';
 
 function App() {
   return (
@@ -26,7 +27,8 @@ function App() {
             <Route path='/user/update/info' element={<UserUpdate />} />
             <Route path="/user/update/password" element={<UserPasswordUpdate />} />
             <Route path="/watchlists/:userId" element={<WalletPage />} />
-            <Route path='/user/me' element={<Mypage />} />
+            <Route path='/user/me' element={<MypageInfo />} />
+            <Route path='/user/me' element={<MypageMain />} />
           </Routes>
         </main>
         <Footer/>

@@ -15,7 +15,7 @@ import kr.or.iei.user.model.service.UpdateService;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin("*")
+@CrossOrigin("http://localhost:5173")
 public class UpdateController {
 
     @Autowired
@@ -58,6 +58,12 @@ public class UpdateController {
     // ▶ 마이페이지용 사용자 정보 조회
     @GetMapping("/me")
     public ResponseEntity<ResponseDTO> getUserProfile(Principal principal) {
+        if (principal == null) {
+            return new ResponseEntity<>(
+                new ResponseDTO(HttpStatus.UNAUTHORIZED, "로그인이 필요합니다.", null, "error"),
+                HttpStatus.UNAUTHORIZED
+            );
+        }
         ResponseDTO res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "유저 정보 조회 실패", null, "error");
         try {
             String userId = principal.getName(); // 로그인한 사용자의 ID 가져오기

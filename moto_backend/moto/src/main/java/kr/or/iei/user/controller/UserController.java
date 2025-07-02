@@ -18,7 +18,7 @@ import kr.or.iei.user.model.dto.User;
 import kr.or.iei.user.model.service.UserService;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin("http://localhost:5173")
 @RequestMapping("/user")
 public class UserController {
 	
