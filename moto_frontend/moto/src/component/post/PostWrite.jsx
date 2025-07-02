@@ -11,9 +11,7 @@ export default function PostWrite(){
         const axiosInstance = createInstance();
         const {loginMember} = useUserStore();
         
-        if(loginMember != null){
-            const userNo = loginMember.userNo;
-        }
+        const userNo = loginMember.userNo;
     
          const uploadFileEl = useRef(false);
          const serverUrl = import.meta.env.VITE_BACK_SERVER;
@@ -82,6 +80,8 @@ export default function PostWrite(){
 
             axiosInstance(options)
             .then(function(res){
+                setContent("");
+                setUploadFile([]);
                 closeModal();
             })
 
@@ -97,7 +97,7 @@ export default function PostWrite(){
                     uploadPost();
                     
                 }}>
-                <table style={{border:"1", background:"white", borderRadius:"5px", width:"300px", marginLeft:"200px"}}>
+                <table style={{border:"1", background:"white", borderRadius:"5px", width:"400px", marginLeft:"150px"}}>
                     <thead>
                     <tr>
                         <td><img src={loginMember
@@ -112,7 +112,7 @@ export default function PostWrite(){
                             <div>
                                 {/* 게시글 작성 버튼 */}
                                 
-                                <input type="text" id="write" placeholder="무엇을 생각하고 계신가요?" style={{width:"170px", height:"30px",border:"none", }} onClick={openModal}/>
+                                <input type="text" id="write" placeholder="무엇을 생각하고 계신가요?" style={{width:"170px", height:"30px",border:"none", }} onClick={openModal} readOnly/>
                                 
 
                             {/* 모달 */}
@@ -151,7 +151,7 @@ export default function PostWrite(){
                                                 setUploadFile(newUploadFile);
                                         }
 
-                                        return <p key={"file" + index}>
+                                        return <p key={"file" + index} style={{textAlign:"left"}}>
 
                                             
 
@@ -181,7 +181,7 @@ export default function PostWrite(){
                     <tbody>
                     <tr>
                         <td>
-                             <div style={{display:"flex"}}>
+                             <div style={{display:"flex", marginLeft:"20px"}}>
                                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3" style={{cursor:"pointer"}} onClick={function(){
                                         uploadFileEl.current.click();
                                     }}>

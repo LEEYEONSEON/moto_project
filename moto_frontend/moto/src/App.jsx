@@ -16,6 +16,7 @@ function App() {
       <Sidebar/>
       <Routes>
       <Route path='/' element={<PageMain />} />
+      <Route path='/main/:reqPage' element={<PageMain />} />
       <Route path='/join' element={<Join />} />
       <Route path='/login' element={<Login/>} />
       </Routes>
