@@ -4,17 +4,27 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import kr.or.iei.common.filter.EncodingFilter;
-
 import jakarta.servlet.Filter;
+import kr.or.iei.common.filter.EncodingFilter;
 
 @Configuration //이 어노테이션이 작성된 클래스는 IoC 컨테이너가 초기화될 때 실행
 public class WebConfig implements WebMvcConfigurer{ //이 클래스는 Spring MVC 관련 설정을 커스터마이징 할 때 작성
-	
+    
+
+	@Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**") // 모든 엔드포인트에 적용
+                .allowedOrigins("http://localhost:5173") // React 개발 서버
+                .allowedMethods("GET","POST","PUT","DELETE","OPTIONS")
+                .allowedHeaders("*")
+                .allowCredentials(true);
+    }
 	
 	//필터 등록
 	@Bean

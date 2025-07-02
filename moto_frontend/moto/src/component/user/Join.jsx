@@ -156,44 +156,79 @@ export default function Join() {
     const navigate = useNavigate();
 
     //회원가입 처리 함수
-    function join(){
-        if(idChk == 1 && pwChk == 1 && emailChk == 1){ //아이디, 비밀번호 정상 입력
+    function join() {
+    const errors = [];
 
-            let options = {};
-            options.url = serverUrl + '/user';
-            options.method = 'post'; //등록 == POST
-            options.data = user;
-
-            axiosInstance(options)
-            .then(function(res){
-                //res.data == ResponseDTO
-                //res.data.resData == 회원가입 결과 (true or false)
-                //res.data.clientMsg == 서버에서 응답해준 메시지
-                Swal.fire({
-                    title : '알림',
-                    text : res.data.clientMsg,
-                    icon : res.data.alertIcon,
-                    confirmButtonText : '확인'
-                })
-                .then(function(result){
-                    if(res.data.resData){ //회원가입 정상 처리
-                        navigate('/login'); //로그인 컴포넌트로 전환.
-                    }
-                });
-            })
-            .catch(function(err){
-                console.log(err);
-            });
-
-        }else {
-            Swal.fire({
-                title : '알림',
-                text : '입력값이 유효하지 않습니다.',
-                icon : 'warning',
-                confirmButtonText : '확인'
-            });
+    if (idChk !== 1) {
+        if (idChk === 0) {
+            errors.push("아이디 유효성 검사를 완료해주세요.");
+        } else if (idChk === 2) {
+            errors.push("아이디는 영문 대소문자 및 숫자로 8~20자여야 합니다.");
+        } else if (idChk === 3) {
+            errors.push("이미 사용 중인 아이디입니다.");
         }
     }
+
+    else if (pwChk !== 1) {
+        if (pwChk === 0) {
+            errors.push("비밀번호와 확인값을 입력하고 검증을 완료해주세요.");
+        } else if (pwChk === 2) {
+            errors.push("비밀번호는 영어, 숫자, 특수문자로 6~30자여야 합니다.");
+        } else if (pwChk === 3) {
+            errors.push("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+        }
+    }
+
+    else if (emailChk !== 1) {
+        if (emailChk === 0) {
+            errors.push("이메일 유효성 검사를 완료해주세요.");
+        } else if (emailChk === 2) {
+            errors.push("이메일 형식이 올바르지 않습니다.");
+        } else if (emailChk === 3) {
+            errors.push("이미 사용 중인 이메일입니다.");
+        }
+    }
+
+    else if (user.userNickname.trim() === "") {
+        errors.push("닉네임을 입력해주세요.");
+    }
+
+    // 에러 메시지 출력
+    if (errors.length > 0) {
+        Swal.fire({
+            title: "입력 오류",
+            html: errors.map(e => `<div style="text-align:left;">• ${e}</div>`).join(""),
+            icon: "warning",
+            confirmButtonText: "확인"
+        });
+        return;
+    }
+
+    // 모든 입력이 유효할 때 회원가입 요청
+    const options = {
+        url: serverUrl + '/user',
+        method: 'post',
+        data: user
+    };
+
+    axiosInstance(options)
+        .then(function(res) {
+            Swal.fire({
+                title: '알림',
+                text: res.data.clientMsg,
+                icon: res.data.alertIcon,
+                confirmButtonText: '확인'
+            })
+            .then(function(result) {
+                if (res.data.resData) {
+                    navigate('/login');
+                }
+            });
+        })
+        .catch(function(err) {
+            console.log(err);
+        });
+}
 
     return (
         <section className="section join-wrap">
