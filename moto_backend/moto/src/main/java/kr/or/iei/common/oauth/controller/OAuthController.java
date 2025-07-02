@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +28,7 @@ import kr.or.iei.user.model.dto.User;
  * OAuth2 인증 엔드포인트를 제공하는 컨트롤러
  */
 @RestController
+@CrossOrigin("http://localhost:5173")
 @RequestMapping("/auth/oauth2")
 public class OAuthController {
 	

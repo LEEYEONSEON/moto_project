@@ -47,7 +47,6 @@ export default function Login() {
       setKakaoMember(loginUser.user);
 
       setIsLogined(true);
-      setLoginMember(loginUser.user);
       navigate("/");
     })
     .catch((err) => {
@@ -146,6 +145,7 @@ export default function Login() {
                     //정상 로그인 (스토리지 데이터 변경)
                     setIsLogined(true);
                     setLoginMember(loginMember.user);
+                
                     //스토리지에 토큰 저장
                     setAccessToken(loginMember.accessToken);
                     setRefreshToken(loginMember.refreshToken);
