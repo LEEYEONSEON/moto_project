@@ -6,7 +6,8 @@ import { customHistory } from "../common/history";
 // 외부 컴포넌트에서 서버 요청 시 사용할 axios 인스턴스 생성 함수
 export default function createInstance() {
   const baseURL = import.meta.env.VITE_BACK_SERVER;
-
+  console.log('VITE_BACK_SERVER:', baseURL);
+  
   const instance = axios.create({
     baseURL,
     withCredentials: true,

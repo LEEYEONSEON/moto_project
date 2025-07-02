@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class WalletHistoryDto {
     private String transactionId;         // 거래 고유 ID
-    private Date transactionDate;         // 거래 날짜
+    private String transactionDate;         // 거래 날짜
     private String assetName;             // 자산명 (주식, 코인 등)
     private String transactionType;       // 거래 유형 (매수, 매도, 복구 등)
     private BigDecimal quantity;          // 거래 수량

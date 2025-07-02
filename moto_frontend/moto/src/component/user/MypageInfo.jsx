@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import createInstance from '../../axios/Interceptor';
 import useUserStore from '../../store/useUserStore';
 
-// axios 인스턴스 한 번만 생성
-const api = createInstance();
 
 export default function MypageInfo() {
   const navigate = useNavigate();
-
+  
+  // axios 인스턴스 한 번만 생성
+  const api = createInstance();
   // Zustand store에서 로그인 여부와 accessToken을 가져옴
   const isLogined = useUserStore(state => state.isLogined);
   const accessToken = useUserStore(state => state.accessToken);
@@ -151,8 +151,8 @@ export default function MypageInfo() {
           <form onSubmit={onSubmit}>
             {[
               { label: '아이디', name: 'userId', disabled: true, value: form.userId },
-              { label: '닉네임', name: 'userNickname', disabled: isSocial, value: form.userNickname },
-              { label: '이메일', name: 'userEmail', disabled: isSocial, value: form.userEmail },
+              { label: '닉네임', name: 'userNickname',  value: form.userNickname },
+              { label: '이메일', name: 'userEmail',  value: form.userEmail },
               { label: '등급', name: 'userGrade', disabled: true, value: form.userGrade || '일반' },
               { label: '프로필 이미지 URL', name: 'userProfileImg', disabled: true, value: form.userProfileImg || '' },
             ].map(({ label, name, disabled, value }) => (

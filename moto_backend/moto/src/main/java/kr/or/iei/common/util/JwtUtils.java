@@ -1,6 +1,5 @@
 package kr.or.iei.common.util;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -11,113 +10,100 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import kr.or.iei.user.model.dto.User;
 
 @Component
 public class JwtUtils {
-
-    @Value("${jwt.secret-key}")
-    private String jwtSecretKey;
-
-    @Value("${jwt.expire-minute}")
-    private int jwtExpireMinute;
-
-    @Value("${jwt.expire-hour-refresh}")
-    private int jwtExpireHourRefresh;
-
-    // SecretKey 생성 및 길이 검사
-    private SecretKey getSigningKey() {
-        byte[] keyBytes = jwtSecretKey.getBytes(StandardCharsets.UTF_8);
-        System.out.println("🔐 Secret Key Byte Length: " + keyBytes.length);
-        if (keyBytes.length < 32) {
-            throw new IllegalArgumentException("❌ Secret key must be at least 32 bytes (256 bits) for HMAC-SHA algorithms.");
-        }
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
-
-    // AccessToken 생성
-    public String createAccessToken(String userId, int userRole) {
-        SecretKey key = getSigningKey();
-
-        Calendar calendar = Calendar.getInstance();
-        Date startTime = calendar.getTime();
-        calendar.add(Calendar.MINUTE, jwtExpireMinute);
-        Date expireTime = calendar.getTime();
-
-        return Jwts.builder()
-                .setIssuedAt(startTime)
-                .setExpiration(expireTime)
-                .signWith(key)
-                .claim("userId", userId)
-                .claim("userRole", userRole)
-                .compact();
-    }
-
-    // RefreshToken 생성
-    public String createRefreshToken(String userId, int userRole) {
-        SecretKey key = getSigningKey();
-
-        Calendar calendar = Calendar.getInstance();
-        Date startTime = calendar.getTime();
-        calendar.add(Calendar.HOUR, jwtExpireHourRefresh);
-        Date expireTime = calendar.getTime();
-
-        return Jwts.builder()
-                .setIssuedAt(startTime)
-                .setExpiration(expireTime)
-                .signWith(key)
-                .claim("userId", userId)
-                .claim("userRole", userRole)
-                .compact();
-    }
-
-    // 토큰 검증
-    public Object validateToken(String token) {
-        if (token == null || token.trim().isEmpty()) {
-            return HttpStatus.UNAUTHORIZED;
-        }
-
-        User m = new User();
-
-        try {
-            if (token.startsWith("Bearer ")) {
-                token = token.substring(7);
-            }
-            token = token.trim();
-
-            SecretKey key = getSigningKey();
-
-            Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-
-            String userId = claims.get("userId", String.class);
-            Integer userRole = claims.get("userRole", Integer.class);
-
-            m.setUserId(userId);
-            m.setUserRole(String.valueOf(userRole));
-
-        } catch (ExpiredJwtException e) {
-            System.out.println("❌ Token expired: " + e.getMessage());
-            return HttpStatus.UNAUTHORIZED;
-        } catch (MalformedJwtException e) {
-            System.out.println("❌ Malformed token: " + e.getMessage());
-            return HttpStatus.BAD_REQUEST;
-        } catch (SignatureException e) {
-            System.out.println("❌ Invalid signature: " + e.getMessage());
-            return HttpStatus.UNAUTHORIZED;
-        } catch (Exception e) {
-            System.out.println("❌ Unknown JWT exception: " + e.getMessage());
-            return HttpStatus.FORBIDDEN;
-        }
-
-        return m;
-    }
+   
+   //application.properties에 작성된 값 읽어오기
+   @Value("${jwt.secret-key}")
+   private String jwtSecretKey;
+   @Value("${jwt.expire-minute}")
+   private int jwtExpireMinute;
+   @Value("${jwt.expire-hour-refresh}")
+   private int jwtExpireHourRefresh;
+   
+   
+   //AccessToken 발급 메소드
+   public String createAccessToken(String userId, int userRole) {
+      //1. 내부에서 사용할 방식으로, 정의한 key 변환
+      SecretKey key = Keys.hmacShaKeyFor(jwtSecretKey.getBytes());
+      
+      //2. 토큰 생성시간 및 만료시간 설정
+      
+      Calendar calendar = Calendar.getInstance();                //현재시간
+      Date startTime = calendar.getTime();                     //현재시간 == 유효 시작시간
+      calendar.add(Calendar.MINUTE, jwtExpireMinute);               //현재시간 + 10분 == 유효 만료시간
+      Date expireTime = calendar.getTime();                     //만료시간
+      
+      //3. 토큰 생성
+      String accessToken = Jwts.builder()                        //builder를 이용해 토큰 생성
+                         .issuedAt(startTime)               //시작시간
+                         .expiration(expireTime)            //만료시간
+                         .signWith(key)                     //암호화 서명
+                         .claim("userId", userId)         //토큰 포함 정보(key ~ value 형태)
+                         .claim("userRole", userRole)      //토큰 포함 정보(key ~ value 형태)
+                         .compact();                     //생성
+      
+      return accessToken;
+   }
+   
+   //RefreshToken 발급 메소드
+   public String createRefreshToken(String userId, int userRole) {
+      //1. 내부에서 사용할 방식으로, 정의한 key 변환
+      SecretKey key = Keys.hmacShaKeyFor(jwtSecretKey.getBytes());
+      
+      //2. 토큰 생성시간 및 만료시간 설정
+      
+      Calendar calendar = Calendar.getInstance();                //현재시간
+      Date startTime = calendar.getTime();                     //현재시간 == 유효 시작시간
+      calendar.add(Calendar.HOUR, jwtExpireHourRefresh);            //현재시간 + 10분 == 유효 만료시간
+      Date expireTime = calendar.getTime();                     //만료시간
+      
+      //3. 토큰 생성
+      String refreshToken = Jwts.builder()                        //builder를 이용해 토큰 생성
+                         .issuedAt(startTime)               //시작시간
+                         .expiration(expireTime)            //만료시간
+                         .signWith(key)                     //암호화 서명
+                         .claim("userId", userId)         //토큰 포함 정보(key ~ value 형태)
+                         .claim("userRole", userRole)      //토큰 포함 정보(key ~ value 형태)
+                         .compact();                     //생성
+      
+      return refreshToken;
+   }
+   
+   //토큰 검증
+   public Object validateToken(String token) {
+      
+      User m = new User();
+      
+      try {
+         //1. 토큰 해석을 위한 암호화 키 세팅
+         SecretKey key = Keys.hmacShaKeyFor(jwtSecretKey.getBytes());
+         
+         //2. 토큰 해석
+         Claims claims = (Claims) Jwts.parser()
+                               .verifyWith(key)   //해석에 필요한 Key
+                               .build()
+                               .parse(token)      //해석 대상 토큰
+                               .getPayload();
+         
+         //3. 토큰에서 데이터 추출
+         String userId = (String) claims.get("userId");
+         int userRole = (int) claims.get("userRole");
+         
+         m.setUserId(userId);
+         m.setUserRole(userRole+"");
+         
+      }catch(SignatureException e) { // 발급 토큰과 요청 토큰 불일치
+         return HttpStatus.UNAUTHORIZED; //401 코드 
+      }catch(Exception e) { //토큰 유효 시간 경과
+         return HttpStatus.FORBIDDEN; //403 코드
+      }
+      
+      return m;
+   }
 }

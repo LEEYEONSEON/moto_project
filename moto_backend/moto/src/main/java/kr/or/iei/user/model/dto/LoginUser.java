@@ -11,4 +11,12 @@ public class LoginUser {
 	private User user;
 	private String accessToken;
 	private String refreshToken;
+	public String getUserId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public String getUserRole() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
