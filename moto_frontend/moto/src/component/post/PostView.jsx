@@ -114,7 +114,7 @@ function PostView() {
 
               return (
                 <div key={"post" + index}>
-                  
+                    
                     <span>{post.userNickname}</span> {/* 사용자 닉네임 */} 
                     <span class="material-symbols-outlined" onClick={function(){
                       
