@@ -26,8 +26,6 @@ export default function PostView() {
   useEffect(function() {
     let options = {};
 
-
-
     options.url = serverUrl + "/post/getList/" + reqPage;
     options.method = "get";
 
@@ -108,8 +106,7 @@ export default function PostView() {
     });
   }
 
-  //---------------------------------- 구글링 항목 -----------------------------------------------------------//
-
+  
   return (
     <div className="post-list-wrap">
       <div className="post-item-wrap">
@@ -120,12 +117,13 @@ export default function PostView() {
               let postFiles = fileList.filter(function(file) {
                 return file.postNo == post.postNo; // 해당 게시글의 파일 필터링
               });
-
+              
               // 이미지 인덱스가 없으면 0으로 초기화
               if (imageIndexes[index] == undefined || imageIndexes[index] >= postFiles.length) {
                 imageIndexes[index] = 0; // 초기 이미지 인덱스를 0으로 설정
               }
-
+              
+              //---------------------------------- 구글링 항목 -----------------------------------------------------------//
               return (
                 <div key={"post" + index}>
                   

@@ -68,14 +68,15 @@ public class PostService {
 				
 				ArrayList<Integer> postNoArr = new ArrayList<>();
 				postNoArr.add(post.getPostNo());
+				
 				System.out.println(postNoArr);
 				ArrayList<PostFile> postFiles = dao.selectPostFileList(postNoArr);
 				System.out.println(postFiles);
 				if(postFiles != null && !postFiles.isEmpty()) {
 				postFileList.addAll(postFiles);
 				postInfo.setFileList(postFileList);
-				postInfo.setPostList(postList);
 				}
+				postInfo.setPostList(postList);
 			}
 		
 			HashMap<String, Object> postMap = new HashMap<String,Object>();
