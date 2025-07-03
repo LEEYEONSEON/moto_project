@@ -10,6 +10,7 @@ export default function PostWrite(){
         const [uploadFile, setUploadFile] = useState([]);
         const axiosInstance = createInstance();
         const {loginMember} = useUserStore();
+        const reqPage = useState(1);
         
         const userNo = loginMember.userNo;
     
@@ -83,6 +84,7 @@ export default function PostWrite(){
                 setContent("");
                 setUploadFile([]);
                 closeModal();
+                window.location.reload();   //<- 메인 페이지 게시글 update를 위한 새로고침 기능 추가
             })
 
         }

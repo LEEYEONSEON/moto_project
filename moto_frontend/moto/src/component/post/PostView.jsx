@@ -3,7 +3,7 @@ import createInstance from "../../axios/Interceptor";
 import useUserStore from "../../store/useUserStore";
 import PageNavi from "../common/PageNavi";
 
-function PostView() {
+export default function PostView() {
   const [reqPage, setReqPage] = useState(1);
   const [pageInfo, setPageInfo] = useState({});
   const [postList, setPostList] = useState([]); // 게시글 목록
@@ -14,18 +14,18 @@ function PostView() {
   const axiosInstance = createInstance();
 
   useEffect(function() {
-    var options = {};
+    let options = {};
     options.url = serverUrl + "/post/getList/" + reqPage;
     options.method = "get";
 
     axiosInstance(options)
       .then(function(res) {
-        var newPostList = res.data.resData.postInfo.postList || []; // 게시글 목록
-        var newFileList = res.data.resData.postInfo.fileList || []; // 파일 목록
+        let newPostList = res.data.resData.postInfo.postList || []; // 게시글 목록
+        let newFileList = res.data.resData.postInfo.fileList || []; // 파일 목록
 
         // 게시글 목록 저장
         setPostList(function(prevPostList) {
-          var newPostLists = [...prevPostList]; // 이전의 게시글 목록을 복사
+          let newPostLists = [...prevPostList]; // 이전의 게시글 목록을 복사
           newPostLists[reqPage - 1] = newPostList; // 새로운 페이지의 게시글을 추가
           return newPostLists;
         });
@@ -155,4 +155,4 @@ function PostView() {
   );
 }
 
-export default PostView;
+
