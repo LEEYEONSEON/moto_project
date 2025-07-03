@@ -23,41 +23,7 @@ export default function Login() {
         }
     },[]);
 
-      // ======================================
-  // 1) 콜백 URL 에 코드가 있으면 자동 처리
-  // ======================================
-  useEffect(() => {
-  const params = new URLSearchParams(window.location.search);
-  const code = params.get("code");
-  if (!code) return;
 
-  axiosInstance
-    .get(`${serverUrl}/auth/oauth2/kakao/callback`, { params: { code } })
-    .then((response) => {
-      
-      const { resData: loginUser } = response.data;
-
-      // 토큰 부분
-      const { accessToken, refreshToken, expiresIn, refreshTokenExpiresIn } = loginUser.tokens;
-      setAccessToken(accessToken);
-      setRefreshToken(refreshToken);
-      setTokenExpiresIn(expiresIn);
-      setRefreshTokenExpiresIn(refreshTokenExpiresIn);
-
-      // 유저 정보
-      setKakaoMember(loginUser.user);
-
-      setIsLogined(true);
-      navigate("/");
-    })
-    .catch((err) => {
-      console.error("카카오 로그인 처리 중 오류:", err);
-      Swal.fire("오류", "카카오 로그인에 실패했습니다.", "error");
-    })
-    .finally(() => {
-      window.history.replaceState(null, "", "/login");
-    });
-}, []);
 
 
 
@@ -101,11 +67,7 @@ export default function Login() {
   function requestKakaoAuth() {
     window.location.href = `${serverUrl}/auth/oauth2/kakao/authorize`;
   }
-   useEffect(function(){
-        if(!isLogined){ //외부에서 강제 로그아웃 시킨 경우
-            setLoginMember(null);
-        }
-    },[]);
+
 
       // ======================================
   // 1) 콜백 URL 에 코드가 있으면 자동 처리

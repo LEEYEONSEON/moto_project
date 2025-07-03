@@ -185,7 +185,7 @@ public class KakaoOAuthService implements OAuthService {
         System.out.println(kakaoUser.getUserEmail());
         
         
-        // (d) DB upsert
+        // (d) DB upate || insert
         //이메일로 모든 정보를 조회해 온다. 
         User existing = userDao.findByEmail(kakaoUser.getUserEmail());
         if (existing != null) {

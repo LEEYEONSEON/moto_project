@@ -130,7 +130,7 @@ function PostView() {
                     {/**추가) 로그인된 회원이 존재하고, 회원의 번호가 게시글의 작성자번호와 같을 때 */
                       member != null && member.userNo == post.userNo  
                     
-                      ?<span class="material-symbols-outlined" onClick={function(e){
+                      ?<span className ="material-symbols-outlined" onClick={function(e){
                           
                       }}>dehaze</span>
                       :""

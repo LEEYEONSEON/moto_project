@@ -147,7 +147,7 @@ function setInterceptors(instance) {
 				if(kakaoMember != null){
 					const refreshToken = refreshToken;
 					let options = {};
-					options.url = import.meta.env.VITE_BACK_SERVER + '/auth/auth2/kakao/refresh';
+					options.url = import.meta.env.VITE_BACK_SERVER + '/auth/oauth2/kakao/refresh';
 					options.method = 'post';
 					options.data = kakaoMember;
 					options.headers = {};
@@ -194,7 +194,7 @@ function setInterceptors(instance) {
 									store.setRefreshTokenExpiresIn(null);
 									customHistory.push("/login");
 								});
-								return Promise.reject(err);
+								return Promise.reject(error);
 						   })
 				}
 			}else { // HttpStatus.INTERNAL_SERVER_ERROR == 500 (서버 오류)

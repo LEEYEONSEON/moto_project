@@ -47,7 +47,7 @@ public class PostController {
 		try {
 			ArrayList<PostFile> fileList = new ArrayList<>();	//postFile 배열
 			
-			if(fileList != null) {
+			if(postFile != null) {
 				for(int i=0; i<postFile.length; i++) {
 					MultipartFile mFile = postFile[i];	// file 1개
 					

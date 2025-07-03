@@ -20,7 +20,10 @@ export default function PostWrite(){
             member = kakaoMember;
         }
         //변경)
-        const userNo = member.userNo;
+        let userNo = null;
+        if(member != null){
+            userNo = member.userNo;
+        }
 
     
          const uploadFileEl = useRef(false);
@@ -30,7 +33,8 @@ export default function PostWrite(){
 
         // 모달을 여는 함수
         function openModal() {
-            if(loginMember !=null){
+            //추가) 일반, 카카오 회원이 로그인 되어야 글 쓸 수 있음. 
+            if(loginMember != null || kakaoMember != null){
                 document.getElementById("modal").style.display = "flex";
             }else{
                 Swal.fire({
@@ -94,6 +98,7 @@ export default function PostWrite(){
                 setContent("");
                 setUploadFile([]);
                 closeModal();
+                window.location.reload();
             })
 
         }
