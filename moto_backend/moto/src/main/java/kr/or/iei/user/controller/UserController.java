@@ -23,8 +23,42 @@ import kr.or.iei.user.model.service.UserService;
 public class UserController {
 	
 	
+	
 	@Autowired
 	private UserService service;
+	
+	@PostMapping("/local/test")
+	public ResponseEntity<ResponseDTO> localTest(@RequestBody User user) {
+		
+		ResponseDTO res = new ResponseDTO(HttpStatus.OK, "jwtTest localUser", null, null);
+		return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus());
+	}
+	
+	@PostMapping("/kakao/test")
+	public ResponseEntity<ResponseDTO> kakaoTest(@RequestBody User user) {
+		
+		ResponseDTO res = new ResponseDTO(HttpStatus.OK, "jwtTest kakaoUser", null, null);
+		return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus());
+	}
+	
+	//refreshToken으로 accessToken 재발급 처리
+	@PostMapping("/refresh")
+	public ResponseEntity<ResponseDTO> refreshToken(@RequestBody User user){
+		System.out.println("localUser refresh 토큰 재발급하러 들어옴");
+		ResponseDTO res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "토큰 재발급 실패", null, "error");
+		
+		try {
+			String reAccessToken = service.refreshToken(user);
+			
+			//accessToken 재발급 완료!
+			res = new ResponseDTO(HttpStatus.OK, "", reAccessToken, "");
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus());
+	}
 	
 	//아이디 중복 체크
 	//query : select count(*) from tbl_user where user_id = #{_parameter}

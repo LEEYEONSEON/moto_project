@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +20,6 @@ import kr.or.iei.common.oauth.ProviderType;
 import kr.or.iei.common.oauth.dto.OAuthLoginUser;
 import kr.or.iei.common.oauth.dto.OAuthTokenResponse;
 import kr.or.iei.common.oauth.model.service.KakaoOAuthService;
-import kr.or.iei.user.model.dto.LoginUser;
 import kr.or.iei.user.model.dto.User;
 
 /**
@@ -32,11 +30,30 @@ import kr.or.iei.user.model.dto.User;
 @RequestMapping("/auth/oauth2")
 public class OAuthController {
 	
+	
+	
 	private final KakaoOAuthService kakao;
 	// 생성자에 @Autowired는 생략 가능 (Spring 4.3+)
     public OAuthController(KakaoOAuthService kakao) {
         this.kakao = kakao;
     }
+    @NoTokenCheck
+    @PostMapping("/{provider}/refresh")
+    public ResponseEntity<ResponseDTO> refreshKakaoToken(
+            @RequestHeader("refreshToken") String refreshToken
+    ) {
+        Object result = kakao.refreshAccessToken(refreshToken);
+        if (result instanceof HttpStatus status) {
+        	 ResponseDTO res =
+        	            new ResponseDTO(status, "토큰 재발급에 실패했습니다.", null, "error");
+        	 return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus()); 
+        }
+        // 성공: OAuthTokenResponse 반환
+        ResponseDTO res =
+	            new ResponseDTO(HttpStatus.OK, null, result, null);
+        return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus());
+    }
+    
 
     /**
      * 인가 코드 요청 엔드포인트
@@ -124,5 +141,14 @@ public class OAuthController {
         // 서비스 호출
         User user = kakao.processLoginWithToken(accessToken);
         return ResponseEntity.ok(user);
+    }
+    
+    @NoTokenCheck
+    @GetMapping("/{provider}/logout")
+    public void redirectToKakaoLogout(HttpServletResponse res) throws IOException{
+    	System.out.println("kakaoLogout백엔드 들어옴");
+    	String uri = kakao.getLogoutUri();
+    	
+    	res.sendRedirect(uri);
     }
 }
