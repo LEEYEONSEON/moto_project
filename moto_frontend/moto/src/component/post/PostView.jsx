@@ -8,6 +8,7 @@ function PostView() {
   const [pageInfo, setPageInfo] = useState({});
   const [postList, setPostList] = useState([]); // 게시글 목록
   const { loginMember, kakaoMember } = useUserStore();
+
   const [fileList, setFileList] = useState([]); // 게시글에 첨부된 파일 목록 상태
 
   const serverUrl = import.meta.env.VITE_BACK_SERVER;
@@ -21,6 +22,7 @@ function PostView() {
   }else if(kakaoMember != null){
     member = kakaoMember;
   }
+
 
 
   useEffect(function() {
@@ -127,6 +129,7 @@ function PostView() {
                     <span>{post.userNickname}</span> {/* 사용자 닉네임 */} 
                     {/**추가) 로그인된 회원이 존재하고, 회원의 번호가 게시글의 작성자번호와 같을 때 */
                       member != null && member.userNo == post.userNo  
+                    
                       ?<span class="material-symbols-outlined" onClick={function(e){
                           
                       }}>dehaze</span>

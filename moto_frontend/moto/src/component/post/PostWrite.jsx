@@ -9,6 +9,8 @@ export default function PostWrite(){
         const [content, setContent] = useState();
         const [uploadFile, setUploadFile] = useState([]);
         const axiosInstance = createInstance();
+
+
         const {loginMember, kakaoMember} = useUserStore();
         //추가) 로그인된 회원 구분(일반, 카카오)
         let member = null;
@@ -19,6 +21,7 @@ export default function PostWrite(){
         }
         //변경)
         const userNo = member.userNo;
+
     
          const uploadFileEl = useRef(false);
          const serverUrl = import.meta.env.VITE_BACK_SERVER;
@@ -71,6 +74,7 @@ export default function PostWrite(){
             form.append("userNo", userNo);
             form.append("loginMember", member);
 
+
             if(uploadFile.length>0){
                 for(let i=0; i<uploadFile.length; i++){
                     form.append("postFile", uploadFile[i]);
@@ -111,6 +115,7 @@ export default function PostWrite(){
                                 ?
                                     member.userProfileImg
                                     ? serverUrl + "/user/profile" + member.userProfileImg.substring(0,8) + loginMember.userProfileImg
+
                                     : "/images/default_img.png"
                                 :"/images/default_img.png"
                                 } style={{height:"50px", width:"50px"}}/>

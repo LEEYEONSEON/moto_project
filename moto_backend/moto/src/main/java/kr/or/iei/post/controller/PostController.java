@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+
 import kr.or.iei.common.annotation.NoTokenCheck;
 import kr.or.iei.common.model.dto.ResponseDTO;
 import kr.or.iei.common.util.FileUtil;
@@ -34,7 +35,7 @@ public class PostController {
 	@Autowired
 	private FileUtil fileUtil;
 	
-	
+
 	@PostMapping("/insert")
 	public ResponseEntity<ResponseDTO> insertPost(@ModelAttribute MultipartFile [] postFile,
 												  @ModelAttribute Post post,
@@ -77,6 +78,7 @@ public class PostController {
 		
 	}
 	
+
 	@NoTokenCheck
 	@GetMapping("/getList/{reqPage}")
 	public ResponseEntity<ResponseDTO> selectPostList(@PathVariable int reqPage){
