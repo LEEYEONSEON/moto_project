@@ -12,6 +12,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import jakarta.servlet.http.HttpServletRequest;
 import kr.or.iei.common.exception.CommonException;
 import kr.or.iei.common.util.JwtUtils;
+import kr.or.iei.common.util.KakaoTokenUtils;
 
 /*
  * AOP : 관점 지향 프로그래밍
@@ -35,6 +36,9 @@ public class ValidateAOP {
 	@Autowired
 	private JwtUtils jwtUtils;
 	
+	@Autowired
+	private KakaoTokenUtils kakaoTokenUtils;
+	
 	//모든 Controller 메소드 중, noTokenCheck 어노테이션이 작성되지 않은 메소드가 실행되기 이전에, 수행할 공통 로직
 	@Before("allControllerPointcut() && !noTokenCheckAnnotation()")
 	public void validateTokenAop() {
@@ -47,20 +51,40 @@ public class ValidateAOP {
 		 * URI ex) : /member/checkPw
 		 * */
 		String uri = request.getRequestURI();
+		 
+		String auth = request.getHeader("Authorization");
+		String[] parts = null;
 		
-		//재발급 요청이면, refreshToken을 추출하고, 아니면 accessToken 추출
-		String token = uri.endsWith("refresh") //access 토큰이 만료되어,refresh 토큰을 이용해 accessToken 재발급 요청 
-						? request.getHeader("refreshToken")
-					    : request.getHeader("Authorization");//access 토큰이 만료되지 않아, access 토큰을 보냈다면 확인 
+			parts = auth.split(" ");
 		
-		//토큰 검증 메소드 호출
-		Object resObj = jwtUtils.validateToken(token);
 		
-		//토큰 검증 실패
-		if(resObj instanceof HttpStatus httpStatus) {
-			CommonException ex = new CommonException("invalid jwtToken in request Header");
-			ex.setErrorCode(httpStatus);
-			throw ex;
+		if(parts.length <2) {
+			//재발급 요청이면, refreshToken을 추출하고, 아니면 accessToken 추출
+			String token = uri.endsWith("refresh") //access 토큰이 만료되어,refresh 토큰을 이용해 accessToken 재발급 요청 
+					? request.getHeader("refreshToken")
+							: request.getHeader("Authorization");//access 토큰이 만료되지 않아, access 토큰을 보냈다면 확인 
+			System.out.println("local User token : " + auth);
+			//토큰 검증 메소드 호출
+			Object resObj = jwtUtils.validateToken(token);
+			
+			//토큰 검증 실패
+			if(resObj instanceof HttpStatus httpStatus) {
+				CommonException ex = new CommonException("invalid localJwtToken in request Header");
+				ex.setErrorCode(httpStatus);
+				throw ex;
+			}
+		}else {
+			//소셜 로그인인 경우, accessToken을 뽑아 검증 api 요청 후, 만료됐으면 갱신
+			String token = parts[1];
+			System.out.println(token);
+			Object resObj = kakaoTokenUtils.validateKakaoToken(token);
+			
+			if(resObj instanceof HttpStatus httpStatus) {
+				CommonException ex = new CommonException("invalid kakaoJwtToken in request Header");
+				ex.setErrorCode(httpStatus);
+				throw ex;
+			}
 		}
+		
 	}
 }

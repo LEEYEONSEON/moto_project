@@ -5,6 +5,7 @@ import Login from './component/user/Login'
 import './App.css'
 import PageMain from './component/PageMain';
 import Sidebar from './component/common/Sidebar';
+import KakaoLogout from './component/common/KakaoLogout';
 import { Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -16,8 +17,10 @@ function App() {
       <Sidebar/>
       <Routes>
       <Route path='/' element={<PageMain />} />
+      <Route path='/main/:reqPage' element={<PageMain />} />
       <Route path='/join' element={<Join />} />
       <Route path='/login' element={<Login/>} />
+      <Route path='/kakaoLogout' element={<KakaoLogout/>} />
       </Routes>
       </main>
       <Footer/>
