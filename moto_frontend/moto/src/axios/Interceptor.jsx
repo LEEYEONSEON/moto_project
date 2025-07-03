@@ -25,8 +25,6 @@ function setInterceptors(instance) {
       // 스토리지에 저장된 accessToken 추출.
       const accessToken = useUserStore.getState().accessToken; //인터셉터는 컴포넌트가 아니므로, 추출하는 코드 상이.
 
-	console.log("🟡 accessToken in store:", accessToken);
-    console.log("🟢 Authorization header before setting:", config.headers['Authorization']);
       // 스토리지에 저장된 accessToken 요청 헤더에 포함시키기.
       if (accessToken != null) {
         // 여기 Bearer 접두사 붙이기 꼭 필요!

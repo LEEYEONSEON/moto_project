@@ -64,6 +64,18 @@ public class UserService {
 		}
 	}
 
+	public int updateUserInfo(User user) {
+		return dao.updateUserInfo(user);
+	}
+
+	public int updateUserPassword(User user) {
+		return dao.updateUserPassword(user);
+	}
+
+	public User getUserProfile(String userId) {
+		return dao.getUserProfile(userId);
+	}
+
 
 	
 	
