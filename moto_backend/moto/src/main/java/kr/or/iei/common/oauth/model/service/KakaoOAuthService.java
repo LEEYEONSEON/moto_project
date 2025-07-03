@@ -194,7 +194,8 @@ public class KakaoOAuthService implements OAuthService {
             existing.setUserNickname(kakaoUser.getUserNickname());
             result = userDao.updateUser(existing);
             System.out.println("수정 결과"+result);
-            if(result == 0) {return null;
+            if(result == 0) {
+            	return null;
             }else {
             	return existing;
             }

@@ -72,5 +72,9 @@
 	  from tbl_user
 	 where user_id = #{_parameter}
 	</select>
+	
+	<select id="selectCurrUserNo" resultType="int">
+		SELECT seq_user_no.CURRVAL FROM dual
+	</select>
 
 </mapper>
