@@ -8,16 +8,12 @@ export default function PostView() {
   const [reqPage, setReqPage] = useState(1);
   const [pageInfo, setPageInfo] = useState({});
   const [postList, setPostList] = useState([]); // 게시글 목록
-  const { loginMember } = useUserStore();
+  const { loginMember, kakaoMember } = useUserStore();
 
   const [fileList, setFileList] = useState([]); // 게시글에 첨부된 파일 목록 상태
 
   const serverUrl = import.meta.env.VITE_BACK_SERVER;
   const axiosInstance = createInstance();
-
-
-  useEffect(function() {
-    let options = {};
 
 
   //추가) 로그인된 회원(일반, 카카오)이 있는 경우에만 자기가 작성한 게시글에 따로 표시하기 위함
@@ -27,6 +23,10 @@ export default function PostView() {
   }else if(kakaoMember != null){
     member = kakaoMember;
   }
+  useEffect(function() {
+    let options = {};
+
+
 
     options.url = serverUrl + "/post/getList/" + reqPage;
     options.method = "get";

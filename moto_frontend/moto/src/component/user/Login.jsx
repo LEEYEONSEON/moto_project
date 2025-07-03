@@ -23,49 +23,7 @@ export default function Login() {
         }
     },[]);
 
-<<<<<<< HEAD
-      // ======================================
-  // 1) 콜백 URL 에 코드가 있으면 자동 처리
-  // ======================================
-  useEffect(() => {
-  const params = new URLSearchParams(window.location.search);
-  const code = params.get("code");
-  if (!code) return;
 
-  axiosInstance
-    .get(`${serverUrl}/auth/oauth2/kakao/callback`, { params: { code } })
-    .then((response) => {
-      // ✅ 이렇게 response.data.resData 로 가져와야 합니다
-      const { resData: loginUser } = response.data;
-
-      // 토큰 부분
-      const { accessToken, refreshToken, expiresIn, refreshTokenExpiresIn } = loginUser.tokens;
-      setAccessToken(accessToken);
-      setRefreshToken(refreshToken);
-      setTokenExpiresIn(expiresIn);
-      setRefreshTokenExpiresIn(refreshTokenExpiresIn);
-
-      // 유저 정보
-      setKakaoMember(loginUser.user);
-
-      setIsLogined(true);
-      navigate("/");
-    })
-    .catch((err) => {
-      console.error("카카오 로그인 처리 중 오류:", err);
-      Swal.fire("오류", "카카오 로그인에 실패했습니다.", "error");
-    })
-    .finally(() => {
-      window.history.replaceState(null, "", "/login");
-    });
-}, []);
-=======
->>>>>>> master
-
-
-
-
-    
     //환경변수 파일에 저장된 변수 읽어오기
     const serverUrl = import.meta.env.VITE_BACK_SERVER;
 
