@@ -9,9 +9,22 @@ export default function PostWrite(){
         const [content, setContent] = useState();
         const [uploadFile, setUploadFile] = useState([]);
         const axiosInstance = createInstance();
-        const {loginMember} = useUserStore();
-        
-        const userNo = loginMember.userNo;
+
+
+        const {loginMember, kakaoMember} = useUserStore();
+        //추가) 로그인된 회원 구분(일반, 카카오)
+        let member = null;
+        if(loginMember != null){
+            member = loginMember;
+        }else if(kakaoMember != null){
+            member = kakaoMember;
+        }
+        //변경)
+        let userNo = null;
+        if(member != null){
+            userNo = member.userNo;
+        }
+
     
          const uploadFileEl = useRef(false);
          const serverUrl = import.meta.env.VITE_BACK_SERVER;
@@ -20,7 +33,8 @@ export default function PostWrite(){
 
         // 모달을 여는 함수
         function openModal() {
-            if(loginMember !=null){
+            //추가) 일반, 카카오 회원이 로그인 되어야 글 쓸 수 있음. 
+            if(loginMember != null || kakaoMember != null){
                 document.getElementById("modal").style.display = "flex";
             }else{
                 Swal.fire({
@@ -62,7 +76,8 @@ export default function PostWrite(){
 
             form.append("postContent", content);
             form.append("userNo", userNo);
-            form.append("loginMember", loginMember);
+            form.append("loginMember", member);
+
 
             if(uploadFile.length>0){
                 for(let i=0; i<uploadFile.length; i++){
@@ -83,6 +98,7 @@ export default function PostWrite(){
                 setContent("");
                 setUploadFile([]);
                 closeModal();
+                window.location.reload();
             })
 
         }
@@ -100,10 +116,11 @@ export default function PostWrite(){
                 <table style={{border:"1", background:"white", borderRadius:"5px", width:"400px", marginLeft:"150px"}}>
                     <thead>
                     <tr>
-                        <td><img src={loginMember
+                        <td><img src={member
                                 ?
-                                    loginMember.userProfileImg
-                                    ? serverUrl + "/user/profile" + loginMember.userProfileImg.substring(0,8) + loginMember.userProfileImg
+                                    member.userProfileImg
+                                    ? serverUrl + "/user/profile" + member.userProfileImg.substring(0,8) + loginMember.userProfileImg
+
                                     : "/images/default_img.png"
                                 :"/images/default_img.png"
                                 } style={{height:"50px", width:"50px"}}/>

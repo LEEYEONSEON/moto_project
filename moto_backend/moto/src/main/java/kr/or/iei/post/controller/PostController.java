@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+
+import kr.or.iei.common.annotation.NoTokenCheck;
 import kr.or.iei.common.model.dto.ResponseDTO;
 import kr.or.iei.common.util.FileUtil;
 import kr.or.iei.post.model.dto.Post;
@@ -32,6 +35,7 @@ public class PostController {
 	@Autowired
 	private FileUtil fileUtil;
 	
+
 	@PostMapping("/insert")
 	public ResponseEntity<ResponseDTO> insertPost(@ModelAttribute MultipartFile [] postFile,
 												  @ModelAttribute Post post,
@@ -43,7 +47,7 @@ public class PostController {
 		try {
 			ArrayList<PostFile> fileList = new ArrayList<>();	//postFile 배열
 			
-			if(fileList != null) {
+			if(postFile != null) {
 				for(int i=0; i<postFile.length; i++) {
 					MultipartFile mFile = postFile[i];	// file 1개
 					
@@ -74,6 +78,8 @@ public class PostController {
 		
 	}
 	
+
+	@NoTokenCheck
 	@GetMapping("/getList/{reqPage}")
 	public ResponseEntity<ResponseDTO> selectPostList(@PathVariable int reqPage){
 		ResponseDTO res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "게시글 조회 중, 오류가 발생하였습니다.", false, "error");

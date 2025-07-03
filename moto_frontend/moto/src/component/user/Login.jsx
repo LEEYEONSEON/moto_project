@@ -16,49 +16,18 @@ export default function Login() {
     //스토리지에 저장한 데이터 추출하기. 
     const {isLogined, setIsLogined, setLoginMember, setAccessToken, setRefreshToken, setKakaoMember, setTokenExpiresIn, setRefreshTokenExpiresIn} = useUserStore();
 
+
     useEffect(function(){
         if(!isLogined){ //외부에서 강제 로그아웃 시킨 경우
             setLoginMember(null);
         }
     },[]);
 
-      // ======================================
-  // 1) 콜백 URL 에 코드가 있으면 자동 처리
-  // ======================================
-  useEffect(() => {
-  const params = new URLSearchParams(window.location.search);
-  const code = params.get("code");
-  if (!code) return;
-
-  axiosInstance
-    .get(`${serverUrl}/auth/oauth2/kakao/callback`, { params: { code } })
-    .then((response) => {
-      // ✅ 이렇게 response.data.resData 로 가져와야 합니다
-      const { resData: loginUser } = response.data;
-
-      // 토큰 부분
-      const { accessToken, refreshToken, expiresIn, refreshTokenExpiresIn } = loginUser.tokens;
-      setAccessToken(accessToken);
-      setRefreshToken(refreshToken);
-      setTokenExpiresIn(expiresIn);
-      setRefreshTokenExpiresIn(refreshTokenExpiresIn);
-
-      // 유저 정보
-      setKakaoMember(loginUser.user);
-
-      setIsLogined(true);
-      navigate("/");
-    })
-    .catch((err) => {
-      console.error("카카오 로그인 처리 중 오류:", err);
-      Swal.fire("오류", "카카오 로그인에 실패했습니다.", "error");
-    })
-    .finally(() => {
-      window.history.replaceState(null, "", "/login");
-    });
-}, []);
 
 
+
+
+    
     //환경변수 파일에 저장된 변수 읽어오기
     const serverUrl = import.meta.env.VITE_BACK_SERVER;
 
@@ -99,6 +68,43 @@ export default function Login() {
     window.location.href = `${serverUrl}/auth/oauth2/kakao/authorize`;
   }
 
+
+      // ======================================
+  // 1) 콜백 URL 에 코드가 있으면 자동 처리
+  // ======================================
+  useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get("code");
+  if (!code) return;
+
+  axiosInstance
+    .get(`${serverUrl}/auth/oauth2/kakao/callback`, { params: { code } })
+    .then((response) => {
+      const { resData: loginUser } = response.data;
+
+      // 토큰 부분
+      const { accessToken, refreshToken, expiresIn, refreshTokenExpiresIn } = loginUser.tokens;
+      setAccessToken(accessToken);
+      setRefreshToken(refreshToken);
+      setTokenExpiresIn(expiresIn);
+      setRefreshTokenExpiresIn(refreshTokenExpiresIn);
+
+      // 유저 정보
+      setKakaoMember(loginUser.user);
+
+      setIsLogined(true);
+      navigate("/");
+    })
+    .catch((err) => {
+      console.error("카카오 로그인 처리 중 오류:", err);
+      Swal.fire("오류", "카카오 로그인에 실패했습니다.", "error");
+    })
+     .finally(() => {
+        // 쿼리스트링만 제거하려면 현재 경로 기준 replace
+        const cleanPath = window.location.pathname;
+        window.history.replaceState(null, "", cleanPath);
+    });
+}, []);
     //로그인 요청
     function login(){
         if(user.userId == '' || user.userPassword == ''){
@@ -205,7 +211,7 @@ export default function Login() {
 
                     //정상 로그인 (스토리지 데이터 변경)
                     setIsLogined(true);
-                    setLoginMember(loginMember.user);
+                    setKakaoMember(loginMember.user);
                     //스토리지에 토큰 저장
                     setAccessToken(loginMember.accessToken);
                     setRefreshToken(loginMember.refreshToken);
