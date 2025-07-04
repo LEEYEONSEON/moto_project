@@ -110,5 +110,44 @@
     	  </foreach>
 </select>
 
+<!--  게시글 정보 삭제  -->
+<delete id="deletePost"
+		parameterType="int">
+		
+delete tbl_post
+	where post_no = #{postNo}
+		
+</delete>
+
+<!-- 게시글 정보 수정 -->
+<update id="updatePostContent" parameterType="Post">
+    UPDATE tbl_post
+    SET post_content = #{postContent}
+    WHERE post_no = #{postNo}
+</update>
+
+<!-- 삭제할 파일 정보 조회 -->
+<select id="selectPostFilesByIds" parameterType="list" resultType="PostFile">
+    SELECT post_img_no AS postImgNo,
+           post_no AS postNo,
+           post_img_path AS postImgPath,
+           post_img_name AS postImgName
+    FROM tbl_post_image
+    WHERE post_img_no IN
+    <foreach collection="list" item="imgNo" open="(" separator="," close=")">
+        #{imgNo}
+    </foreach>
+</select>
+
+<!-- 파일 정보 삭제 -->
+<delete id="deletePostFiles" parameterType="list">
+    DELETE FROM tbl_post_image
+    WHERE post_img_no IN
+    <foreach collection="list" item="imgNo" open="(" separator="," close=")">
+        #{imgNo}
+    </foreach>
+</delete>
+
+
 	  
 </mapper>
