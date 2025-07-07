@@ -41,7 +41,7 @@ td {
 }
 
 .zero {
-    color: red !important;
+    color: gray !important;
 }
 
 button {
@@ -67,5 +67,43 @@ button {
   padding: 4px 10px;
   cursor: pointer;
 }
+
+.range-bar {
+  position: relative;
+  height: 10px;
+  background: #222;
+  border-radius: 5px;
+  margin-top: 4px;
+}
+
+.range-fill {
+  height: 100%;
+  background: limegreen;
+  border-radius: 5px;
+}
+
+.range-indicator {
+  position: absolute;
+  top: -10px;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 14px;
+}
+
+.positive {
+  color: red !important;
+}
+
+.negative {
+  color: #1976D2 !important;
+}
+
+.favorite-star {
+  cursor: pointer;
+  font-size: 25px;
+  color: rgba(255, 255, 0, 0.5)
+}
+
+
 
 

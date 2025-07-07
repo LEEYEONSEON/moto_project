@@ -8,17 +8,17 @@ import Sidebar from './component/common/Sidebar'
 import KakaoLogout from './component/common/KakaoLogout'
 import { Route, Routes } from 'react-router-dom'
 import MyPage from './component/user/Mypage'
-
+import AssetPage from './component/asset/AssetPage';
 import WalletInfo from './component/wallet/WalletInfo';
 
 
-
 function App() {
+  
   return (
     <div className='wrap'>
       <Header/>
-      
       <main className='content' style={{display:"flex"}}>
+
       <Sidebar/>
       <Routes>
       <Route path='/' element={<PageMain />} />
@@ -28,12 +28,14 @@ function App() {
       <Route path='/kakaoLogout' element={<KakaoLogout/>} />
       <Route path='/wallet' element={<WalletInfo/>} />
       <Route path="/users/me/*" element={<MyPage />} />
+       <Route path="/asset/*" element={<AssetPage />} />
       </Routes>
 
       </main>
       <Footer />
     </div>
   )
+
 }
 
-export default App
+export default App;
