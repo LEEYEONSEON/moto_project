@@ -9,20 +9,27 @@ import KakaoLogout from './component/common/KakaoLogout'
 import { Route, Routes } from 'react-router-dom'
 import MyPage from './component/user/Mypage'
 
+import WalletInfo from './component/wallet/WalletInfo';
+
+
+
 function App() {
   return (
-    <div className="wrap">
-      <Header />
-      <main className="content" style={{ display: "flex" }}>
-        <Sidebar />
-        <Routes>
-          <Route path="/" element={<PageMain />} />
-          <Route path="/main/:reqPage" element={<PageMain />} />
-          <Route path="/join" element={<Join />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/kakaoLogout" element={<KakaoLogout />} />
-          <Route path="/users/me/*" element={<MyPage />} />
-        </Routes>
+    <div className='wrap'>
+      <Header/>
+      
+      <main className='content' style={{display:"flex"}}>
+      <Sidebar/>
+      <Routes>
+      <Route path='/' element={<PageMain />} />
+      <Route path='/main/:reqPage' element={<PageMain />} />
+      <Route path='/join' element={<Join />} />
+      <Route path='/login' element={<Login/>} />
+      <Route path='/kakaoLogout' element={<KakaoLogout/>} />
+      <Route path='/wallet' element={<WalletInfo/>} />
+      <Route path="/users/me/*" element={<MyPage />} />
+      </Routes>
+
       </main>
       <Footer />
     </div>

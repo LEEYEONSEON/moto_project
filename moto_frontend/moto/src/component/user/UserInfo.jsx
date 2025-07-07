@@ -6,35 +6,31 @@ import { useNavigate } from "react-router-dom";
 
 export default function UserInfo() {
   const [member, setMember] = useState({
-    user_no: "",
-    user_id: "",
-    user_nickname: "",
-    user_email: "",
-    user_role: "2",  
-    user_profile_img: ""
+    userNo: "",
+    userId: "",
+    userNickname: "",
+    userEmail: "",
+    userRole: "2",  
+    userProfileImg: ""
   });
 
   const serverUrl = import.meta.env.VITE_BACK_SERVER;
   const axiosInstance = createInstance();
-  const {
-    loginMember,
-    setLoginMember,
-    setIsLogined,
-    setAccessToken,
-    setRefreshToken
-  } = useUserStore();
+  const {loginMember, setLoginMember, setIsLogined, setAccessToken, setRefreshToken} = useUserStore();
+
+  const userNo = loginMember.userNo;
 
   const navigate = useNavigate();
 
   
   useEffect(function () {
-    if (!loginMember || !loginMember.user_no) {
-      console.warn("로그인 정보가 없거나 user_no가 없습니다.");
+    if (!loginMember || !loginMember.userNo) {
+      console.log("로그인 정보가 없거나 user_no가 없습니다.");
       return;
     }
-
+    console.log(userNo);
     let options = {};
-    options.url = serverUrl + "/member/" + loginMember.user_no; 
+    options.url = serverUrl + "/user/" + loginMember.userNo; 
     options.method = "get"; 
 
     axiosInstance(options)
@@ -46,7 +42,7 @@ export default function UserInfo() {
       .catch(function (err) {
         console.error("회원 정보 요청 오류:", err);
       });
-  }, [loginMember]);
+  }, []);
 
   function updateMember() {
     Swal.fire({

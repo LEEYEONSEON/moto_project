@@ -77,6 +77,9 @@ public class UserService {
 		return dao.updateUserInfo(user);
 	}
 
+	public int updateUserPassword(User user) {
+		return dao.updateUserPassword(user);
+	}
 
 	public User getUserProfile(String userId) {
 		return dao.getUserProfile(userId);

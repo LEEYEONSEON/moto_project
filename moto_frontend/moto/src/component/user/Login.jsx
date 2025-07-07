@@ -24,10 +24,6 @@ export default function Login() {
     },[]);
 
 
-
-
-
-    
     //환경변수 파일에 저장된 변수 읽어오기
     const serverUrl = import.meta.env.VITE_BACK_SERVER;
 

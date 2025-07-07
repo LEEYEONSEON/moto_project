@@ -94,7 +94,9 @@ public class OAuthController {
         // 공급자별로 코드 → 토큰 요청 처리
         try {
         	switch (ProviderType.valueOf(provider.toUpperCase())) {
-        	case KAKAO:  tokens = kakao.getAccessToken(code);  break;
+        	case KAKAO:  tokens = kakao.getAccessToken(code);  
+        		System.out.println(tokens.toString());
+        		break;
         	default: 
         		throw new IllegalArgumentException("Unknown provider: " + provider);
         		

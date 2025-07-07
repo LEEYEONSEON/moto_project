@@ -146,6 +146,43 @@ public class UserController {
 			return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus());
 		}
 		
+		//마이페이지에서 기본적으로 보여줄 회원 정보 조회
+		@GetMapping("/{userNo}")
+		public ResponseEntity<ResponseDTO> searchUserInfo(@PathVariable int userNo){
+			ResponseDTO res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "회원 정보 조회 중, 오류가 발생하였습니다.", null, "error");
+			System.out.println(userNo);
+			try {
+				
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				
+			}
+			
+			return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus());
+		}
+		
+		/*
+		// 회원 정보 수정 
+		@PostMapping("/{userNo}")
+		public ResponseEntity<ResponseDTO> updateUser(@RequestBody User user) {
+		    ResponseDTO res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "회원 정보 수정 중, 오류가 발생하였습니다.", null, "error");
+		    
+		    try {
+		  
+		        int result = service.updateUser(user);
+		        if(result > 0) {
+		            res = new ResponseDTO(HttpStatus.OK, "정보가 수정되었습니다.", true, "success");
+		        } else {
+		            res = new ResponseDTO(HttpStatus.OK, "수정에 실패했습니다.", false, "warning");
+		        }
+		    } catch(Exception e) {
+		        e.printStackTrace();
+		        res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "서버 오류가 발생했습니다.", false, "error");
+		    }
+		    return new ResponseEntity<>(res, res.getHttpStatus());
+		}
+			*/
 		
 		
 }

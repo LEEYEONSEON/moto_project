@@ -20,6 +20,8 @@ public interface UserDao {
 	int updateUserPassword(User user);
 
 	User getUserProfile(String userId);
+
+
 	
 
 }
