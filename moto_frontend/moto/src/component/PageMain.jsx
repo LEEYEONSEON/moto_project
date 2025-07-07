@@ -15,7 +15,7 @@ export default function PageMain(){
            <PostWrite />
            <hr />
            <PostView/>
-
+            
            
            </div>
         </section>
