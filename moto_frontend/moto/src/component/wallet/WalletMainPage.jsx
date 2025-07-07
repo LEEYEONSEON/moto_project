@@ -4,7 +4,10 @@ import createInstance from "../../axios/Interceptor";
 
 export default function WalletMainPage(){
 
+<<<<<<< HEAD
     const [walletCount, setWalletCount] = useState(0);
+=======
+>>>>>>> master
     const [walletInfo, setWalletInfo] = useState("");
     
     const {loginMember} = useUserStore();
@@ -21,11 +24,17 @@ export default function WalletMainPage(){
 
         axiosInstance(options)
         .then(function(res){
+<<<<<<< HEAD
             if(res.data.resData > 0){
                 setWalletCount(res.data.resData);
             }else{
                 setWalletCount(res.data.resData);
             }
+=======
+            
+            setWalletInfo(res.data.resData);
+            
+>>>>>>> master
         })
     },[])
 
@@ -35,9 +44,15 @@ export default function WalletMainPage(){
 
     return (
         <>
+<<<<<<< HEAD
         {walletCount == 0
         ? <button type="button" onClick={createWallet}>지갑 만들기</button>
         :""}
+=======
+         {walletInfo.walletNo > 0 
+         ? ""
+         : <button type="button" onClick={createWallet}>지갑 만들기</button> }
+>>>>>>> master
         </>
     )
 }

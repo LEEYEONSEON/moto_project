@@ -28,7 +28,7 @@ public class JwtUtils {
 	
 	
 	//AccessToken 발급 메소드
-	public String createAccessToken(String userNo, String userRole) {
+	public String createAccessToken(int userNo, String userRole) {
 		//1. 내부에서 사용할 방식으로, 정의한 key 변환
 		SecretKey key = Keys.hmacShaKeyFor(jwtSecretKey.getBytes());
 		
@@ -52,7 +52,7 @@ public class JwtUtils {
 	}
 	
 	//RefreshToken 발급 메소드
-	public String createRefreshToken(String userNo, String userRole) {
+	public String createRefreshToken(int userNo, String userRole) {
 		//1. 내부에서 사용할 방식으로, 정의한 key 변환
 		SecretKey key = Keys.hmacShaKeyFor(jwtSecretKey.getBytes());
 		
@@ -92,7 +92,7 @@ public class JwtUtils {
 										 .getPayload();
 			
 			//3. 토큰에서 데이터 추출
-			String userNo   = claims.get("userNo", String.class);
+			int userNo   = claims.get("userNo", Integer.class);
 			String userRole = claims.get("userRole", String.class);
 			
 			m.setUserNo(userNo);
