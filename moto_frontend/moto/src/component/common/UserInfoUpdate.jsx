@@ -3,7 +3,7 @@ import { UserContext } from "./UserContext";  // 로그인 사용자 정보 Cont
 import api from "../api/axios";
 
 export default function UserInfoUpdate() {
-  const { user } = useContext(UserContext);
+  const { user, setUser, setIsLogined } = useContext(UserContext);
 
   // form 상태 초기화, userId는 Context에서 받아서 세팅, 수정 불가(readonly)
   const [form, setForm] = useState({
@@ -37,9 +37,29 @@ export default function UserInfoUpdate() {
     }
   };
 
+
+  const onDelete = async () => {
+    if (!window.confirm("정말 회원 탈퇴를 하시겠습니까?")) {
+      return;
+    }
+
+    try {
+      const res = await api.delete("/user/delete/" + form.userId);
+      if (res.data.success) {
+        alert("회원 탈퇴가 완료되었습니다.");
+        setUser(null);
+        setIsLogined(false);
+      } else {
+        alert("회원 탈퇴에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("회원 탈퇴 중 오류가 발생했습니다.");
+    }
+  };
+
   return (
     <form onSubmit={onSubmit}>
-      {/* userId는 로그인 정보에서 받아서 보여주고 수정 불가 */}
       <input
         name="userId"
         placeholder="User ID"
@@ -66,6 +86,7 @@ export default function UserInfoUpdate() {
         onChange={onChange}
       />
       <button type="submit">회원정보 수정</button>
+      <button type="button" onClick={onDelete} style={{ marginLeft: "10px" }}>회원탈퇴</button>
     </form>
   );
 }

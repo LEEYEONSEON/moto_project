@@ -1,30 +1,29 @@
-import { useEffect, useState } from "react";
-import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
-import LeftMenu from "../components/LeftMenu";
-import UserInfo from "../components/UserInfo";
-import UserEditForm from "../components/UserEditForm";
-import PasswordChange from "../components/PasswordChange";
-import PortfolioList from "../components/PortfolioList";
-import { useUserStore } from "../stores/userStore";
+import { useEffect } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
+import useUserStore from "../../store/useUserStore";
+import UserInfo from "./UserInfo";
+import UserEditForm from "./UserEditForm";
+import PortfolioList from "./PortfolioList";
 
-export default function MyPage() {
-  const { loginMember, kakaoMember } = useUserStore();
+export default function Mypage() {
+  const { loginMember } = useUserStore();
   const navigate = useNavigate();
 
-  // 로그인 타입: kakaoMember가 있으면 social, 아니면 normal
-  const loginType = kakaoMember?.member ? "social" : "normal";
+  function goToInfo() {
+    navigate('/users/me/info');
+  }
 
-  useEffect(() => {
-    if (!loginMember && !kakaoMember?.member) {
-      navigate("/login");
-    }
-  }, [loginMember, kakaoMember, navigate]);
+  function goToChangePassword() {
+    navigate('/users/me/change-password');
+  }
 
-  const menuList = [
-    { url: '/user/info', text: "내 정보" },
-    { url: '/user/EditForm', text: "정보 변경" },
-    { url: '/user/pwChg', text: "비밀번호 변경" },
-  ];
+  function goToAdmin() {
+    navigate('/admin');
+  }
+
+  useEffect(function () {
+    navigate('/users/me/info');
+  }, [loginMember, navigate]);
 
   return (
     <div className="mypage-wrap">
@@ -36,15 +35,20 @@ export default function MyPage() {
           </div>
         </section>
         <section className="section">
-          <LeftMenu menuList={menuList} />
+          <ul className="left-menu">
+            <li onClick={goToInfo}>내 정보</li>
+            <li onClick={goToChangePassword}>비밀번호 변경</li>
+            {loginMember && loginMember.memberLevel === 1 && (
+              <li onClick={goToAdmin}>관리자 페이지</li>
+            )}
+          </ul>
         </section>
       </div>
       <div className="mypage-content">
         <Routes>
-          <Route path="info" element={<UserInfo loginType={loginType} user={loginMember || kakaoMember?.member} />} />
-          <Route path="EditForm" element={<UserEditForm loginType={loginType} user={loginMember || kakaoMember?.member} />} />
-          <Route path="pwChg" element={<PasswordChange />} />
-          <Route path="List" element={<PortfolioList />} />
+          <Route path="info" element={<UserInfo />} />
+          <Route path="change-password" element={<UserEditForm />} />
+          <Route path="portfolio" element={<PortfolioList />} />
         </Routes>
       </div>
     </div>
