@@ -10,6 +10,7 @@ import kr.or.iei.wallet.model.dto.Wallet;
 public class WalletService {
 	
 	@Autowired
+
 	WalletDao dao;
 
 	public Wallet getWalletByUserNo(int userNo) {
@@ -24,5 +25,6 @@ public class WalletService {
 		return dao.updateWallet(wallet);
 	}
 	
+
 
 }

@@ -11,6 +11,7 @@ export default function createInstance() {
 }
 
 function setInterceptors(instance) {
+
   const {
     loginMember,
     kakaoMember,
@@ -46,6 +47,7 @@ function setInterceptors(instance) {
   }
 
 
+
     // 응답 인터셉터: 서버 → 클라이언트 응답 시 응답 객체를 가로채어 처리
 	instance.interceptors.response.use(
         
@@ -65,11 +67,6 @@ function setInterceptors(instance) {
 
 			return response;
 		},
-
-
-
-
-
 		//아래 부터 jwt 토큰 관련 로직
 		function(error) {   // 응답 처리 중 오류가 발생한 경우 (ResponseDTO.HttpStatus: 4xx, 5xx)
 			if (!error.response) {

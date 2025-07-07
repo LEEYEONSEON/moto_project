@@ -11,6 +11,7 @@ export default function PostWrite(){
         const axiosInstance = createInstance();
 
 
+
         const {loginMember, kakaoMember} = useUserStore();
         //추가) 로그인된 회원 구분(일반, 카카오)
         let member = null;
@@ -33,8 +34,10 @@ export default function PostWrite(){
 
         // 모달을 여는 함수
         function openModal() {
+
             //추가) 일반, 카카오 회원이 로그인 되어야 글 쓸 수 있음. 
             if(loginMember != null || kakaoMember != null){
+
                 document.getElementById("modal").style.display = "flex";
             }else{
                 Swal.fire({
@@ -63,7 +66,7 @@ export default function PostWrite(){
 
             for(let i=0; i<files.length; i++){
                 fileArr.push(files[i]);
-                console.log(fileArr);
+                
             }
     
             setUploadFile([...uploadFile,...fileArr]);
@@ -76,7 +79,9 @@ export default function PostWrite(){
 
             form.append("postContent", content);
             form.append("userNo", userNo);
+
             form.append("loginMember", member);
+
 
 
             if(uploadFile.length>0){
@@ -98,7 +103,9 @@ export default function PostWrite(){
                 setContent("");
                 setUploadFile([]);
                 closeModal();
-                window.location.reload();
+
+                window.location.reload();   //<- 메인 페이지 게시글 update를 위한 새로고침 기능 추가
+
             })
 
         }
@@ -116,10 +123,12 @@ export default function PostWrite(){
                 <table style={{border:"1", background:"white", borderRadius:"5px", width:"400px", marginLeft:"150px"}}>
                     <thead>
                     <tr>
+
                         <td><img src={member
                                 ?
                                     member.userProfileImg
                                     ? serverUrl + "/user/profile" + member.userProfileImg.substring(0,8) + loginMember.userProfileImg
+
 
                                     : "/images/default_img.png"
                                 :"/images/default_img.png"
@@ -152,11 +161,9 @@ export default function PostWrite(){
                                         uploadFileEl.current.click();
                                     }}>
                                     <path d="M720-330q0 104-73 177T470-80q-104 0-177-73t-73-177v-370q0-75 52.5-127.5T400-880q75 0 127.5 52.5T580-700v350q0 46-32 78t-78 32q-46 0-78-32t-32-78v-370h80v370q0 13 8.5 21.5T470-320q13 0 21.5-8.5T500-350v-350q-1-42-29.5-71T400-800q-42 0-71 29t-29 71v370q-1 71 49 120.5T470-160q70 0 119-49.5T640-330v-390h80v390Z"/></svg>
-                                    <label htmlFor="inputFile" style={{marginRight:"30px"}}>upload</label>
+                                    <label htmlFor="inputFile" style={{marginRight:"30px"}}>파일선택</label>
                                     <input type="file" id="inputFile" style={{display:"none"}} multiple ref={uploadFileEl} onChange={chgPostFile} />
                                     
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M200-80q-33 0-56.5-23.5T120-160v-182l110-125 57 57-80 90h546l-78-88 57-57 108 123v182q0 33-23.5 56.5T760-80H200Zm0-80h560v-80H200v80Zm225-225L284-526q-23-23-22.5-56.5T285-639l196-196q23-23 57-24t57 22l141 141q23 23 24 56t-22 56L538-384q-23 23-56.5 22.5T425-385Zm255-254L539-780 341-582l141 141 198-198ZM200-160v-80 80Z"/></svg>
-                                    vote
                                 </div>
                                 <div>
                                     <h4 style={{textAlign:"left"}}>첨부파일 목록</h4>
@@ -203,14 +210,12 @@ export default function PostWrite(){
                                         uploadFileEl.current.click();
                                     }}>
                                     <path d="M720-330q0 104-73 177T470-80q-104 0-177-73t-73-177v-370q0-75 52.5-127.5T400-880q75 0 127.5 52.5T580-700v350q0 46-32 78t-78 32q-46 0-78-32t-32-78v-370h80v370q0 13 8.5 21.5T470-320q13 0 21.5-8.5T500-350v-350q-1-42-29.5-71T400-800q-42 0-71 29t-29 71v370q-1 71 49 120.5T470-160q70 0 119-49.5T640-330v-390h80v390Z"/></svg>
-                                    <label htmlFor="inputFile">upload</label>
+                                    <label htmlFor="inputFile">파일선택</label>
                                 </div>
                         </td>
                         <td>
                              <input type="file" id="inputFile" style={{display:"none"}}  multiple ref={uploadFileEl} onChange={chgPostFile}/>
                                     
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M200-80q-33 0-56.5-23.5T120-160v-182l110-125 57 57-80 90h546l-78-88 57-57 108 123v182q0 33-23.5 56.5T760-80H200Zm0-80h560v-80H200v80Zm225-225L284-526q-23-23-22.5-56.5T285-639l196-196q23-23 57-24t57 22l141 141q23 23 24 56t-22 56L538-384q-23 23-56.5 22.5T425-385Zm255-254L539-780 341-582l141 141 198-198ZM200-160v-80 80Z"/></svg>
-                                    vote
                         </td>
                     </tr>
                     </tbody>

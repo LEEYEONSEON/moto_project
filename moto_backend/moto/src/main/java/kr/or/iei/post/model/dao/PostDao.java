@@ -25,8 +25,15 @@ public interface PostDao {
 
 	ArrayList<PostFile> selectPostFileList(ArrayList<Integer> postNoArr);
 
-	
+	int deletePost(int postNo);
+	 // 게시글 수정
+    int updatePostContent(Post post);
+
+    // 삭제할 파일 정보 조회
+    List<PostFile> selectPostFilesByIds(List<Integer> delFiles);
+
+    // 실제 파일 삭제
+    int deletePostFiles(List<Integer> delFiles);
 
 	
-
 }
