@@ -21,16 +21,13 @@ export default function WalletInfo() {
     axiosInstance
       .get(`${import.meta.env.VITE_BACK_SERVER}/wallet/${userNo}`)
       .then(function (res) {
-
         setWallet(res.data.resData);
       })
       .catch(function (err) {
         console.error("지갑 조회 실패", err);
         setError("지갑 정보를 불러오지 못했습니다.");
       });
-  }, []); 
-
-  
+  }, [userNo]); 
 
   // 로그인되지 않은 경우 안내 메시지
   if (!userNo) {
@@ -56,6 +53,7 @@ export default function WalletInfo() {
   // 현금 비율 계산 (남은 비율)
   const availableRatio = 1 - investedRatio;
 
+  // 실제 화면 렌더링 (JSX 반환)
   return (
   <div className="wallet-container" style={{ width: "100%" }}>
     {wallet == null ? (

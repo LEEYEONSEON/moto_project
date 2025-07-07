@@ -31,14 +31,14 @@ public class WalletController {
 	//지갑 조회
 	@GetMapping("/{userNo}")
     public ResponseEntity<ResponseDTO> getWallet(@PathVariable int userNo) {
-		ResponseDTO res = new ResponseDTO(HttpStatus.OK, null, null, null);
+		ResponseDTO res = new ResponseDTO(HttpStatus.OK, "지갑 조회 중, 오류가 발생하였습니다.", null, "error");
         Wallet wallet = service.getWalletByUserNo(userNo);
         if(wallet == null) {
         	
-        	res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "회원의 지갑이 존재하지 않습니다. ", null, "error");
+        	res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "회원의 지갑이 존재하지 않습니다. ", null, "warning");
         	return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus());
         }
-    	res = new ResponseDTO(HttpStatus.OK, null, wallet, null);
+    	res = new ResponseDTO(HttpStatus.OK, "", wallet, "");
 
         return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus());
     }
@@ -81,6 +81,8 @@ public class WalletController {
 
         return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus());
 	}
+	
+	
 	
 	
 	

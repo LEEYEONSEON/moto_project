@@ -47,7 +47,7 @@ public class UserService {
 		user.setUserPassword(encodePw);
 		int result = dao.insertUser(user);
 		
-		if(result <1) return result;
+		if(result < 1) return result;
 		int userNo = dao.selectCurrUserNo();
 		result = walletDao.createWallet(userNo);
 		return result;
