@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class User {
-	private String userNo;			//시퀀스 기반 내부 고유 식별자
+	private int userNo;			//시퀀스 기반 내부 고유 식별자
 	private String userId;			//사용자 고유 ID (중복 불가, 로그인용)
 	private String userNickname;	//사용자 닉네임
 	private String userEmail;		//로그인 이메일

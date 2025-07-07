@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.or.iei.asset.model.dao.AssetDao">
+	<select id="selectAllAsset"
+	resultType="kr.or.iei.asset.model.dto.Asset">
+	select asset_no as assetNo,
+	       asset_name as assetName,
+	       asset_code as assetCode,
+	       asset_type as assetType,
+	       asset_currency as assetCurrency,
+	       low_52 as low52,
+	       high_52 as high52
+	  from tbl_asset
+	</select>
+
+
+</mapper>

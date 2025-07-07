@@ -5,30 +5,28 @@ import Login from './component/user/Login'
 import './App.css'
 import PageMain from './component/PageMain';
 import Sidebar from './component/common/Sidebar';
-import KakaoLogout from './component/common/KakaoLogout';
 import { Route, Routes } from 'react-router-dom';
-import WalletMainPage from './component/wallet/WalletMainPage';
+import AssetPage from './component/asset/AssetPage';
 
 function App() {
+  
   return (
     <div className='wrap'>
       <Header/>
-      
       <main className='content' style={{display:"flex"}}>
-      <Sidebar/>
-      <Routes>
-      <Route path='/' element={<PageMain />} />
-      <Route path='/main/:reqPage' element={<PageMain />} />
-      <Route path='/join' element={<Join />} />
-      <Route path='/login' element={<Login/>} />
-      <Route path='/kakaoLogout' element={<KakaoLogout/>} />
-      <Route path='/wallet' element={<WalletMainPage />} />
-      </Routes>
-      </main>
-      <Footer/>
-    </div>
+          <Sidebar/>
+          <Routes>
+            <Route path='/' element={<PageMain />} />
+            <Route path='/join' element={<Join />} />
+            <Route path='/login' element={<Login/>} />
+            <Route path="/asset/*" element={<AssetPage />} />
+          </Routes>
+        </main>
 
-  )
+      <Footer/>
+
+    </div>
+  );
 }
 
-export default App
+export default App;

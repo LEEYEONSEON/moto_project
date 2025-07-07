@@ -10,19 +10,21 @@ import kr.or.iei.wallet.model.dto.Wallet;
 public class WalletService {
 	
 	@Autowired
-	private WalletDao dao;
 
-	public Wallet searchWallet(int userNo) {
-		
-		int cnt = dao.searchWallet(userNo);
-		
-		if(cnt > 0) {
-			Wallet wallet = dao.selectWallet(userNo);
-			return wallet;
-		}
-		
-		return null;
-		
+	WalletDao dao;
+
+	public Wallet getWalletByUserNo(int userNo) {
+		return dao.getWalletByUserNo(userNo);
 	}
+
+	public int createWallet(int userNo) {
+		return dao.createWallet(userNo);
+	}
+
+	public int updateWallet(Wallet wallet) {
+		return dao.updateWallet(wallet);
+	}
+	
+
 
 }
