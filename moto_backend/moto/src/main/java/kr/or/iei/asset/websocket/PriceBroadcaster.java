@@ -38,7 +38,8 @@ public class PriceBroadcaster {
                         .name("asset")
                         .data(updatedAsset));
                 } catch (IOException e) {
-                    emitters.remove(emitter);
+                	emitter.complete(); // 연결 명시적으로 종료
+                    emitters.remove(emitter); // 리스트에서 제거
                 }
             }   		
     	}

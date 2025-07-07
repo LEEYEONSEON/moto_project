@@ -164,7 +164,7 @@ public class KisWebSocket extends WebSocketListener{
 			}
             
             webSocket.send(requestJson);
-	        System.out.println("메세지 전송 : " + requestJson);
+	        //System.out.println("메세지 전송 : " + requestJson);
             
             }
             
@@ -260,10 +260,10 @@ public class KisWebSocket extends WebSocketListener{
 	            //System.out.println(trId);
 	        	//System.out.println(dataCnt);
 	        	//data에서, 원하는 데이터 추출하여 DB 저장
-	        	System.out.println(data);
+	        	//System.out.println(data);
 	        }else {
 	        	//응답 헤더 및 바디
-	        	System.out.println(text);
+	        	//System.out.println(text);
 	        }
 	        
 	        

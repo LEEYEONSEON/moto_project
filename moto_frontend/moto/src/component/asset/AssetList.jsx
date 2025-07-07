@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { getAsset } from '../../utils/api';
 import './asset.css';
 import { Link } from 'react-router-dom';
+import axiosInstance from "../../axios/Interceptor";
+
 export default function AssetList() {
  
     const [assetList, setAssetList] = useState([]); //API 로 받아온 자산 목록
@@ -95,7 +97,24 @@ export default function AssetList() {
     return hour < 9 || (hour === 15 && minute > 30) || hour > 15;
     }   
         
+    /*
 
+    //워치리스트/즐겨찾기에 추가
+    const [watchlist, setWatchlist] = useState([]); // 즐겨찾기 종목코드 리스트
+
+    function handleToggleWatchlist(assetCode) {
+        setWatchlist(function(prevList) {
+            if (prevList.includes(assetCode)) {
+                return prevList.filter(function(code) {
+                    return code !== assetCode; // <-- 해당 종목코드 제거
+                    });
+            } else {
+                return [...prevList, assetCode]; // <-- 추가
+            }
+        });
+    }   
+
+    */
 
     return(
         <>
@@ -111,6 +130,7 @@ export default function AssetList() {
             <table className="tbl asset-table asset-list">
                 <thead>
                     <tr>
+                        <th></th>
                         <th style={{width:"25%"}}>종목명</th>
                         <th style={{width:"15%"}}>현재가</th>
                         <th style={{width: "30%"}}>52주 최저 최고가</th>
@@ -125,6 +145,18 @@ export default function AssetList() {
 
                     return (
                     <tr key={"asset" + index}>
+                        <td>
+                            
+                           <span
+                                //className="favorite-star"
+                                //onClick={function() { //즐겨찾기 '워치리스트' 에 종목 추가
+                                //    handleToggleWatchlist(asset.assetCode); // <-- 클릭 시 토글
+                                //}}
+                                >
+                                {/*{watchlist.includes(asset.assetCode) ? "★" : "☆"} {/* <-- 즐겨찾기 여부에 따라 별 모양 변경 */}
+                            </span>
+
+                        </td>
                         <td><Link to={"/asset/" + asset.assetCode}>{asset.assetName}</Link></td>
                         <td>{asset.currentPrice != null ? asset.currentPrice == 0 ? "로딩 중" : parseFloat(asset.currentPrice).toFixed(0) : ""}</td>
                         <td>
