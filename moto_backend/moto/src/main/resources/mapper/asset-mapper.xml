@@ -12,6 +12,29 @@
 	       high_52 as high52
 	  from tbl_asset
 	</select>
+	
+	<!-- 매수 -->
+	<insert id="insertBuyAsset"
+	parameterType="TradeDto">
+	
+	insert into tbl_trade values
+	(
+	seq_trade_no.nextval,
+	#{userNo},
+	#{assetNo},
+	#{tradeType},
+	#{amount},
+	#{currentPrice},
+	default
+	)	
+	</insert>
 
+	<update id="resultPayWallet"
+	parameterType="TradeDto">
+	
+	update tbl_wallet
+		set wallet_cash_balance = wallet_cash_balance - (#{amount}*#{currentPrice})
+	  where user_no = #{userNo}
+	</update>
 
 </mapper>

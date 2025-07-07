@@ -1,21 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import createInstance from "../../axios/Interceptor";
 import useUserStore from "../../store/useUserStore";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
 export default function UserInfo() {
-  const [userId, setUserId] = useState("");
-  const [userNickName, setUserNickName] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [userRole, setUserRole] = useState("");
-  const [userProfileImg, setUserProfileImg] = useState("");
+  const [user, setUser] = useState({
+    userNo : 0, userId : "", userNickname : "", userEmail : "", userRole : 2, userProfileImg : ""
+  })
 
   const serverUrl = import.meta.env.VITE_BACK_SERVER;
   const axiosInstance = createInstance();
   const {loginMember, setLoginMember, setIsLogined, setAccessToken, setRefreshToken} = useUserStore();
   const userNo = loginMember.userNo;
   const navigate = useNavigate();
+  
+  const [prevUserImage, setPreveUserImg] = useState();
 
   
   useEffect(function () {
@@ -32,12 +32,7 @@ export default function UserInfo() {
       .then(function (res) {
         //res.data.resData => user 객체 (모든 정보가 있는)
         if (res.data.resData != null) {
-          setUserId(res.data.resData.userId);
-          setUserNickName(res.data.resData.userNickname);
-          setUserEmail(res.data.resData.userEmail);
-          setUserRole(res.data.resData.userRole);
-          setUserProfileImg(res.data.resData.userProfileImg);
-          
+          setUser(res.data.resData);
         }
       })
       .catch(function (err) {
@@ -45,13 +40,35 @@ export default function UserInfo() {
       });
   }, []);
 
+  
 
   function chgUserInfo(e){
-
+    user[e.target.id] = e.target.value;
+    setUser({...user})
   }
 
+  const profileImgEl = useRef(null);
 
-  function updateMember() {
+  function chgProfileImg(e){
+    
+     const file = e.target.files;
+
+    if(file.length != 0 && file[0] != null) {
+      user[user.userProfileImg] = file[0];
+      
+      const reader = new FileReader();    //브라우저에서 파일을 비동기적으로 읽을 수 있게 해주는 객체
+            reader.readAsDataURL(file[0]);     //파일 데이터 읽어오기
+            reader.onloadend = function(){       //모두 읽어오면, 실행할 함수 작성
+                setPreveUserImg(reader.result);     //미리보기용 State 변수에 세팅
+            }
+            console.log(user);
+    }else{
+      user[user.userProfileImg]= null;
+      setPreveUserImg(null);
+    }
+  }
+
+  function updateUserInfo() {
     Swal.fire({
       title: "알림",
       text: "회원 정보를 수정하시겠습니까?",
@@ -64,7 +81,7 @@ export default function UserInfo() {
         let options = {};
         options.url = serverUrl + "/member"; 
         options.method = "patch"; 
-        options.data = member; 
+        options.data = user; 
 
         axiosInstance(options)
           .then(function (res) {
@@ -81,7 +98,7 @@ export default function UserInfo() {
     });
   }
 
-  function deleteMember() {
+  function deleteUser() {
     Swal.fire({
       title: "알림",
       text: "회원을 탈퇴 하시겠습니까?",
@@ -119,7 +136,7 @@ export default function UserInfo() {
     });
   }
 
-
+  
 
   return (
     <section className="section member-info-section">
@@ -127,7 +144,7 @@ export default function UserInfo() {
       <form
         onSubmit={function (e) {
           e.preventDefault();
-          updateMember();
+          updateUserInfo();
         }}
       >
         <table className="tbl my-info" style={{ width: "80%", margin: "0 auto" }}>
@@ -138,7 +155,7 @@ export default function UserInfo() {
               </th>
               <td className="left">
                 <div className="input-item">
-                  <input type="text" name="userId" value={userId} readOnly/>
+                  <input type="text" name="userId" value={user.userId} readOnly/>
                 </div>
               </td>
             </tr>
@@ -148,7 +165,7 @@ export default function UserInfo() {
               </th>
               <td className="left">
                 <div className="input-item">
-                  <input type="text" name="userNickname" id="userNickname" value={userNickName} onChange={chgUserInfo}/>
+                  <input type="text" name="userNickname" id="userNickname" value={user.userNickname} onChange={chgUserInfo}/>
                 </div>
               </td>
             </tr>
@@ -158,17 +175,18 @@ export default function UserInfo() {
               </th>
               <td className="left">
                 <div className="input-item">
-                    <input type="text" name="userEmail" id="userEmail" value={userEmail} onChange={chgUserInfo}/>
+                    <input type="text" name="userEmail" id="userEmail" value={user.userEmail} onChange={chgUserInfo}/>
                 </div>
               </td>
             </tr>
             <tr>
+
               <th>
                 <label htmlFor="userRole">등급</label>
               </th>
               <td className="left">
                 <div className="input-item">
-                    <input type="text" name="userRole" id="userRole" value={userRole} onChange={chgUserInfo}/>
+                    <input type="text" name="userRole" id="userRole" value={user.userRole} readOnly/>
                 </div>
               </td>
             </tr>
@@ -177,24 +195,18 @@ export default function UserInfo() {
                 <label htmlFor="userProfileImg">프로필 이미지</label>
               </th>
               <td className="left">
+                {
+                  <img src={
+                    loginMember.userProfileImg 
+                    ? serverUrl + "/user/profile" + loginMember.userProfileImg.substring(0,8) + "/" + loginMember.userProfileImg
+                    : '/images/default.png'
+                  } 
+                  onClick={function(){
+                    profileImgEl.current.click()
+                  }}/>
+                }
                 <div className="input-item">
-                  <input
-                    type="file"
-                    id="user_profile_img"
-                    accept="image/*"
-                    onChange={function (e) {
-                      const file = e.target.files[0];
-                      if (file) {
-                        const reader = new FileReader();
-                        reader.onloadend = function () {
-                          const updatedMember = { ...member };
-                          updatedMember.user_profile_img = reader.result;
-                          setMember(updatedMember);
-                        };
-                        reader.readAsDataURL(file);
-                      }
-                    }}
-                  />
+                  <input type="file" id="userProfileImg" accept="image/*" style={{display : 'none'}} ref={profileImgEl} onChange={chgProfileImg} />
                 </div>
                
               </td>
@@ -216,7 +228,7 @@ export default function UserInfo() {
             type="button"
             className="btn-secondary lg"
             style={{ marginLeft: "10px" }}
-            onClick={deleteMember}>회원탈퇴</button>
+            onClick={deleteUser}>회원탈퇴</button>
         </div>
       </form>
     </section>

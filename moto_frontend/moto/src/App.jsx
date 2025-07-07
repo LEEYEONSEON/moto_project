@@ -12,13 +12,17 @@ import AssetPage from './component/asset/AssetPage';
 import WalletInfo from './component/wallet/WalletInfo';
 
 
+
+
+
+
+
 function App() {
   
   return (
     <div className='wrap'>
       <Header/>
       <main className='content' style={{display:"flex"}}>
-
       <Sidebar/>
       <Routes>
       <Route path='/' element={<PageMain />} />
@@ -30,9 +34,8 @@ function App() {
       <Route path="/users/me/*" element={<MyPage />} />
        <Route path="/asset/*" element={<AssetPage />} />
       </Routes>
-
       </main>
-      <Footer />
+      <Footer/>
     </div>
   )
 

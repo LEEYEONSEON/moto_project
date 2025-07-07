@@ -25,4 +25,6 @@ public interface UserDao {
 
 	int deleteUser(int userNo);
 
+	int selectCurrUserNo();
+
 }

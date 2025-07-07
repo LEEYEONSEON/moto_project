@@ -9,11 +9,15 @@ import kr.or.iei.common.util.JwtUtils;
 import kr.or.iei.user.model.dao.UserDao;
 import kr.or.iei.user.model.dto.LoginUser;
 import kr.or.iei.user.model.dto.User;
+import kr.or.iei.wallet.model.dao.WalletDao;
 
 @Service
 public class UserService {
 	@Autowired
 	private UserDao dao;
+	
+	@Autowired
+	private WalletDao walletDao;
 	
 	//WebConfig에서, 생성하여 컨테이너에 등록해놓은 객체 주입받아 사용하기
 	@Autowired
@@ -43,7 +47,16 @@ public class UserService {
 	public int insertUser(User user) {
 		String encodePw = encoder.encode(user.getUserPassword()); //평문 => 암호화 60글자
 		user.setUserPassword(encodePw);
-		return dao.insertUser(user);
+
+		int result = dao.insertUser(user);
+		
+
+		if(result < 1) return result;
+
+		int userNo = dao.selectCurrUserNo();
+		result = walletDao.createWallet(userNo);
+		return result;
+
 	}
 
 	public LoginUser userLogin(User user) {
