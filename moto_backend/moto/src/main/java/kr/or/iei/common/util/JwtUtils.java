@@ -28,7 +28,7 @@ public class JwtUtils {
 	
 	
 	//AccessToken 발급 메소드
-	public String createAccessToken(String userId, int userRole) {
+	public String createAccessToken(int userNo, String userRole) {
 		//1. 내부에서 사용할 방식으로, 정의한 key 변환
 		SecretKey key = Keys.hmacShaKeyFor(jwtSecretKey.getBytes());
 		
@@ -44,7 +44,7 @@ public class JwtUtils {
 								 .issuedAt(startTime)					//시작시간
 								 .expiration(expireTime)				//만료시간
 								 .signWith(key)							//암호화 서명
-								 .claim("userId", userId)			//토큰 포함 정보(key ~ value 형태)
+								 .claim("userNo", userNo)			//토큰 포함 정보(key ~ value 형태)
 								 .claim("userRole", userRole)		//토큰 포함 정보(key ~ value 형태)
 								 .compact();							//생성
 		
@@ -52,7 +52,7 @@ public class JwtUtils {
 	}
 	
 	//RefreshToken 발급 메소드
-	public String createRefreshToken(String userId, int userRole) {
+	public String createRefreshToken(int userNo, String userRole) {
 		//1. 내부에서 사용할 방식으로, 정의한 key 변환
 		SecretKey key = Keys.hmacShaKeyFor(jwtSecretKey.getBytes());
 		
@@ -68,7 +68,7 @@ public class JwtUtils {
 								 .issuedAt(startTime)					//시작시간
 								 .expiration(expireTime)				//만료시간
 								 .signWith(key)							//암호화 서명
-								 .claim("userId", userId)			//토큰 포함 정보(key ~ value 형태)
+								 .claim("userNo", userNo)			//토큰 포함 정보(key ~ value 형태)
 								 .claim("userRole", userRole)		//토큰 포함 정보(key ~ value 형태)
 								 .compact();							//생성
 		
@@ -92,11 +92,11 @@ public class JwtUtils {
 										 .getPayload();
 			
 			//3. 토큰에서 데이터 추출
-			String userId = (String) claims.get("userId");
-			int userRole = (int) claims.get("userRole");
+			int userNo   = claims.get("userNo", Integer.class);
+			String userRole = claims.get("userRole", String.class);
 			
-			m.setUserId(userId);
-			m.setUserRole(userRole+"");
+			m.setUserNo(userNo);
+			m.setUserRole(userRole);
 			
 		}catch(SignatureException e) { // 발급 토큰과 요청 토큰 불일치
 			return HttpStatus.UNAUTHORIZED; //401 코드 

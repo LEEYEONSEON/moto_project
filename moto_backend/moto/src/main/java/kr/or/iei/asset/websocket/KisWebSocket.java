@@ -145,7 +145,7 @@ public class KisWebSocket extends WebSocketListener{
             
             Map<String, String> input = new HashMap<>();
             input.put("tr_id", "H0STCNT0");
-            input.put("tr_key", asset.getAssetCode());  //삼성전자 종목 코드
+            input.put("tr_key", asset.getAssetCode());  
             
             Map<String, Object> body = new HashMap<>();
             body.put("input", input);

@@ -5,11 +5,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import kr.or.iei.common.oauth.dto.OAuthTokenResponse;
@@ -35,6 +39,76 @@ public class KakaoOAuthService implements OAuthService {
     private OAuthUserDao userDao;
     
     private final RestTemplate rest = new RestTemplate();
+    
+    public Object refreshAccessToken(String refreshToken) {
+        String url = "https://kauth.kakao.com/oauth/token";
+
+        // 요청 파라미터 세팅
+        MultiValueMap<String,String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "refresh_token");
+        params.add("client_id", clientId);
+        if (!clientSecret.isBlank()) {
+            params.add("client_secret", clientSecret);
+        }
+        params.add("refresh_token", refreshToken);
+
+        // 반드시 form urlencoded
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        HttpEntity<MultiValueMap<String,String>> entity =
+            new HttpEntity<>(params, headers);
+
+        try {
+            // 카카오 토큰 갱신 호출
+            ResponseEntity<KakaoRefreshResponse> resp =
+                rest.exchange(url, HttpMethod.POST, entity, KakaoRefreshResponse.class);
+
+            KakaoRefreshResponse body = resp.getBody();
+            if (body == null) {
+                return HttpStatus.INTERNAL_SERVER_ERROR;
+            }
+
+            // 공통 DTO로 복사
+            OAuthTokenResponse result = new OAuthTokenResponse();
+            result.setTokenType(body.getToken_type());
+            result.setAccessToken(body.getAccess_token());
+            result.setExpiresIn(body.getExpires_in());
+
+            // refresh_token, expires_in 은 optional
+            if (body.getRefresh_token() != null) {
+                result.setRefreshToken(body.getRefresh_token());
+            }
+            if (body.getRefresh_token_expires_in() != null) {
+                result.setRefreshTokenExpiresIn(body.getRefresh_token_expires_in());
+            }
+            return result;
+        }
+        catch (HttpClientErrorException e) {
+            // 400,401 등
+        	HttpStatusCode status = e.getStatusCode();
+            // Kakao 에러코드별 세분화가 필요하면 여기서 분기
+            return status;
+        }
+        catch (Exception e) {
+            // 네트워크/파싱 오류 등
+            return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+    }
+    // 카카오 “토큰 갱신” 응답 매핑용 내부 클래스
+    private static class KakaoRefreshResponse {
+        private String access_token;
+        private String token_type;
+        private Integer expires_in;
+        private String  refresh_token;
+        private Integer refresh_token_expires_in;
+
+        // getters
+        public String  getAccess_token()             { return access_token; }
+        public String  getToken_type()               { return token_type; }
+        public Integer getExpires_in()               { return expires_in; }
+        public String  getRefresh_token()            { return refresh_token; }
+        public Integer getRefresh_token_expires_in() { return refresh_token_expires_in; }
+    }
 
     /**
      * Kakao 인가 코드 요청용 URL 생성
@@ -111,7 +185,7 @@ public class KakaoOAuthService implements OAuthService {
         System.out.println(kakaoUser.getUserEmail());
         
         
-        // (d) DB upsert
+        // (d) DB upate || insert
         //이메일로 모든 정보를 조회해 온다. 
         User existing = userDao.findByEmail(kakaoUser.getUserEmail());
         if (existing != null) {
@@ -120,7 +194,8 @@ public class KakaoOAuthService implements OAuthService {
             existing.setUserNickname(kakaoUser.getUserNickname());
             result = userDao.updateUser(existing);
             System.out.println("수정 결과"+result);
-            if(result == 0) {return null;
+            if(result == 0) {
+            	return null;
             }else {
             	return existing;
             }
@@ -132,6 +207,12 @@ public class KakaoOAuthService implements OAuthService {
            
             return userDao.findByEmail(kakaoUser.getUserEmail());
         }
+    }
+    
+    //로그아웃 uri 생성후 반환
+    public String getLogoutUri() {
+    	return "https://kauth.kakao.com/oauth/logout?client_id="+clientId+"&logout_redirect_uri="+"http://localhost:5173/kakaoLogout"+"&state=state";
+    
     }
     
  // KakaoOAuthService 내부 매핑용 클래스 (private static)

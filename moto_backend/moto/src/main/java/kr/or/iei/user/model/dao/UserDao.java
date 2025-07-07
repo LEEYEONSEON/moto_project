@@ -14,6 +14,8 @@ public interface UserDao {
 	int insertUser(User user);
 
 	User userLogin(String userId);
+
+	int selectCurrUserNo();
 	
 
 	

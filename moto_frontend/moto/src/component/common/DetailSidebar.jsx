@@ -58,7 +58,7 @@ export default function DetailSidebar(props) {
             </div>
 
             <div className="menu-item" style={{ paddingBottom: "40px" }}>
-                <Link to={"/users/{id}/wallet"} style={{fontSize:"25px", color:"white"}}>
+                <Link to={"/asset"} style={{fontSize:"25px", color:"white"}}>
                     거래소
                 </Link>
             </div>

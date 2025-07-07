@@ -16,6 +16,7 @@ import kr.or.iei.common.model.dto.ResponseDTO;
 import kr.or.iei.user.model.dto.LoginUser;
 import kr.or.iei.user.model.dto.User;
 import kr.or.iei.user.model.service.UserService;
+import kr.or.iei.wallet.model.service.WalletService;
 
 @RestController
 @CrossOrigin("http://localhost:5173")
@@ -23,8 +24,46 @@ import kr.or.iei.user.model.service.UserService;
 public class UserController {
 	
 	
+	
 	@Autowired
 	private UserService service;
+	
+	@Autowired
+	private WalletService walletService;
+	
+	
+	@PostMapping("/local/test")
+	public ResponseEntity<ResponseDTO> localTest(@RequestBody User user) {
+		
+		ResponseDTO res = new ResponseDTO(HttpStatus.OK, "jwtTest localUser", null, null);
+		return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus());
+	}
+	
+	@PostMapping("/kakao/test")
+	public ResponseEntity<ResponseDTO> kakaoTest(@RequestBody User user) {
+		
+		ResponseDTO res = new ResponseDTO(HttpStatus.OK, "jwtTest kakaoUser", null, null);
+		return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus());
+	}
+	
+	//refreshToken으로 accessToken 재발급 처리
+	@PostMapping("/refresh")
+	public ResponseEntity<ResponseDTO> refreshToken(@RequestBody User user){
+		System.out.println("localUser refresh 토큰 재발급하러 들어옴");
+		ResponseDTO res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "토큰 재발급 실패", null, "error");
+		
+		try {
+			String reAccessToken = service.refreshToken(user);
+			
+			//accessToken 재발급 완료!
+			res = new ResponseDTO(HttpStatus.OK, "", reAccessToken, "");
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus());
+	}
 	
 	//아이디 중복 체크
 	//query : select count(*) from tbl_user where user_id = #{_parameter}
@@ -77,8 +116,11 @@ public class UserController {
 				if(result > 0) {
 					res = new ResponseDTO(HttpStatus.OK, "회원가입이 완료되었습니다. 로그인 화면으로 이동합니다.", true, "success");
 				}else {
+					
 					res = new ResponseDTO(HttpStatus.OK, "회원가입 중, 오류가 발생하였습니다.", false, "warning");
 				}
+				
+				
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
