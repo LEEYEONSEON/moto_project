@@ -107,7 +107,7 @@ public class PostController {
 		return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus());
 	}
 	
-	@NoTokenCheck
+	
 	@DeleteMapping("/delete/{postNo}")
 	public ResponseEntity<ResponseDTO> deletePost(@PathVariable int postNo){
 		ResponseDTO res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "게시글 삭제 중, 오류가 발생하였습니다.", false, "error");
@@ -125,7 +125,7 @@ public class PostController {
 		return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus());
 	}
 	
-	@NoTokenCheck
+	
 	@PatchMapping("/update")
 	public ResponseEntity<ResponseDTO> updatePost(@ModelAttribute UpdatePost updPost) {
 	    ResponseDTO res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "게시글 수정 중, 오류가 발생하였습니다.", false, "error");

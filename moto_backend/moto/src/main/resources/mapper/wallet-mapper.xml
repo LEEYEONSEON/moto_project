@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.or.iei.wallet.model.dao.WalletDao">
+  
+  <!-- 지갑 존재 유무 확인 -->
+  <select id="searchWallet"
+  parameterType="int"
+  resultType="int">
+  
+  select count(*) from tbl_wallet
+  	where user_no = #{userNo}
+  
+  </select>
+  
+  <!-- 지갑이 존재한다면 지갑 정보 조회 -->
+  <select id="selectWallet"
+  parameterType="int"
+  resultType="Wallet">
+  
+  select wallet_no as walletNo,
+  		 user_no as userNo,
+  		 wallet_cash_balance as walletCashBalance,
+  		 wallet_total_valuation as walletTotalValuation
+  	 from tbl_wallet
+  where user_no = #{userNo}
+  
+  </select>
+  
+</mapper>
