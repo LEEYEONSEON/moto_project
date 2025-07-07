@@ -21,6 +21,8 @@ public interface UserDao {
 
 	User getUserProfile(String userId);
 
+	User searchUserInfo(int userNo);
+
 
 	
 

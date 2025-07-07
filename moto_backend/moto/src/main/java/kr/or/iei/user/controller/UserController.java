@@ -150,9 +150,17 @@ public class UserController {
 		@GetMapping("/{userNo}")
 		public ResponseEntity<ResponseDTO> searchUserInfo(@PathVariable int userNo){
 			ResponseDTO res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "회원 정보 조회 중, 오류가 발생하였습니다.", null, "error");
-			System.out.println(userNo);
+			
 			try {
+			
+				User user  = service.searchUserInfo(userNo);
 				
+				if(user != null) {
+					res = new ResponseDTO(HttpStatus.OK, "", user, "");
+					System.out.println(user);
+				}else {
+					res = new ResponseDTO(HttpStatus.OK, "회원 정보 조회 중, 오류가 발생하였습니다.", null, "warning");
+				}
 				
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -162,7 +170,7 @@ public class UserController {
 			return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus());
 		}
 		
-		/*
+		
 		// 회원 정보 수정 
 		@PostMapping("/{userNo}")
 		public ResponseEntity<ResponseDTO> updateUser(@RequestBody User user) {
@@ -170,7 +178,7 @@ public class UserController {
 		    
 		    try {
 		  
-		        int result = service.updateUser(user);
+		        int result = service.updateUserInfo(user);
 		        if(result > 0) {
 		            res = new ResponseDTO(HttpStatus.OK, "정보가 수정되었습니다.", true, "success");
 		        } else {
@@ -182,7 +190,9 @@ public class UserController {
 		    }
 		    return new ResponseEntity<>(res, res.getHttpStatus());
 		}
-			*/
+		
+		//회원 비밀번호 변경
+			
 		
 		
 }

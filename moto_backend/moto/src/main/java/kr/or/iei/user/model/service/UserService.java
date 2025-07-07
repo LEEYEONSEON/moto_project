@@ -84,8 +84,12 @@ public class UserService {
 	public User getUserProfile(String userId) {
 		return dao.getUserProfile(userId);
 	}
-
-
+	public User searchUserInfo(int userNo) {
+		
+		return dao.searchUserInfo(userNo);
 	
+
+
+	}
 	
 }

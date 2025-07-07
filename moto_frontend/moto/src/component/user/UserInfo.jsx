@@ -5,14 +5,11 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 
 export default function UserInfo() {
-  const [member, setMember] = useState({
-    userNo: "",
-    userId: "",
-    userNickname: "",
-    userEmail: "",
-    userRole: "2",  
-    userProfileImg: ""
-  });
+  const [userId, setUserId] = useState("");
+  const [userNickName, setUserNickName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userRole, setUserRole] = useState("");
+  const [userProfileImg, setUserProfileImg] = useState("");
 
   const serverUrl = import.meta.env.VITE_BACK_SERVER;
   const axiosInstance = createInstance();
@@ -35,14 +32,26 @@ export default function UserInfo() {
 
     axiosInstance(options)
       .then(function (res) {
+        //res.data.resData => user 객체 (모든 정보가 있는)
         if (res.data.resData != null) {
-          setMember(res.data.resData); 
+          setUserId(res.data.resData.userId);
+          setUserNickName(res.data.resData.userNickname);
+          setUserEmail(res.data.resData.userEmail);
+          setUserRole(res.data.resData.userRole);
+          setUserProfileImg(res.data.resData.userProfileImg);
+          
         }
       })
       .catch(function (err) {
         console.error("회원 정보 요청 오류:", err);
       });
   }, []);
+
+
+  function chgUserInfo(e){
+
+  }
+
 
   function updateMember() {
     Swal.fire({
@@ -112,6 +121,8 @@ export default function UserInfo() {
     });
   }
 
+
+
   return (
     <section className="section member-info-section">
       <div className="page-title">내 정보</div>
@@ -125,60 +136,47 @@ export default function UserInfo() {
           <tbody>
             <tr>
               <th>
-                <label htmlFor="user_id">아이디</label>
+                <label htmlFor="userId">아이디</label>
               </th>
               <td className="left">
                 <div className="input-item">
-                  <input
-                    type="text"
-                    id="user_id"
-                    value={member.user_id || ""}
-                    readOnly
-                  />
+                  <input type="text" name="userId" value={userId} readOnly/>
                 </div>
               </td>
             </tr>
             <tr>
               <th>
-                <label htmlFor="user_nickname">닉네임</label>
+                <label htmlFor="userNickname">닉네임</label>
               </th>
               <td className="left">
                 <div className="input-item">
-                  <input
-                    type="text"
-                    id="user_nickname"
-                    value={member.user_nickname || ""}
-                    onChange={function (e) {
-                      const updatedMember = { ...member };
-                      updatedMember.user_nickname = e.target.value;
-                      setMember(updatedMember);
-                    }}
-                  />
+                  <input type="text" name="userNickname" id="userNickname" value={userNickName} onChange={chgUserInfo}/>
                 </div>
               </td>
             </tr>
             <tr>
               <th>
-                <label htmlFor="user_email">이메일</label>
+                <label htmlFor="userEmail">이메일</label>
               </th>
               <td className="left">
                 <div className="input-item">
-                  <input
-                    type="email"
-                    id="user_email"
-                    value={member.user_email || ""}
-                    onChange={function (e) {
-                      const updatedMember = { ...member };
-                      updatedMember.user_email = e.target.value;
-                      setMember(updatedMember);
-                    }}
-                  />
+                    <input type="text" name="userEmail" id="userEmail" value={userEmail} onChange={chgUserInfo}/>
                 </div>
               </td>
             </tr>
             <tr>
               <th>
-                <label htmlFor="user_profile_img">프로필 이미지</label>
+                <label htmlFor="userRole">등급</label>
+              </th>
+              <td className="left">
+                <div className="input-item">
+                    <input type="text" name="userRole" id="userRole" value={userRole} onChange={chgUserInfo}/>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <label htmlFor="userProfileImg">프로필 이미지</label>
               </th>
               <td className="left">
                 <div className="input-item">
@@ -200,21 +198,13 @@ export default function UserInfo() {
                     }}
                   />
                 </div>
-                {member.user_profile_img && (
-                  <div className="profile-img-preview">
-                    <img
-                      src={member.user_profile_img}
-                      alt="Profile Preview"
-                      style={{ maxWidth: "150px", maxHeight: "150px" }}
-                    />
-                  </div>
-                )}
+               
               </td>
             </tr>
             <tr>
               <th>회원등급</th>
               <td className="left">
-                {member.user_role === "1" ? "관리자" : member.user_role === "3" ? "정지" : "일반회원"}
+                
               </td>
             </tr>
           </tbody>
