@@ -117,8 +117,31 @@
 		<dependency>
 		  <groupId>org.java-websocket</groupId>
 		  <artifactId>Java-WebSocket</artifactId>
-		  <version>1.5.3</version>
+		  <version>1.5.6</version>
 		</dependency>
+		
+		
+		<dependency>
+		    <groupId>org.json</groupId>
+		    <artifactId>json</artifactId>
+		    <version>20240303</version> <!-- 최신 버전 -->
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
+		
+		<dependency>
+		    <groupId>com.squareup.okhttp3</groupId>
+		    <artifactId>okhttp</artifactId>
+		    <version>4.12.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+		</dependency>
+		
 		
 		
 		

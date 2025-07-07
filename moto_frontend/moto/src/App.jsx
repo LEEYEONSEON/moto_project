@@ -6,7 +6,7 @@ import './App.css'
 import PageMain from './component/PageMain';
 import Sidebar from './component/common/Sidebar';
 import { Route, Routes } from 'react-router-dom';
-import Sidebar from './component/common/Sidebar';
+import AssetPage from './component/asset/AssetPage';
 
 function App() {
   
@@ -19,7 +19,7 @@ function App() {
             <Route path='/' element={<PageMain />} />
             <Route path='/join' element={<Join />} />
             <Route path='/login' element={<Login/>} />
-            <Route path="/asset" element={<AssetPage />} />
+            <Route path="/asset/*" element={<AssetPage />} />
           </Routes>
         </main>
 

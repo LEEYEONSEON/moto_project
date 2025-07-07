@@ -14,7 +14,10 @@ public class Asset {
 	private String assetType;
 	private String assetCurrency;
 	
-	private Double currentPrice; //Finnhub api 에서 조회해온 현재 시세
-	private Double prevClose; // 전일 종가
-	private Double priceChangeRate; //전일 종가 대비 현재가 변동률(%)
+	private String currentPrice; //api 에서 조회해온 현재 시세
+	private String priceChange; // 전일 대비
+	private String ChangeRate; //전일 종가 대비 현재가 변동률(%)
+	private Double low52;
+	private Double high52;
+	
 }
