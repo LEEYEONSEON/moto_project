@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -190,9 +192,67 @@ public class UserController {
 		    }
 		    return new ResponseEntity<>(res, res.getHttpStatus());
 		}
+		//회원 탈퇴
+		@DeleteMapping("/{userNo}")
+		public ResponseEntity<ResponseDTO> deleteUser(@PathVariable int userNo){
+			ResponseDTO res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "삭제 중, 오류가 발생하였습니다.", false, "error");
+			
+			try {
+				int result = service.deleteUser(userNo);
+				
+				if(result > 0) {
+					res = new ResponseDTO(HttpStatus.OK, "회원 탈퇴가 정상 처리 되었습니다.", true, "success");
+				}else {
+					res = new ResponseDTO(HttpStatus.OK, "삭제 중, 오류가 발생하였습니다.", false, "warning");
+				}
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus());
+		} 
+		
+		//비밀번호 변경을 위한 체크
+		@PostMapping("/{userPw}checkPw")
+		public ResponseEntity<ResponseDTO> checkPw(@RequestBody User user){
+			ResponseDTO res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "기존 비밀번호 체크 중, 오류가 발생하였습니다.", false, "error");
+			
+			try {
+				boolean chkResult = service.checkUserPassword(user);
+				
+				//토큰 검증 성공 ==> 비밀번호 일치 결과 (true or false)
+				res = new ResponseDTO(HttpStatus.OK, "", chkResult, "");
+				
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus());
+		}
+		
 		
 		//회원 비밀번호 변경
+		@PatchMapping("/{userPw}")
+		public ResponseEntity<ResponseDTO> updateUserPassword(@RequestBody User user){
+			ResponseDTO res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "비밀번호 변경 중, 오류가 발생하였습니다.", false, "error");
 			
+			try {
+				int result = service.updateUserPassword(user);
+				
+				if(result > 0) {
+					res = new ResponseDTO(HttpStatus.OK, "비밀번호가 정상적으로 변경되었습니다.", true, "success");
+				}else {
+					res = new ResponseDTO(HttpStatus.OK, "비밀번호 변경 중, 오류가 발생하였습니다.", false, "warning");
+				}
+				
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			
+			return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus());
+		}
 		
-		
+				
 }

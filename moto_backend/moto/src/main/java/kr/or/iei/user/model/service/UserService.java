@@ -85,11 +85,18 @@ public class UserService {
 		return dao.getUserProfile(userId);
 	}
 	public User searchUserInfo(int userNo) {
-		
-		return dao.searchUserInfo(userNo);
+		User user = dao.searchUserInfo(userNo);
+		user.setUserPassword(null);
+		return user; 	
+	}	
 	
-
-
+	public boolean checkUserPassword(User user) {
+		User u = dao.searchUserInfo(user.getUserNo());
+		return encoder.matches(user.getUserPassword(), u.getUserPassword());
 	}
+	public int deleteUser(int userNo) {
+		return dao.deleteUser(userNo);
+	}
+	
 	
 }

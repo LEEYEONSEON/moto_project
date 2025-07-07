@@ -88,6 +88,30 @@
 		 where user_no = #{_parameter}
 	</select>
 
+	<!-- 회원 정보 수정 -->
+	<update id="updateUser"
+	parameterType="User">
+	update tbl_user
+		set user_id = #{userId},
+			user_nickname = #{userNickname},
+			user_email = #{userEmail},
+			user_role = #{userRole},
+			user_profileImg = #{userProfileImg}
+	</update>
+	
+	<!-- 회원 탈퇴 -->
+	<delete id="deleteUser"
+	parameterType="int">
+	delete from tbl_user where user_no = #{_parameter}
+	</delete>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="updateUserPassword"
+	parameterType="User">
+	update tbl_user
+		set user_password = #{userPassword}
+	  where user_id	= #{userId}
+	</update>
 	
 	<select id="selectCurrUserNo" resultType="int">
 		SELECT seq_user_no.CURRVAL FROM dual

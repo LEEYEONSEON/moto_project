@@ -14,9 +14,7 @@ export default function UserInfo() {
   const serverUrl = import.meta.env.VITE_BACK_SERVER;
   const axiosInstance = createInstance();
   const {loginMember, setLoginMember, setIsLogined, setAccessToken, setRefreshToken} = useUserStore();
-
   const userNo = loginMember.userNo;
-
   const navigate = useNavigate();
 
   

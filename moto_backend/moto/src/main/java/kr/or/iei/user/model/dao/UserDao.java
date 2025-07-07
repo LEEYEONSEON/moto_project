@@ -17,13 +17,12 @@ public interface UserDao {
 
 	int updateUserInfo(User user);
 
-	int updateUserPassword(User user);
-
 	User getUserProfile(String userId);
 
 	User searchUserInfo(int userNo);
 
+	int updateUserPassword(User user);
 
-	
+	int deleteUser(int userNo);
 
 }
