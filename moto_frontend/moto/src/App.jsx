@@ -7,7 +7,8 @@ import PageMain from './component/PageMain';
 import Sidebar from './component/common/Sidebar';
 import KakaoLogout from './component/common/KakaoLogout';
 import { Route, Routes } from 'react-router-dom';
-import WalletMainPage from './component/wallet/WalletMainPage';
+import WalletInfo from './component/wallet/WalletInfo';
+
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
       <Route path='/join' element={<Join />} />
       <Route path='/login' element={<Login/>} />
       <Route path='/kakaoLogout' element={<KakaoLogout/>} />
-      <Route path='/wallet' element={<WalletMainPage />} />
+      <Route path='/wallet' element={<WalletInfo/>} />
       </Routes>
       </main>
       <Footer/>

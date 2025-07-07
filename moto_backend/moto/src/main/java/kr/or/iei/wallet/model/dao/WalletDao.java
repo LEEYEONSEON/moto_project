@@ -7,8 +7,11 @@ import kr.or.iei.wallet.model.dto.Wallet;
 @Mapper
 public interface WalletDao {
 
-	int searchWallet(int userNo);
+	Wallet getWalletByUserNo(int userNo);
 
-	Wallet selectWallet(int userNo);
+	int createWallet(int userNo);
+
+	int updateWallet(Wallet wallet);
+
 
 }

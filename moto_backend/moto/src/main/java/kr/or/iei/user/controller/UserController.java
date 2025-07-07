@@ -16,6 +16,7 @@ import kr.or.iei.common.model.dto.ResponseDTO;
 import kr.or.iei.user.model.dto.LoginUser;
 import kr.or.iei.user.model.dto.User;
 import kr.or.iei.user.model.service.UserService;
+import kr.or.iei.wallet.model.service.WalletService;
 
 @RestController
 @CrossOrigin("http://localhost:5173")
@@ -26,6 +27,10 @@ public class UserController {
 	
 	@Autowired
 	private UserService service;
+	
+	@Autowired
+	private WalletService walletService;
+	
 	
 	@PostMapping("/local/test")
 	public ResponseEntity<ResponseDTO> localTest(@RequestBody User user) {
@@ -111,8 +116,11 @@ public class UserController {
 				if(result > 0) {
 					res = new ResponseDTO(HttpStatus.OK, "회원가입이 완료되었습니다. 로그인 화면으로 이동합니다.", true, "success");
 				}else {
+					
 					res = new ResponseDTO(HttpStatus.OK, "회원가입 중, 오류가 발생하였습니다.", false, "warning");
 				}
+				
+				
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
