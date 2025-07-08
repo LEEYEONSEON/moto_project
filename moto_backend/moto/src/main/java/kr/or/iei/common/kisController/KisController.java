@@ -14,14 +14,14 @@ import kr.or.iei.asset.websocket.KisWebSocket;
 @RestController
 @RequestMapping("/asset")
 public class KisController {
-		
-	@Autowired
-	private KisWebSocket socketTest;
-	
+      
+   @Autowired
+   private KisWebSocket socketTest;
+   
 
-	@GetMapping("/ws-start")
-	public void ss() {
-		socketTest.connectAndSend(); // 웹소켓 연결 및 시세 수신 시작
-	}
-
+   @GetMapping("/ws-start")
+   public void ss() {
+      socketTest.connectAndSend(); // 웹소켓 연결 및 시세 수신 시작
+   }
+   
 }

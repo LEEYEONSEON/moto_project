@@ -46,7 +46,7 @@ export default function DetailSidebar(props) {
             </div>
 
             <div className="menu-item" style={{ paddingBottom: "40px" }}>
-                <Link to={"/users/me/portfolio?filter = TYPE"} style={{fontSize:"25px", color:"white"}}>
+                <Link to={"/watchlist"} style={{fontSize:"25px", color:"white"}}>
                     관심종목
                 </Link>
             </div>

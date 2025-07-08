@@ -48,7 +48,7 @@ public class KisWebSocket extends WebSocketListener{
 	    // 실시간 방송 기능 주입
 	    @Autowired
 	    private PriceBroadcaster priceStream;
-	
+
 	    // 한국투자증권 클라이언트 ID(AppKey), Secret(AppSecret) 이용해서 한투 access token 발급받는 작업
 	    public String getAccessToken() {
 	        RestTemplate rt = new RestTemplate();
@@ -145,7 +145,7 @@ public class KisWebSocket extends WebSocketListener{
             
             Map<String, String> input = new HashMap<>();
             input.put("tr_id", "H0STCNT0");
-            input.put("tr_key", asset.getAssetCode());  
+            input.put("tr_key", asset.getAssetCode());
             
             Map<String, Object> body = new HashMap<>();
             body.put("input", input);
@@ -167,14 +167,7 @@ public class KisWebSocket extends WebSocketListener{
 	        //System.out.println("메세지 전송 : " + requestJson);
             
             }
-            
 
-            
-
-            
-            
-			
-            
 	       
 	    }
 	    
@@ -278,8 +271,10 @@ public class KisWebSocket extends WebSocketListener{
 	    @Override
 	    public void onFailure(WebSocket webSocket, Throwable t, Response response) {
 	        System.err.println("WebSocket 오류");
+	        
+	        //t.printStackTrace(); // 오류 이유 확인용.
 	    }
-	   
+
 
 }
 
