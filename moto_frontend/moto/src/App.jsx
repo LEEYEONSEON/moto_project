@@ -7,6 +7,7 @@ import PageMain from './component/PageMain';
 import Sidebar from './component/common/Sidebar';
 import { Route, Routes } from 'react-router-dom';
 import AssetPage from './component/asset/AssetPage';
+import WatchlistPage from './component/watchlist/WatchlistPage';
 import WalletInfo from './component/wallet/WalletInfo';
 import KakaoLogout from './component/common/KakaoLogout';
 
@@ -27,10 +28,12 @@ function App() {
       <Route path='/join' element={<Join />} />
       <Route path='/login' element={<Login/>} />
       <Route path='/kakaoLogout' element={<KakaoLogout />} />
-      <Route path="/asset" element={<AssetPage />} />
+      <Route path="/asset/*" element={<AssetPage />} />
       <Route path='/wallet' element={<WalletInfo/>} />
+      <Route path="/watchlist/*" element={<WatchlistPage />} />
       </Routes>
       </main>
+
       <Footer/>
     </div>
   );
