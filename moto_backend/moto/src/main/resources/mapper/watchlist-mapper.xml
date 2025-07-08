@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.or.iei.watchlist.model.dao.WatchlistDao">
+	
+	<insert id="addWatchlist" parameterType="map">
+	  INSERT INTO tbl_watchlist (
+	    user_no, asset_code
+	  ) VALUES (
+	    #{userNo}, #{assetCode}
+	  )
+	</insert>
+
+
+	<delete id="deleteWatchlist">
+	    DELETE FROM tbl_watchlist
+	    WHERE user_no = #{userNo}
+	          AND asset_code = #{assetCode}
+	</delete>
+	
+	<!-- 워치리스트 조회 - 즐겨찾기 추가 제거용 -->
+	<select id="selectWatchlistByUserNo" parameterType="string" resultType="Watchlist">
+	    SELECT w.asset_code as assetCode, a.asset_name as assetName, a.high_52 as high52, a.low_52 as low52
+	    FROM tbl_watchlist w
+	    JOIN tbl_asset a ON w.asset_code = a.asset_code
+	    WHERE w.user_no = #{_parameter}
+	</select>
+	
+	<!-- 워치리스트 메인 페이지 조회 -->
+	
+	
+
+</mapper>

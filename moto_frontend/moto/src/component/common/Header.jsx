@@ -139,6 +139,9 @@ function HeaderLink () {
                         <li>
                         <a href="#" onClick={localTest}>localJwtTest</a>
                         </li>
+                        {loginMember.userRole == 1
+                        ? <li><Link to="/admin">관리자페이지</Link></li>
+                        :""}
                     </>
                     ) : (
                     <>

@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
 import { getAsset } from '../../utils/api';
 import './asset.css';
-import { Link } from 'react-router-dom';
+import useWsStore from "../../store/useWsStore";
+import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import useUserStore from '../../store/useUserStore';
 import createInstance from '../../axios/Interceptor';
 
 export default function AssetList() {
+  
   const [assetList, setAssetList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -20,22 +23,39 @@ export default function AssetList() {
   // 매수 시 보유 현금 부족 여부
   const notEnoughCash = tradeType === "BUY" && totalPrice > walletCash;
 
-  const { loginMember } = useUserStore();
-  const userNo = loginMember ? loginMember.userNo : null;
+  const { loginMember, kakaoMember } = useUserStore();
+
+  let userNo;
+  if(loginMember){
+    userNo = loginMember.userNo
+  }else if(kakaoMember){
+    userNo = kakaoMember.userNo
+  }else{
+    userNo = null;
+  }
+
+
 
   const serverUrl = import.meta.env.VITE_BACK_SERVER;
   const axiosInstance = createInstance();
 
-  // 컴포넌트 첫 렌더링 시 WebSocket 연결 요청
-  useEffect(function () {
-    fetch("http://localhost:9999/asset/ws-start")
-      .then(function (res) {
-        if (!res.ok) console.error("WS Start 실패", res.status);
-      })
-      .catch(function (err) {
-        console.error("WS 연결 오류", err);
-      });
-  }, []);
+  //웹 소켓 사용해서 KIS 한국 투자증권 시세 연결 시작 하기 위한 용도 == 한번만 실행되도록 Zustand 로 wsStarted 상태 관리
+    const { wsStarted, setWsStarted } = useWsStore();
+
+        useEffect(function () {
+        if (!wsStarted) {
+            fetch(serverUrl + "/asset/ws-start")
+            .then(function(res) {
+                if (res.ok) {
+                setWsStarted(true); // 한번만 실행되게!
+                }
+            })
+            .catch(function(err) {
+                console.log("WS 연결 오류", err)
+            });
+        }
+    }, []);
+
 
   // 자산 목록 초기 조회
   useEffect(function () {
@@ -60,10 +80,10 @@ export default function AssetList() {
       });
   }, []);
 
+
   // SSE 실시간 가격 업데이트
   useEffect(function () {
     const eventSource = new EventSource(serverUrl + "/asset/price-stream");
-
     eventSource.addEventListener("asset", function (event) {
       if (!event || !event.data) return;
 
@@ -90,6 +110,7 @@ export default function AssetList() {
     };
   }, []);
 
+
   // 로그인 회원 지갑 정보 조회
   useEffect(function () {
     if (!userNo) return; // userNo 없으면 요청 안 함
@@ -114,7 +135,123 @@ export default function AssetList() {
     const hour = now.getHours();
     const minute = now.getMinutes();
     return hour < 9 || (hour === 15 && minute > 30) || hour > 15;
+
+    }   
+        
+    //워치리스트/즐겨찾기에 추가
+    const [watchlist, setWatchlist] = useState([]); // 즐겨찾기 종목코드 리스트
+    //여기서 prevList 는 워치리스트의 최신 상태! == prevList는 React가 보장해주는 최신 상태
+    const navigate = useNavigate();
+    let member = null;
+    
+    if(loginMember != null){
+        member = loginMember;
+    }else if(kakaoMember != null){
+        member = kakaoMember;
+    }
+
+    //워치리스트 조회
+    useEffect(function() {
+         
+        if (member != null) { // 로그인 되어 있을 때만 요청
+            let userNo = member.userNo;
+            
+            let options = {
+                url: serverUrl + "/watchlist/" + userNo, // ← userNo path로 전달
+                method: "get"
+            }
+            
+
+
+            axiosInstance(options) 
+            .then(function(res) {
+
+                const assetList = res.data.resData;
+                //console.log("watchlist 응답", res.data.resData);
+                if (res.data.resData != null) {
+                    const newWatchlist = (assetList.map(function(item, index) {
+                        return item.assetCode;
+                    }))
+                
+                    setWatchlist(newWatchlist); // ← 리스트 저장
+                }
+
+
+
+
+            })
+            .catch(function(err) {
+                console.error("워치리스트 조회 실패", err);
+            });
+        }
+    }, [member]); 
+    
+
+
+
+
+
+    function handleToggleWatchlist(assetCode) {
+        
+        if(member == null) {
+        //로그인 하지 않은 회원인 경우
+            Swal.fire({
+                title : "알림",
+                text:"로그인후 이용 가능합니다.",
+                icon: "warning",
+                confirmButtonText:"확인"
+            });
+
+            navigate("/login");
+
+        }else {
+        //로그인한 회원일경우.
+            let userNo = member.userNo;
+
+            if (watchlist.includes(assetCode)) {
+                
+                let options = {
+                    url: serverUrl + "/watchlist",
+                    method: "delete",
+                    params: { // <-- delete는 data 대신 params 사용해야 함!!
+                        userNo: userNo,
+                        assetCode: assetCode
+                    }
+                }
+
+                    axiosInstance(options)// 즐겨찾기 제거 요청
+                    .then(function(res) {
+                        setWatchlist(function(prevList) {
+                            return prevList.filter(function(code) { // 기존 종목코드 배열(prevList)에서 code 들과 제거 대상(assetCode)를 비교하여, 제거 대상 assetCode 만 필터링해서 나머지만 반환.
+                                return code !== assetCode;
+                            });
+                        });
+                    })    
+
+            } else {
+
+                let options = {
+                    url: serverUrl + "/watchlist",
+                    method: "post",
+                    data: {
+                        userNo: userNo,
+                        assetCode: assetCode
+                    }
+                }
+
+                axiosInstance(options) // 즐겨찾기 추가 요청
+                .then(function(res) {
+                    setWatchlist(function(prevList) {
+                        return [...prevList, assetCode]; //기존 배열에 새 종목 코드 추가
+                    });
+                })
+            }
+        }
+
+
   }
+
+
 
   // 거래 요청 함수 (컴포넌트 내부에 선언)
   function handleTradeSubmit(e) {
@@ -125,7 +262,7 @@ export default function AssetList() {
     setSelectedAsset(null);
     console.log(selectedAsset.assetNo);
 
-    if(tradeType == "BUY"){
+    
         const options = {
           url: serverUrl + "/asset/insert", 
           method: "post",
@@ -141,31 +278,13 @@ export default function AssetList() {
         axiosInstance(options)
           .then(function (res) {
             
-            
           })
-      }else if(tradeType == "SELL"){
-        const options = {
-          url: serverUrl + "/asset/update", 
-          method: "patch",
-          data: {
-            userNo: userNo,
-            tradeType: tradeType,
-            amount: amount,
-            currentPrice: selectedAsset.currentPrice,
-            assetNo : selectedAsset.assetNo
-          },
-        };
     
-        axiosInstance(options)
-          .then(function (res) {
-            
-          })
-      }
     }
-    
+
 
   return (
-    <>
+
       <section className="section asset-list">
         <div className="page-title">종목리스트</div>
 
@@ -186,10 +305,21 @@ export default function AssetList() {
               </tr>
             </thead>
             <tbody>
+
               {assetList.map(function (asset, index) {
-                return (
-                  <tr key={"asset" + index}>
-                    <td></td>
+                return(
+                    <tr key={"asset" + index}>
+                        <td>
+                            
+                           <span
+                                className="favorite-star"
+                                onClick={function() { //즐겨찾기 '워치리스트' 에 종목 추가
+                                    handleToggleWatchlist(asset.assetCode); // <-- 클릭 시 토글
+                                }}
+                                >
+                                {watchlist.includes(String(asset.assetCode)) ? "★" : "☆"}  {/* <-- 즐겨찾기 여부에 따라 별 모양 변경 */}
+                            </span>
+                     </td>
                     <td>
                       <Link to={"/asset/" + asset.assetCode}>{asset.assetName}</Link>
                     </td>
@@ -251,7 +381,8 @@ export default function AssetList() {
                         ? parseFloat(asset.priceChangeRate).toFixed(2) + "%"
                         : ""}
                     </td>
-                    <td>
+                    
+                   <td>
                       <button
                         onClick={function () {
                           setSelectedAsset(asset);
@@ -299,12 +430,13 @@ export default function AssetList() {
                 />
               </label>
 
+
               <p>총 금액: {totalPrice.toLocaleString()} 원</p>
 
               {notEnoughCash && <p style={{ color: "red" }}>보유 현금이 부족합니다.</p>}
 
               <button onClick={handleTradeSubmit} disabled={notEnoughCash}>
-                {tradeType === "buy" ? "매수" : "매도"} 실행
+                {tradeType === "BUY" ? "매수" : "매도"} 실행
               </button>
               <button
                 onClick={function () {
@@ -317,7 +449,10 @@ export default function AssetList() {
           </div>
         )}
       </section>
-    </>
-  );
-}
 
+  );
+
+
+
+
+}

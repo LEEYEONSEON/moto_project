@@ -23,5 +23,5 @@ public class KisController {
    public void ss() {
       socketTest.connectAndSend(); // 웹소켓 연결 및 시세 수신 시작
    }
-
+   
 }

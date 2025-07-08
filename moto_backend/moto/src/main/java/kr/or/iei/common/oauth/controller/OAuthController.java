@@ -37,6 +37,7 @@ public class OAuthController {
     public OAuthController(KakaoOAuthService kakao) {
         this.kakao = kakao;
     }
+    
     @NoTokenCheck
     @PostMapping("/{provider}/refresh")
     public ResponseEntity<ResponseDTO> refreshKakaoToken(
@@ -153,4 +154,6 @@ public class OAuthController {
     	
     	res.sendRedirect(uri);
     }
+    
+    
 }
