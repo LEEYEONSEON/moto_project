@@ -21,6 +21,10 @@ public interface UserDao {
 
 	ArrayList<User> selectAllList();
 
+	int updateUserRole(User user);
+
+	int deleteUser(int userNo);
+
 	
 	
 

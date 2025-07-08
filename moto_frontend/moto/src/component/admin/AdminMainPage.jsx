@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import createInstance from "../../axios/Interceptor";
 import UserList from "./UserList";
 
+
 export default function AdminMainPage() {
   const [userList, setUserList] = useState([]);
   const serverUrl = import.meta.env.VITE_BACK_SERVER;
@@ -29,7 +30,7 @@ export default function AdminMainPage() {
     
       <div style={{display:"block"}}>
         <h2 style={{color:"white"}}>회원 리스트</h2>
-         <div style={{width:"1137px"}}>
+         <div style={{width:"1137px", paddingLeft:"20px"}}>
          <UserList userList={userList}/>
          </div>
       </div>
