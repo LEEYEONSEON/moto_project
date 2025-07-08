@@ -8,6 +8,12 @@ import Sidebar from './component/common/Sidebar';
 import { Route, Routes } from 'react-router-dom';
 import AssetPage from './component/asset/AssetPage';
 import WatchlistPage from './component/watchlist/WatchlistPage';
+import WalletInfo from './component/wallet/WalletInfo';
+import KakaoLogout from './component/common/KakaoLogout';
+
+
+
+
 
 function App() {
   
@@ -15,18 +21,20 @@ function App() {
     <div className='wrap'>
       <Header/>
       <main className='content' style={{display:"flex"}}>
-          <Sidebar/>
-          <Routes>
-            <Route path='/' element={<PageMain />} />
-            <Route path='/join' element={<Join />} />
-            <Route path='/login' element={<Login/>} />
-            <Route path="/asset/*" element={<AssetPage />} />
-            <Route path="/watchlist/*" element={<WatchlistPage />} />
-          </Routes>
-        </main>
+      <Sidebar/>
+      <Routes>
+      <Route path='/' element={<PageMain />} />
+      <Route path='/main/:reqPage' element={<PageMain />} />
+      <Route path='/join' element={<Join />} />
+      <Route path='/login' element={<Login/>} />
+      <Route path='/kakaoLogout' element={<KakaoLogout />} />
+      <Route path="/asset" element={<AssetPage />} />
+      <Route path='/wallet' element={<WalletInfo/>} />
+      <Route path="/watchlist/*" element={<WatchlistPage />} />
+      </Routes>
+      </main>
 
       <Footer/>
-
     </div>
   );
 }
