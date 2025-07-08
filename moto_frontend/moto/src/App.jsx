@@ -9,6 +9,7 @@ import { Route, Routes } from 'react-router-dom';
 import AssetPage from './component/asset/AssetPage';
 import WalletInfo from './component/wallet/WalletInfo';
 import KakaoLogout from './component/common/KakaoLogout';
+import AdminMainPage from './component/admin/AdminMainPage';
 
 
 
@@ -29,6 +30,7 @@ function App() {
       <Route path='/kakaoLogout' element={<KakaoLogout />} />
       <Route path="/asset" element={<AssetPage />} />
       <Route path='/wallet' element={<WalletInfo/>} />
+      <Route path='/admin' element={<AdminMainPage />} />
       </Routes>
       </main>
       <Footer/>

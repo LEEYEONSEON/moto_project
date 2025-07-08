@@ -20,8 +20,15 @@ export default function AssetList() {
   // 매수 시 보유 현금 부족 여부
   const notEnoughCash = tradeType === "BUY" && totalPrice > walletCash;
 
-  const { loginMember } = useUserStore();
-  const userNo = loginMember ? loginMember.userNo : null;
+  const { loginMember, kakaoMember } = useUserStore();
+  let userNo;
+  if(loginMember){
+    userNo = loginMember.userNo
+  }else if(kakaoMember){
+    userNo = kakaoMember.userNo
+  }else{
+    userNo = null;
+  }
 
   const serverUrl = import.meta.env.VITE_BACK_SERVER;
   const axiosInstance = createInstance();

@@ -8,4 +8,10 @@ npm install sweetalert2 --force                 => 사용자에게 보여줄 알
 npm install zustand                             => 로그인 정보와 같은 애플리케이션 전역에 영향을 주는 상태를 관리하기 위해 설치
 npm install history --force                     => 컴포넌트 외부(인터셉터)에서, 컴포넌트 전환을 위해 설치
 npm install @toast-ui/react-editor --force      => 게시글 작성, 수정 시 게시글 본문 작성을 위해 설치
+
+2025-06-30 이준형
 npm install react-modal --force                 => 게시글 작성 시, 팝업 띄우기 위해 modal 라이브러리 설치
+
+2025-07-08 이준형
+npm install ag-grid-react ag-grid-community --legacy-peer-deps  => 회원 정보를 grid로 보여주기 위해 ag-grid 라이브러리 설치 (기존에 설치되어 있는 toast-ui 충돌로 인해 새 옵션 추가)
+npm install ag-grid-community ag-grid-react --legacy-peer-deps  => 회원 정보를 grid로 보여주기 위해 ag-grid 라이브러리 설치 (기존에 설치되어 있는 toast-ui 충돌로 인해 새 옵션 추가)

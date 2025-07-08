@@ -69,12 +69,12 @@ export default function DetailSidebar(props) {
                 </Link>
             </div>
 
-             <div className="menu-item" style={{ paddingBottom: "40px" }}>
+             <div className="menu-item" style={{ paddingBottom: "40px", margin:"0 auto" }}>
                  {
                     loginMember
                     ?
-                    <button onClick={logout} style={{border:"none", backgroundColor: "transparent" }} ><p style={{textAlign:"right", color:"white", border:"none"}}>로그아웃</p></button>
-                    : <button onClick={logout} style={{border:"none", backgroundColor: "transparent" }}><p style={{textAlign:"right", color:"white",fontSize:"20px"}}>로그아웃</p></button>
+                    <button onClick={logout} style={{border:"none", backgroundColor: "transparent", color:"white", fontSize:"20px", width:"200px" }} >로그아웃</button>
+                    : <button onClick={logout} style={{border:"none", backgroundColor: "transparent", color:"white", fontSize:"20px", width:"200px"}}>로그아웃</button>
                 }
             </div>
 

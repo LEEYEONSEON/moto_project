@@ -31,6 +31,15 @@
 		where user_email = #{userEmail}
 	
 	</update>
+	
+	<!-- 회원 가입 시  -->
+	<select id="searchUserNo"
+	resultType="int">
+	
+	SELECT seq_user_no.nextval FROM dual
+	
+	</select>
+	
 	<insert id = "insertUser"
 			parameterType = "User">
 		insert into tbl_user
@@ -48,7 +57,7 @@
 		)
 	values 
 		(
-		seq_user_no.nextval, 
+		#{userNo}, 
 		#{userId},
 		#{userNickname},
 		#{userEmail},
@@ -60,4 +69,8 @@
 		'KAKAO'
 		)		
 	</insert>
+	
+	<!-- 회원 가입시 생성될 지갑 -->
+	
+	
 </mapper>

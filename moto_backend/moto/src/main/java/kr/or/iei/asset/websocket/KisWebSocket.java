@@ -279,6 +279,8 @@ public class KisWebSocket extends WebSocketListener{
 	    public void onFailure(WebSocket webSocket, Throwable t, Response response) {
 	        System.err.println("WebSocket 오류");
 	    }
+	   
+
 }
 
 
