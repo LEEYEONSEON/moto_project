@@ -10,9 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-
 import org.springframework.web.bind.annotation.RequestBody;
+
+
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -56,7 +59,6 @@ public class AssetController {
 	    return priceStream.subscribe(); 
 	}
 	
-
 	@PostMapping("/insert")
 	public ResponseEntity<ResponseDTO> insertBuyAsset(@RequestBody TradeDto trade){
 		ResponseDTO res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "주식 구매 중, 오류가 발생하였습니다.", false, "error");

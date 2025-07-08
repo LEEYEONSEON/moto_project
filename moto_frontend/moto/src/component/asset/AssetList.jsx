@@ -23,7 +23,7 @@ export default function AssetList() {
   // 매수 시 보유 현금 부족 여부
   const notEnoughCash = tradeType === "BUY" && totalPrice > walletCash;
 
-  const { loginMember } = useUserStore();
+  const { loginMember, kakaoMember } = useUserStore();
   const userNo = loginMember ? loginMember.userNo : null;
 
   const serverUrl = import.meta.env.VITE_BACK_SERVER;
@@ -70,6 +70,7 @@ export default function AssetList() {
       });
   }, []);
 
+
   // SSE 실시간 가격 업데이트
   useEffect(function () {
     const eventSource = new EventSource(serverUrl + "/asset/price-stream");
@@ -98,6 +99,7 @@ export default function AssetList() {
       eventSource.close();
     };
   }, []);
+
 
   // 로그인 회원 지갑 정보 조회
   useEffect(function () {
@@ -237,11 +239,9 @@ export default function AssetList() {
         }
 
 
-            
-        }
+  }
 
 
-  
 
   // 거래 요청 함수 (컴포넌트 내부에 선언)
   function handleTradeSubmit(e) {
@@ -292,7 +292,7 @@ export default function AssetList() {
 
 
   return (
-    <>
+
       <section className="section asset-list">
         <div className="page-title">종목리스트</div>
 
@@ -389,7 +389,8 @@ export default function AssetList() {
                         ? parseFloat(asset.priceChangeRate).toFixed(2) + "%"
                         : ""}
                     </td>
-                    <td>
+                    
+                   <td>
                       <button
                         onClick={function () {
                           setSelectedAsset(asset);
@@ -424,6 +425,7 @@ export default function AssetList() {
               <p>종목명: {selectedAsset.assetName}</p>
               <p>현재가: {selectedAsset.currentPrice.toLocaleString()} 원</p>
               <p>현재 회원 자산: {walletCash.toLocaleString()} 원</p>
+
               <label>
                 수량:
                 <input
@@ -455,9 +457,10 @@ export default function AssetList() {
           </div>
         )}
       </section>
-    
-    </>
+
   );
+
+
 
 
 }
