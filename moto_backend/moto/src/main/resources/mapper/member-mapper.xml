@@ -89,14 +89,15 @@
 	</select>
 
 	<!-- 회원 정보 수정 -->
-	<update id="updateUser"
+	<update id="updateUserInfo"
 	parameterType="User">
 	update tbl_user
 		set user_id = #{userId},
 			user_nickname = #{userNickname},
 			user_email = #{userEmail},
 			user_role = #{userRole},
-			user_profileImg = #{userProfileImg}
+			user_profile_Img = #{userProfileImg}
+			where user_no = #{userNo}
 	</update>
 	
 	<!-- 회원 탈퇴 -->

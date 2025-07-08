@@ -20,7 +20,7 @@ import kr.or.iei.user.model.dto.User;
 import kr.or.iei.user.model.service.UserService;
 
 @RestController
-@CrossOrigin("http://localhost:5173")
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/user")
 public class UserController {
 	
@@ -174,7 +174,7 @@ public class UserController {
 		
 		
 		// 회원 정보 수정 
-		@PostMapping("/{userNo}")
+		@PatchMapping("/{userNo}")
 		public ResponseEntity<ResponseDTO> updateUser(@RequestBody User user) {
 		    ResponseDTO res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "회원 정보 수정 중, 오류가 발생하였습니다.", null, "error");
 		    
@@ -214,7 +214,7 @@ public class UserController {
 		} 
 		
 		//비밀번호 변경을 위한 체크
-		@PostMapping("/{userPw}checkPw")
+		@PostMapping("/checkPw")
 		public ResponseEntity<ResponseDTO> checkPw(@RequestBody User user){
 			ResponseDTO res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "기존 비밀번호 체크 중, 오류가 발생하였습니다.", false, "error");
 			
@@ -234,7 +234,7 @@ public class UserController {
 		
 		
 		//회원 비밀번호 변경
-		@PatchMapping("/{userPw}")
+		@PatchMapping("/updatePassword")
 		public ResponseEntity<ResponseDTO> updateUserPassword(@RequestBody User user){
 			ResponseDTO res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "비밀번호 변경 중, 오류가 발생하였습니다.", false, "error");
 			

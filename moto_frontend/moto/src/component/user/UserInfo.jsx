@@ -13,8 +13,7 @@ export default function UserInfo() {
   const axiosInstance = createInstance();
   const {loginMember, setLoginMember, setIsLogined, setAccessToken, setRefreshToken} = useUserStore();
   const userNo = loginMember.userNo;
-  const navigate = useNavigate();
-  
+  const navigate = useNavigate();  
   const [prevUserImage, setPreveUserImg] = useState();
 
   
@@ -41,16 +40,17 @@ export default function UserInfo() {
   }, []);
 
   
-
-  function chgUserInfo(e){
-    user[e.target.id] = e.target.value;
-    setUser({...user})
-  }
-
+function chgUserInfo(e) {
+  setUser(function(prevUser) {
+    return {
+      ...prevUser,
+      [e.target.id]: e.target.value, 
+    };
+  });
+}
   const profileImgEl = useRef(null);
 
   function chgProfileImg(e){
-    
      const file = e.target.files;
 
     if(file.length != 0 && file[0] != null) {
@@ -68,6 +68,22 @@ export default function UserInfo() {
     }
   }
 
+  function fetchUserData() {
+    let options = {};
+    options.url = serverUrl + "/user/" + loginMember.userNo;
+    options.method = "get";
+
+    axiosInstance(options)
+      .then(function (res) {
+        if (res.data.resData != null) {
+          setUser(res.data.resData);
+        }
+      })
+      .catch(function (err) {
+        console.error("회원 정보 요청 오류:", err);
+      });
+  }
+
   function updateUserInfo() {
     Swal.fire({
       title: "알림",
@@ -79,7 +95,7 @@ export default function UserInfo() {
     }).then(function (res) {
       if (res.isConfirmed) {
         let options = {};
-        options.url = serverUrl + "/member"; 
+        options.url = serverUrl + "/user/" + loginMember.userNo; 
         options.method = "patch"; 
         options.data = user; 
 
@@ -88,6 +104,7 @@ export default function UserInfo() {
             if (res.data.resData) {
               Swal.fire("성공", "회원 정보가 수정되었습니다.", "success");
               setLoginMember(res.data.resData);  
+               fetchUserData();
             }
           })
           .catch(function (err) {
@@ -109,7 +126,7 @@ export default function UserInfo() {
     }).then(function (res) {
       if (res.isConfirmed) {
         let options = {};
-        options.url = serverUrl + "/member/" + loginMember.user_no;
+        options.url = serverUrl + "/user/" + loginMember.userNo;
         options.method = "delete"; 
 
         axiosInstance(options)
@@ -155,7 +172,7 @@ export default function UserInfo() {
               </th>
               <td className="left">
                 <div className="input-item">
-                  <input type="text" name="userId" value={user.userId} readOnly/>
+                  <input type="text" name="userId" id="userId" value={user.userId} readOnly/>
                 </div>
               </td>
             </tr>
