@@ -10,4 +10,6 @@ public interface OAuthUserDao {
 	User findByEmail(String userEmail);
 
 	int updateUser(User existing);
+	int searchUserNo();
+	void createWallet(int userNo);
 }

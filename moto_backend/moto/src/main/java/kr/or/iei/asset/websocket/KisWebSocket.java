@@ -48,7 +48,7 @@ public class KisWebSocket extends WebSocketListener{
 	    // 실시간 방송 기능 주입
 	    @Autowired
 	    private PriceBroadcaster priceStream;
-/*	
+
 	    // 한국투자증권 클라이언트 ID(AppKey), Secret(AppSecret) 이용해서 한투 access token 발급받는 작업
 	    public String getAccessToken() {
 	        RestTemplate rt = new RestTemplate();
@@ -274,8 +274,8 @@ public class KisWebSocket extends WebSocketListener{
 	        
 	        //t.printStackTrace(); // 오류 이유 확인용.
 	    }
-	    
-	*/
+
+
 }
 
 

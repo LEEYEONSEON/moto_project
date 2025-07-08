@@ -24,7 +24,17 @@ export default function AssetList() {
   const notEnoughCash = tradeType === "BUY" && totalPrice > walletCash;
 
   const { loginMember, kakaoMember } = useUserStore();
-  const userNo = loginMember ? loginMember.userNo : null;
+
+  let userNo;
+  if(loginMember){
+    userNo = loginMember.userNo
+  }else if(kakaoMember){
+    userNo = kakaoMember.userNo
+  }else{
+    userNo = null;
+  }
+
+
 
   const serverUrl = import.meta.env.VITE_BACK_SERVER;
   const axiosInstance = createInstance();
@@ -252,7 +262,7 @@ export default function AssetList() {
     setSelectedAsset(null);
     console.log(selectedAsset.assetNo);
 
-    if(tradeType == "BUY"){
+    
         const options = {
           url: serverUrl + "/asset/insert", 
           method: "post",
@@ -268,26 +278,8 @@ export default function AssetList() {
         axiosInstance(options)
           .then(function (res) {
             
-            
           })
-      }else if(tradeType == "SELL"){
-        const options = {
-          url: serverUrl + "/asset/update", 
-          method: "patch",
-          data: {
-            userNo: userNo,
-            tradeType: tradeType,
-            amount: amount,
-            currentPrice: selectedAsset.currentPrice,
-            assetNo : selectedAsset.assetNo
-          },
-        };
     
-        axiosInstance(options)
-          .then(function (res) {
-            
-          })
-      }
     }
 
 
@@ -444,7 +436,7 @@ export default function AssetList() {
               {notEnoughCash && <p style={{ color: "red" }}>보유 현금이 부족합니다.</p>}
 
               <button onClick={handleTradeSubmit} disabled={notEnoughCash}>
-                {tradeType === "buy" ? "매수" : "매도"} 실행
+                {tradeType === "BUY" ? "매수" : "매도"} 실행
               </button>
               <button
                 onClick={function () {

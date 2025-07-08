@@ -19,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 import kr.or.iei.common.oauth.dto.OAuthTokenResponse;
 import kr.or.iei.common.oauth.model.dao.OAuthUserDao;
 import kr.or.iei.user.model.dto.User;
+import kr.or.iei.wallet.model.dao.WalletDao;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,6 +38,9 @@ public class KakaoOAuthService implements OAuthService {
     
     @Autowired
     private OAuthUserDao userDao;
+    
+    @Autowired
+    private WalletDao walletDao;
     
     private final RestTemplate rest = new RestTemplate();
     
@@ -202,9 +206,13 @@ public class KakaoOAuthService implements OAuthService {
         } else {
         	//기존 정보가 없다면 회원가입(id, 닉네임, 이메일 저장 
         	//이메일로 회원정보를 다시 가져와 반환한다. 
+        	int userNo = userDao.searchUserNo();
+        	kakaoUser.setUserNo(userNo); 
             result = userDao.insertUser(kakaoUser);
             if(result == 0) return null;
-           
+            if(result > 0) {
+            	walletDao.createWallet(kakaoUser.getUserNo());
+            }
             return userDao.findByEmail(kakaoUser.getUserEmail());
         }
     }

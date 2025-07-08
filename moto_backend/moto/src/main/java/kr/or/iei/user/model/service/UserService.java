@@ -1,5 +1,7 @@
 package kr.or.iei.user.model.service;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -80,6 +82,10 @@ public class UserService {
 			//평문 != 암호화 비밀번호(일치하지 않은 경우)
 			return null;			
 		}
+	}
+	public ArrayList<User> selectAllList() {
+		
+		return dao.selectAllList();
 	}
 	
 	
