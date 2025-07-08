@@ -1,22 +1,15 @@
-//asset API 호출 함수
-import { useEffect, useState } from 'react';
-import { getAsset } from '../../utils/api';
-import './asset.css';
-import { Link, useNavigate } from 'react-router-dom';
-
-import createInstance from '../../axios/Interceptor';
-import useUserStore from '../../store/useUserStore';
-import Swal from 'sweetalert2';
+import { useEffect, useState } from "react";
+import '../../component/asset/asset.css'
+import { Link, useNavigate } from "react-router-dom";
+import createInstance from "../../axios/Interceptor";
+import useUserStore from "../../store/useUserStore";
+import Swal from "sweetalert2";
 import useWsStore from "../../store/useWsStore";
 
-export default function AssetList() {
- 
-    const [assetList, setAssetList] = useState([]); //서버에서 받아온 자산 목록
-    const [loading, setLoading] = useState(true); //로딩 중 표시
-    const [error, setError] = useState(null); //에러메시지
-    const serverUrl = import.meta.env.VITE_BACK_SERVER;
-
-    //웹 소켓 사용해서 KIS 한국 투자증권 시세 연결 시작 하기 위한 용도 == 한번만 실행되도록 Zustand 로 wsStarted 상태 관리
+//워치리스트 리스트
+export default function Watchlist() {
+    
+    //웹 소켓 사용해서 KIS 한국 투자증권 시세 연결 시작 하기 위한 용도 == asset 재사용 해봄. == 한번만 실행되도록 Zustand 로 wsStarted 상태 관리
     const { wsStarted, setWsStarted } = useWsStore();
 
         useEffect(function () {
@@ -32,35 +25,75 @@ export default function AssetList() {
             });
         }
     }, []);
+        
+        
+    const [watchlist, setWatchlist] = useState([]); //서버에서 받아온 즐겨찾기 목록 
+    const [watchlistCode, setWatchlistCode] = useState([]); //즐겨찾기 토글 위한, 종목별 코드 리스트.
+    const [loading, setLoading] = useState(true); //로딩 중 표시
+    const [error, setError] = useState(null); //에러 메시지
 
-    useEffect(function() { //자산목록 처음 렌더링시에만 필요하기때문에 useEffect 사용.
+    const serverUrl = import.meta.env.VITE_BACK_SERVER;
 
-            getAsset() //api.js 에 선언된 axiosInstance getAsset() 자산리스트를 받아옴. 
-                .then(function(res) { 
-                    //console.log(res); //객체리스트 반환받음.
+    const axiosInstance = createInstance();
 
-                    const updatedAssetList = res.map(function(asset) {
-                        return {
-                            ...asset,
-                            currentPrice: 0, //나중에 EventSource 로 받아올 새로운 값으로 리랜더링 되기 이전, 초기값 세팅.
-                            priceChange: 0,
-                            priceChangeRate: 0,
-                            low52: asset.low52,
-                            high52: asset.high52
-                        };
-                    });
+    const {loginMember, kakaoMember} = useUserStore(); //userNo 가져오기
+    const navigate = useNavigate();
+    let member = null;
+    
+    if(loginMember != null){
+        member = loginMember;
+    }else if(kakaoMember != null){
+        member = kakaoMember;
+    }
 
-                    setAssetList(updatedAssetList); 
-                    setLoading(false);
-                })  
-                .catch(function(err) { 
-                    setError(err.message);
-                    setLoading(false); 
+    //워치리스트 목록 조회 == 처음 랜더링 시에만 필요 (불러올 항목, assetCode, assetName, high_52, low_52)
+    useEffect(function() {
+         
+        if (member != null) { // 로그인 되어 있을 때만 요청
+            let userNo = member.userNo;
+            
+            let options = {
+                url: serverUrl + "/watchlist/" + userNo, // ← userNo path로 전달
+                method: "get"
+            }
+            
+            axiosInstance(options) 
+            .then(function(res) {
+                if (res.data.resData!=null) {
+
+                const assetList = res.data.resData;
+
+                const updatedAssetList = assetList.map(function(asset) {
+                    return {
+                        ...asset,
+                        currentPrice: 0, //나중에 EventSource 로 받아올 새로운 값으로 리랜더링 되기 이전, 초기값 세팅.
+                        priceChange: 0,
+                        priceChangeRate: 0,
+                        low52: asset.low52,
+                        high52: asset.high52
+                    };
                 });
-            }, []);
+                setWatchlist(updatedAssetList); // ← 리스트 저장
+                
+                const newWatchlistCode = assetList.map(function(item, index) {
+                    return item.assetCode;
+                });
+                
+                setWatchlistCode(newWatchlistCode);
+                }
 
-        //실시간 구독 == 이벤트 리스너 : 실시간으로 종목별 가격을 불러오기위해 EventSource 사용
-        useEffect(function() {
+                setLoading(false);
+            })
+            .catch(function(err) {
+                console.error("워치리스트 조회 실패", err);
+                setLoading(false);
+            });
+        }
+    }, []);
+
+
+    //실시간 구독 == 이벤트 리스너 : 실시간으로 종목별 가격을 불러오기위해 EventSource 사용
+    useEffect(function() {
 
         const eventSource = new EventSource(serverUrl + "/asset/price-stream");
 
@@ -78,7 +111,7 @@ export default function AssetList() {
                 //ping 같은 이벤트 무시
                 if (!priceData.assetCode || priceData.currentPrice == null) return;
                 
-                setAssetList(function(prevList) { //여기서 prevList는 선언 없이, React가 알아서 최신 상태값을 전달해주는 함수 인자
+                setWatchlist(function(prevList) { //여기서 prevList는 선언 없이, React가 알아서 최신 상태값을 전달해주는 함수 인자
                     return prevList.map(function(asset) {
                        if (asset.assetCode === priceData.assetCode) {
                             return {
@@ -106,67 +139,19 @@ export default function AssetList() {
 
     return hour < 9 || (hour === 15 && minute > 30) || hour > 15;
     }   
-        
-    //워치리스트/즐겨찾기에 추가
-    const [watchlist, setWatchlist] = useState([]); // 즐겨찾기 종목코드 리스트
-    //여기서 prevList 는 워치리스트의 최신 상태! == prevList는 React가 보장해주는 최신 상태
-    const axiosInstance = createInstance();
-
-    const {loginMember, kakaoMember} = useUserStore(); //userNo 가져오기
-    const navigate = useNavigate();
-    let member = null;
     
-    if(loginMember != null){
-        member = loginMember;
-    }else if(kakaoMember != null){
-        member = kakaoMember;
-    }
-
-
-
-    //워치리스트 조회
-    useEffect(function() {
-         
-        if (member != null) { // 로그인 되어 있을 때만 요청
-            let userNo = member.userNo;
-            
-            let options = {
-                url: serverUrl + "/watchlist/" + userNo, // ← userNo path로 전달
-                method: "get"
-            }
-            
-
-
-            axiosInstance(options) 
-            .then(function(res) {
-
-                const assetList = res.data.resData;
-                //console.log("watchlist 응답", res.data.resData);
-                if (res.data.resData != null) {
-                    const newWatchlist = (assetList.map(function(item, index) {
-                        return item.assetCode;
-                    }))
-                
-                    setWatchlist(newWatchlist); // ← 리스트 저장
-                }
-
-
-
-
-            })
-            .catch(function(err) {
-                console.error("워치리스트 조회 실패", err);
-            });
-        }
-    }, [member]); 
     
 
 
 
 
 
+
+
+
+    //즐겨찾기 토글
     function handleToggleWatchlist(assetCode) {
-        
+            
         if(member == null) {
         //로그인 하지 않은 회원인 경우
             Swal.fire({
@@ -181,57 +166,42 @@ export default function AssetList() {
         }else {
         //로그인한 회원일경우.
             let userNo = member.userNo;
-
-            if (watchlist.includes(assetCode)) {
-                
-                let options = {
-                    url: serverUrl + "/watchlist",
-                    method: "delete",
-                    params: { // <-- delete는 data 대신 params 사용해야 함!!
-                        userNo: userNo,
-                        assetCode: assetCode
-                    }
+            let options = {
+                url: serverUrl + "/watchlist",
+                method: "delete",
+                params: { // <-- delete는 data 대신 params 사용해야 함!!
+                    userNo: userNo,
+                    assetCode: assetCode
                 }
-
-                    axiosInstance(options)// 즐겨찾기 제거 요청
-                    .then(function(res) {
-                        setWatchlist(function(prevList) {
-                            return prevList.filter(function(code) { // 기존 종목코드 배열(prevList)에서 code 들과 제거 대상(assetCode)를 비교하여, 제거 대상 assetCode 만 필터링해서 나머지만 반환.
-                                return code !== assetCode;
-                            });
-                        });
-                    })    
-
-            } else {
-
-                let options = {
-                    url: serverUrl + "/watchlist",
-                    method: "post",
-                    data: {
-                        userNo: userNo,
-                        assetCode: assetCode
-                    }
-                }
-
-                axiosInstance(options) // 즐겨찾기 추가 요청
-                .then(function(res) {
-                    setWatchlist(function(prevList) {
-                        return [...prevList, assetCode]; //기존 배열에 새 종목 코드 추가
-                    });
-                })
             }
+
+            axiosInstance(options)// 즐겨찾기 제거 요청
+            .then(function(res) {
+                setWatchlist(function(prevList) {
+                    return prevList.filter(function(asset) { // 기존 종목코드 배열(prevList)에서 code 들과 제거 대상(assetCode)를 비교하여, 제거 대상 assetCode 만 필터링해서 나머지만 반환.
+                        return asset.assetCode !== assetCode;
+                    });
+                });
+            })    
+
+        
         }
 
 
             
         }
 
-
-
-    return(
+    return (
         <>
+
+        {watchlist.length === 0 ? (
+            <section className="section asset-list">
+            <div className="page-title">워치리스트</div>
+            <p>등록된 워치리스트가 없습니다.</p>
+            </section>
+        ) : (
         <section className="section asset-list">
-            <div className="page-title">종목리스트</div>
+            <div className="page-title">워치리스트</div>
         
         {
         loading
@@ -251,7 +221,7 @@ export default function AssetList() {
                     </tr>
                 </thead>
                 <tbody>
-                {assetList.map(function(asset, index) {
+                {watchlist.map(function(asset, index) {
 
 
 
@@ -265,7 +235,7 @@ export default function AssetList() {
                                     handleToggleWatchlist(asset.assetCode); // <-- 클릭 시 토글
                                 }}
                                 >
-                                {watchlist.includes(String(asset.assetCode)) ? "★" : "☆"}  {/* <-- 즐겨찾기 여부에 따라 별 모양 변경 */}
+                                {watchlistCode.includes(String(asset.assetCode)) ? "★" : "☆"}  {/* <-- 즐겨찾기 여부에 따라 별 모양 변경 */}
                             </span>
 
                         </td>
@@ -327,9 +297,16 @@ export default function AssetList() {
                 </tbody>
             </table>
             )
+            
         }
-        </section>
-        </>
         
+        </section>
+        )}
+        </>
+
+
+
     )
+
+
 }
