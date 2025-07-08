@@ -241,7 +241,7 @@ export default function AssetList() {
         }
 
 
-  }
+  
 
   // 거래 요청 함수 (컴포넌트 내부에 선언)
   function handleTradeSubmit(e) {
@@ -457,6 +457,7 @@ export default function AssetList() {
       </section>
     
     </>
-  )
+  );
 
 
+}

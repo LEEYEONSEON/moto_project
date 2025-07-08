@@ -28,7 +28,7 @@ function App() {
       <Route path='/join' element={<Join />} />
       <Route path='/login' element={<Login/>} />
       <Route path='/kakaoLogout' element={<KakaoLogout />} />
-      <Route path="/asset" element={<AssetPage />} />
+      <Route path="/asset/*" element={<AssetPage />} />
       <Route path='/wallet' element={<WalletInfo/>} />
       <Route path="/watchlist/*" element={<WatchlistPage />} />
       </Routes>
