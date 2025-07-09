@@ -73,9 +73,35 @@
 	 where user_id = #{_parameter}
 	</select>
 	
+	<!-- 회원 정보 수정 -->
+	<update id="updateUserInfo"
+	parameterType="User">
+	update tbl_user
+		set user_nickname = #{userNickname},
+			user_email = #{userEmail},
+			user_role = #{userRole},
+			user_profile_img = #{userProfileImg}
+			where user_no = #{userNo}
+	</update>
+	
+	<!-- 회원 탈퇴 -->
+	<delete id="deleteUser"
+	parameterType="int">
+	delete from tbl_user where user_no = #{_parameter}
+	</delete>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="updateUserPassword"
+	parameterType="User">
+	update tbl_user
+		set user_password = #{userPassword}
+	  where user_id	= #{userId}
+	</update>
+	
 	<select id="selectCurrUserNo" resultType="int">
 		SELECT seq_user_no.CURRVAL FROM dual
 	</select>
+
 
 	<!-- 회원 정보 전체 조회 -->
 	<select id="selectAllList"
@@ -89,6 +115,34 @@
 		   user_Join_date as userJoinDate,
 		   user_social_type as userSocialType
 		from tbl_user
-	
 	</select>
+	
+	  <!-- 특정 사용자 정보 조회 -->
+  <select id="searchUserInfo" 
+    parameterType="int"
+    resultType="User">
+    select user_no as userNo,
+           user_id as userId,
+           user_nickname as userNickname,
+           user_email as userEmail,
+           user_password as userPassword,
+           user_role as userRole,
+           user_join_date as userJoinDate,
+           user_post_like_count as userPostLikeCount,
+           user_comment_like_count as userCommentLikeCount,
+           user_sanction_count as userSanctionCount,
+           user_social_type as userSocialType,
+           user_profile_img as userProfileImg
+    from tbl_user
+    where user_no = #{userNo}
+  </select>
+
+ <!-- 프로필 이미지 업데이트 -->
+  <update id="updateUserProfileImage"
+          parameterType="User">
+    update tbl_user
+    set user_profile_img = #{userProfileImg}  <!-- userProfileImg를 사용 -->
+    where user_no = #{userNo}  <!-- userNo로 조건 설정 -->
+  </update>
+
 </mapper>

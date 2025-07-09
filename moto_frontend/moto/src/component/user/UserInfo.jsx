@@ -53,20 +53,28 @@ function chgUserInfo(e) {
   function chgProfileImg(e){
      const file = e.target.files;
 
-    if(file.length != 0 && file[0] != null) {
-      user[user.userProfileImg] = file[0];
-      
-      const reader = new FileReader();    //브라우저에서 파일을 비동기적으로 읽을 수 있게 해주는 객체
-            reader.readAsDataURL(file[0]);     //파일 데이터 읽어오기
-            reader.onloadend = function(){       //모두 읽어오면, 실행할 함수 작성
-                setPreveUserImg(reader.result);     //미리보기용 State 변수에 세팅
-            }
-            console.log(user);
-    }else{
-      user[user.userProfileImg]= null;
-      setPreveUserImg(null);
-    }
+  if (file.length != 0 && file[0] != null) {
+    const reader = new FileReader();
+    reader.readAsDataURL(file[0]);
+    reader.onloadend = function() {
+      setPreveUserImg(reader.result);  
+      setUser(function(prevUser) {
+        return {
+          ...prevUser,
+          userProfileImg: file[0]  
+        };
+      });
+    };
+  } else {
+    setPreveUserImg(null);
+    setUser(function(prevUser) {
+      return {
+        ...prevUser,
+        userProfileImg: null  
+      };
+    });
   }
+}
 
   function fetchUserData() {
     let options = {};
@@ -91,24 +99,42 @@ function chgUserInfo(e) {
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "수정하기",
-      cancelButtonText: "취소"
+      cancelButtonText: "취소",
     }).then(function (res) {
       if (res.isConfirmed) {
-        let options = {};
-        options.url = serverUrl + "/user/" + loginMember.userNo; 
-        options.method = "patch"; 
-        options.data = user; 
+     
+        axiosInstance
+          .patch(`${serverUrl}/user/${user.userNo}`, {
+            userNo: user.userNo,
+            userNickname: user.userNickname,
+            userEmail: user.userEmail,
+            userRole: user.userRole,
+          })
+          .then(function () {
+            console.log("기본 정보 수정 완료");
 
-        axiosInstance(options)
-          .then(function (res) {
-            if (res.data.resData) {
+            if (user.userProfileImg && user.userProfileImg instanceof File) {
+        
+              const formData = new FormData();
+              formData.append("userProfileImg", user.userProfileImg);
+              axiosInstance
+                .patch(`${serverUrl}/user/updateProfileImage/${user.userNo}`, formData)
+                .then(function () {
+                  console.log("프로필 이미지 수정 완료");
+                  Swal.fire("성공", "회원 정보가 수정되었습니다.", "success");
+                  fetchUserData();
+                })
+                .catch(function (imgErr) {
+                  console.error("이미지 수정 오류:", imgErr);
+                  Swal.fire("오류", "프로필 이미지 수정 중 오류가 발생했습니다.", "error");
+                });
+            } else {
               Swal.fire("성공", "회원 정보가 수정되었습니다.", "success");
-              setLoginMember(res.data.resData);  
-               fetchUserData();
+              fetchUserData();
             }
           })
-          .catch(function (err) {
-            console.error(err);
+          .catch(function (err1) {
+            console.error("기본 정보 수정 오류:", err1);
             Swal.fire("오류", "회원 정보 수정 중 오류가 발생했습니다.", "error");
           });
       }
@@ -172,7 +198,7 @@ function chgUserInfo(e) {
               </th>
               <td className="left">
                 <div className="input-item">
-                  <input type="text" name="userId" id="userId" value={user.userId} readOnly/>
+                  <input type="text" name="userId" id="userId"  value={user.userId || ""} readOnly/>
                 </div>
               </td>
             </tr>
@@ -182,7 +208,7 @@ function chgUserInfo(e) {
               </th>
               <td className="left">
                 <div className="input-item">
-                  <input type="text" name="userNickname" id="userNickname" value={user.userNickname} onChange={chgUserInfo}/>
+                  <input type="text" name="userNickname" id="userNickname"  value={user.userNickname || ""} onChange={chgUserInfo}/>
                 </div>
               </td>
             </tr>
@@ -192,7 +218,7 @@ function chgUserInfo(e) {
               </th>
               <td className="left">
                 <div className="input-item">
-                    <input type="text" name="userEmail" id="userEmail" value={user.userEmail} onChange={chgUserInfo}/>
+                    <input type="text" name="userEmail" id="userEmail" value={user.userEmail || ""} onChange={chgUserInfo}/>
                 </div>
               </td>
             </tr>
@@ -203,7 +229,7 @@ function chgUserInfo(e) {
               </th>
               <td className="left">
                 <div className="input-item">
-                    <input type="text" name="userRole" id="userRole" value={user.userRole} readOnly/>
+                    <input type="text" name="userRole" id="userRole"  value={user.userRole ?? ""} readOnly/>
                 </div>
               </td>
             </tr>

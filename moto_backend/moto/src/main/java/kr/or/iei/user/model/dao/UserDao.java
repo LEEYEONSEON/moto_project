@@ -31,6 +31,10 @@ public interface UserDao {
 
 	int deleteUser(int userNo);
 
+	int updateProfileImage(int userNo, String filePath);
+
+	int updateUserProfileImage(User user);
+
 	
 	
 
