@@ -91,15 +91,12 @@ public class WatchlistController {
 	    
 	    try {
 	    	List<Watchlist> list = service.selectWatchlistByUserNo(userNo); // <-- 유저 번호로 종목 코드 목록 조회
-
-	        if(!list.isEmpty()) {
+	    	
 	            res = new ResponseDTO(HttpStatus.OK, "", list, "success");
-	        }else {
-	        	res = new ResponseDTO(HttpStatus.OK, "", false, "error");
-	        }
 	        
 	    } catch (Exception e) {
 	        e.printStackTrace();
+	        res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "조회 중 오류 발생", false, "error");
 	    }
 
 	    return new ResponseEntity<>(res, res.getHttpStatus());
