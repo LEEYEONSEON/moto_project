@@ -17,10 +17,8 @@ export default function UserList(props) {
 
   // axios 인터셉터 인스턴스 생성 (API 요청용)
   const axiosInstance = createInstance();
-
   // ag-Grid API 접근을 위한 ref 생성
   const gridRef = useRef(null);
-
   // 변경된 행(회원)만 따로 저장하는 상태 (처음엔 빈 배열)
   const [updatedRows, setUpdatedRows] = useState([]);
 
@@ -46,7 +44,7 @@ export default function UserList(props) {
   {
     headerName: "회원등급",
     field: "userRole",
-    editable: true, // ✅ 여기만 true
+    editable: true, 
     cellEditor: 'agSelectCellEditor',
     cellEditorParams: {
       values: ['1', '2', '3']
@@ -70,7 +68,7 @@ export default function UserList(props) {
 
   // 셀 값 변경 이벤트 핸들러
   function onCellValueChanged(e) {
-    
+
     // 변경된 컬럼이 userRole(회원등급)인지 확인
     if(e.colDef.field == 'userRole') {
       const changedUser = e.data; // 변경된 행 데이터
