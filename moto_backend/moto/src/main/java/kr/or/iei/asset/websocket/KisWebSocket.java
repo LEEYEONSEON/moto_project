@@ -27,7 +27,7 @@ import okhttp3.WebSocketListener;
 
 @Component
 public class KisWebSocket extends WebSocketListener{
-	
+
 		private final ObjectMapper objectMapper = new ObjectMapper();
 		private WebSocket webSocket;
 		 
@@ -85,9 +85,15 @@ public class KisWebSocket extends WebSocketListener{
 	        HttpHeaders headers = new HttpHeaders();
 	        headers.setContentType(MediaType.APPLICATION_JSON);
 	        
+	        
 	        String accessToken = getAccessToken();
 	        
-	        headers.add("authorization", "Bearer " + accessToken);
+	        if (accessToken == null || accessToken.isEmpty()) {
+	            System.out.println("accessToken 발급 안됨.");
+	            return null;
+	        }
+	        	
+	        
 	
 	        Map<String, String> requestBody = new HashMap<>();
 	        
@@ -109,6 +115,7 @@ public class KisWebSocket extends WebSocketListener{
 	        }
 	
 	        return response.getBody().get("approval_key").toString();
+	    
 	    }
 	    
 	    public void connectAndSend() {
@@ -275,6 +282,7 @@ public class KisWebSocket extends WebSocketListener{
 	        //t.printStackTrace(); // 오류 이유 확인용.
 	    }
 
+	
 
 }
 

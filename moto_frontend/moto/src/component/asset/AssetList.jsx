@@ -24,8 +24,8 @@ export default function AssetList() {
   const notEnoughCash = tradeType === "BUY" && totalPrice > walletCash;
 
   const { loginMember, kakaoMember } = useUserStore();
-
   let userNo;
+  
   if(loginMember){
     userNo = loginMember.userNo
   }else if(kakaoMember){
@@ -282,7 +282,6 @@ export default function AssetList() {
     
     }
 
-
   return (
 
       <section className="section asset-list">
@@ -337,20 +336,26 @@ export default function AssetList() {
                             className="range-fill"
                             style={{
                               width:
-                                ((asset.currentPrice - asset.low52) /
-                                  (asset.high52 - asset.low52)) *
-                                  100 +
-                                "%",
-                            }}
-                          ></div>
+
+                              
+                                asset.currentPrice < asset.low52 
+                                ? "0%" 
+                                :asset.currentPrice > asset.high52 
+                                ? "100%"
+                                :
+                                ((asset.currentPrice - asset.low52) / (asset.high52 - asset.low52)) * 100 + "%"
+                                }}>
+                                
+                          </div>
                           <div
                             className="range-indicator"
                             style={{
                               left:
-                                ((asset.currentPrice - asset.low52) /
-                                  (asset.high52 - asset.low52)) *
-                                  100 +
-                                "%",
+                                asset.currentPrice < asset.low52 
+                                ? "0%" 
+                                :asset.currentPrice > asset.high52 
+                                ? "100%"
+                                : ((asset.currentPrice - asset.low52) / (asset.high52 - asset.low52)) * 100 + "%",
                             }}
                           >
                             ▲

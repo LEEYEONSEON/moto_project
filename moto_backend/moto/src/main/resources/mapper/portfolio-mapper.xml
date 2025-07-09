@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.or.iei.portfolio.model.dao.PortfolioDao">
+
+
+<select id="getPortfolioByUserNo" parameterType="string" resultType="kr.or.iei.portfolio.model.dto.Portfolio">
+	SELECT 
+	  a.asset_no as assetNo,
+	  a.asset_code as assetCode,
+	  a.asset_name as assetName,
+	  
+	  SUM(CASE WHEN t.trade_type = 'BUY' THEN t.trade_quantity ELSE 0 END) -
+	  SUM(CASE WHEN t.trade_type = 'SELL' THEN t.trade_quantity ELSE 0 END) as quantity,
+	
+	
+	  CASE 
+      WHEN SUM(CASE WHEN t.trade_type = 'BUY' THEN t.trade_quantity ELSE 0 END) = 0 
+      THEN 0
+      ELSE
+        SUM(CASE WHEN t.trade_type = 'BUY' THEN t.trade_quantity * t.trade_price ELSE 0 END) /
+        SUM(CASE WHEN t.trade_type = 'BUY' THEN t.trade_quantity ELSE 0 END)
+      END AS avgBuyPrice
+    
+    	
+	FROM tbl_trade t
+	JOIN tbl_asset a ON t.asset_no = a.asset_no
+	WHERE t.user_no = #{_parameter}
+	GROUP BY a.asset_no, a.asset_code, a.asset_name
+	HAVING 
+	  SUM(CASE WHEN t.trade_type = 'BUY' THEN t.trade_quantity ELSE 0 END) -
+	  SUM(CASE WHEN t.trade_type = 'SELL' THEN t.trade_quantity ELSE 0 END) > 0
+</select>
+
+
+
+
+</mapper>
