@@ -88,43 +88,50 @@ public class UserService {
 		}
 	}
 
-
-	public int updateUserInfo(User user) {
-		return dao.updateUserInfo(user);
-	}
-
-	public int updateUserPassword(User user) {
-		return dao.updateUserPassword(user);
-	}
-
-	public User getUserProfile(String userId) {
-		return dao.getUserProfile(userId);
-	}
 	public User searchUserInfo(int userNo) {
 		User user = dao.searchUserInfo(userNo);
 		user.setUserPassword(null);
 		return user; 	
 	}	
+
+	public int updateUserInfo(User user) {
+		return dao.updateUserInfo(user);
+	}
 	
+	public int updateUserProfileImage(int userNo, String imageUrl) {
+		// User 객체를 이용해 DB에 프로필 이미지 URL을 업데이트하는 작업
+		User user = new User();
+		user.setUserNo(userNo);
+		user.setUserProfileImg(imageUrl);  // userProfileImg 필드를 사용
+		return dao.updateUserProfileImage(user);  
+	}
+	
+	public User getUserProfile(String userId) {
+		return dao.getUserProfile(userId);
+	}
+	
+	@Transactional
+	public int deleteUser(int userNo) {
+		return dao.deleteUser(userNo);
+	}
+	@Transactional
 	public boolean checkUserPassword(User user) {
 		User u = dao.searchUserInfo(user.getUserNo());
 		return encoder.matches(user.getUserPassword(), u.getUserPassword());
 	}
-	public int deleteUser(int userNo) {
-		return dao.deleteUser(userNo);
+
+	@Transactional
+	public int updateUserPassword(User user) {
+		
+		String encodePw = encoder.encode(user.getUserPassword());
+		user.setUserPassword(encodePw);
+		
+		return dao.updateUserPassword(user);
 	}
 
+	
 	public ArrayList<User> selectAllList() {
 		return dao.selectAllList();
 
 	}
-	public int updateUserProfileImage(int userNo, String imageUrl) {
-	    // User 객체를 이용해 DB에 프로필 이미지 URL을 업데이트하는 작업
-	    User user = new User();
-	    user.setUserNo(userNo);
-	    user.setUserProfileImg(imageUrl);  // userProfileImg 필드를 사용
-
-	    return dao.updateUserProfileImage(user);  // UserDAO에서 업데이트
-	}
-	
 }

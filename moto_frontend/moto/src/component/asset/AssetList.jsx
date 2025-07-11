@@ -282,6 +282,8 @@ export default function AssetList() {
     
     }
 
+
+    console.log(assetList)
   return (
 
       <section className="section asset-list">

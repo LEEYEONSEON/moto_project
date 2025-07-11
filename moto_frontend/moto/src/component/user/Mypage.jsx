@@ -9,7 +9,7 @@ export default function Mypage() {
   const navigate = useNavigate();
 
   const [menuList, setMenuList] = useState([
-    { url: '/pwChg', text: '비밀번호 변경' },
+    { url: '/pwChg', text: '비밀번호 변경' }, 
   ]);
 
   // 관리자 메뉴 추가
@@ -24,7 +24,7 @@ export default function Mypage() {
   // 로그인 상태에 따라 메인 페이지 이동
   useEffect(function () {
     if (loginMember) {
-      navigate('/users/me/info');  // 로그인한 상태에서 info 페이지로 리다이렉트
+      navigate('/users/me/info');  // 로그인 후 기본 경로로 이동
     }
   }, [loginMember, navigate]);
 
@@ -44,8 +44,7 @@ export default function Mypage() {
                 <li
                   key={idx}
                   onClick={function() {
-                    console.log("Navigating to:", `/users/me${menu.url}`);
-                    navigate(`/users/me${menu.url}`);
+                    navigate(menu.url); 
                   }}
                 >
                   {menu.text}
@@ -58,7 +57,7 @@ export default function Mypage() {
       <div className="mypage-content">
         <Routes>
           <Route path="info" element={<UserInfo />} />
-          <Route path="pwChg" element={<UserEditForm />} />
+          <Route path="pwChg" element={<UserEditForm />} /> {/* 비밀번호 변경 페이지 처리 */}
         </Routes>
       </div>
     </div>

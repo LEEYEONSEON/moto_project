@@ -11,7 +11,10 @@ import WatchlistPage from './component/watchlist/WatchlistPage';
 import WalletInfo from './component/wallet/WalletInfo';
 import KakaoLogout from './component/common/KakaoLogout';
 import AdminMainPage from './component/admin/AdminMainPage';
+import MyPage from './component/user/Mypage';
+import UserEditForm from './component/user/UserEditForm';
 import PortfolioPage from './component/portfolio/PortfolioPage';
+
 
 
 
@@ -34,10 +37,11 @@ function App() {
       <Route path='/wallet' element={<WalletInfo/>} />
       <Route path='/admin' element={<AdminMainPage />} />
       <Route path="/watchlist/*" element={<WatchlistPage />} />
+      <Route path="/users/me/*" element={<MyPage />} />
+      <Route path="pwChg" element={<UserEditForm />} />
       <Route path="/portfolio/*" element={<PortfolioPage />} />
       </Routes>
       </main>
-
       <Footer/>
     </div>
   );

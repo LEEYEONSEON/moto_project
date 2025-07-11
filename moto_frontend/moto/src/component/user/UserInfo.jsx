@@ -6,30 +6,40 @@ import { useNavigate } from "react-router-dom";
 
 export default function UserInfo() {
   const [user, setUser] = useState({
-    userNo : 0, userId : "", userNickname : "", userEmail : "", userRole : 2, userProfileImg : ""
-  })
+    userNo: 0,
+    userId: "",
+    userNickname: "",
+    userEmail: "",
+    userRole: 2,
+    userProfileImg: ""
+  });
 
   const serverUrl = import.meta.env.VITE_BACK_SERVER;
   const axiosInstance = createInstance();
-  const {loginMember, setLoginMember, setIsLogined, setAccessToken, setRefreshToken} = useUserStore();
-  const userNo = loginMember.userNo;
-  const navigate = useNavigate();  
-  const [prevUserImage, setPreveUserImg] = useState();
-
+  const {
+    loginMember,
+    setLoginMember,
+    setIsLogined,
+    setAccessToken,
+    setRefreshToken
+  } = useUserStore();
   
+  const navigate = useNavigate();
+  const [prevUserImage, setPreveUserImg] = useState();
+  const profileImgEl = useRef(null);
+
   useEffect(function () {
     if (!loginMember || !loginMember.userNo) {
       console.log("로그인 정보가 없거나 user_no가 없습니다.");
       return;
     }
-    console.log(userNo);
+
     let options = {};
-    options.url = serverUrl + "/user/" + loginMember.userNo; 
-    options.method = "get"; 
+    options.url = serverUrl + "/user/" + loginMember.userNo;
+    options.method = "get";
 
     axiosInstance(options)
       .then(function (res) {
-        //res.data.resData => user 객체 (모든 정보가 있는)
         if (res.data.resData != null) {
           setUser(res.data.resData);
         }
@@ -39,42 +49,39 @@ export default function UserInfo() {
       });
   }, []);
 
-  
-function chgUserInfo(e) {
-  setUser(function(prevUser) {
-    return {
-      ...prevUser,
-      [e.target.id]: e.target.value, 
-    };
-  });
-}
-  const profileImgEl = useRef(null);
-
-  function chgProfileImg(e){
-     const file = e.target.files;
-
-  if (file.length != 0 && file[0] != null) {
-    const reader = new FileReader();
-    reader.readAsDataURL(file[0]);
-    reader.onloadend = function() {
-      setPreveUserImg(reader.result);  
-      setUser(function(prevUser) {
-        return {
-          ...prevUser,
-          userProfileImg: file[0]  
-        };
-      });
-    };
-  } else {
-    setPreveUserImg(null);
-    setUser(function(prevUser) {
+  function chgUserInfo(e) {
+    setUser(function (prevUser) {
       return {
         ...prevUser,
-        userProfileImg: null  
+        [e.target.id]: e.target.value
       };
     });
   }
-}
+
+  function chgProfileImg(e) {
+    const file = e.target.files;
+    if (file.length != 0 && file[0] != null) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file[0]);
+      reader.onloadend = function () {
+        setPreveUserImg(reader.result); // 🔧 수정됨
+        setUser(function (prevUser) {
+          return {
+            ...prevUser,
+            userProfileImg: file[0] // ✅ 변경된 로직: File 객체 저장
+          };
+        });
+      };
+    } else {
+      setPreveUserImg(null);
+      setUser(function (prevUser) {
+        return {
+          ...prevUser,
+          userProfileImg: null
+        };
+      });
+    }
+  }
 
   function fetchUserData() {
     let options = {};
@@ -85,6 +92,7 @@ function chgUserInfo(e) {
       .then(function (res) {
         if (res.data.resData != null) {
           setUser(res.data.resData);
+          setLoginMember(res.data.resData); 
         }
       })
       .catch(function (err) {
@@ -99,30 +107,31 @@ function chgUserInfo(e) {
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "수정하기",
-      cancelButtonText: "취소",
+      cancelButtonText: "취소"
     }).then(function (res) {
       if (res.isConfirmed) {
-     
         axiosInstance
-          .patch(`${serverUrl}/user/${user.userNo}`, {
+          .patch(serverUrl + "/user/" + user.userNo, {
             userNo: user.userNo,
             userNickname: user.userNickname,
             userEmail: user.userEmail,
-            userRole: user.userRole,
+            userRole: user.userRole
           })
           .then(function () {
             console.log("기본 정보 수정 완료");
 
+          
             if (user.userProfileImg && user.userProfileImg instanceof File) {
-        
               const formData = new FormData();
               formData.append("userProfileImg", user.userProfileImg);
+
               axiosInstance
-                .patch(`${serverUrl}/user/updateProfileImage/${user.userNo}`, formData)
+                .patch(serverUrl + "/user/updateProfileImage/" + user.userNo, formData)
                 .then(function () {
                   console.log("프로필 이미지 수정 완료");
                   Swal.fire("성공", "회원 정보가 수정되었습니다.", "success");
-                  fetchUserData();
+                  fetchUserData(); 
+                  setPreveUserImg(null);
                 })
                 .catch(function (imgErr) {
                   console.error("이미지 수정 오류:", imgErr);
@@ -130,7 +139,7 @@ function chgUserInfo(e) {
                 });
             } else {
               Swal.fire("성공", "회원 정보가 수정되었습니다.", "success");
-              fetchUserData();
+              fetchUserData(); 
             }
           })
           .catch(function (err1) {
@@ -141,7 +150,31 @@ function chgUserInfo(e) {
     });
   }
 
-  function deleteUser() {
+
+function getImageSrc() {
+  if (prevUserImage) {
+    return prevUserImage;
+  }
+
+  // loginMember가 null이면 기본 이미지 반환
+  if (!loginMember || !loginMember.userProfileImg) {
+    return "/images/default.png";
+  }
+
+  if (loginMember.userProfileImg.startsWith("http")) {
+    return loginMember.userProfileImg;
+  }
+
+  const imgPath = loginMember.userProfileImg.startsWith("/userProfile/")
+    ? loginMember.userProfileImg
+    : "/userProfile/" + loginMember.userProfileImg;
+
+  return serverUrl + imgPath;
+}
+
+ function deleteUser() {
+  if (!loginMember || !loginMember.userNo) return;
+
     Swal.fire({
       title: "알림",
       text: "회원을 탈퇴 하시겠습니까?",
@@ -153,7 +186,7 @@ function chgUserInfo(e) {
       if (res.isConfirmed) {
         let options = {};
         options.url = serverUrl + "/user/" + loginMember.userNo;
-        options.method = "delete"; 
+        options.method = "delete";
 
         axiosInstance(options)
           .then(function (res) {
@@ -163,11 +196,7 @@ function chgUserInfo(e) {
               setAccessToken(null);
               setRefreshToken(null);
 
-              if (axiosInstance.defaults.headers.common["Authorization"]) {
-                delete axiosInstance.defaults.headers.common["Authorization"];
-              }
-
-              Swal.fire("완료", "회원 탈퇴가 완료되었습니다.", "success");
+           
               navigate("/login");
             }
           })
@@ -178,8 +207,6 @@ function chgUserInfo(e) {
       }
     });
   }
-
-  
 
   return (
     <section className="section member-info-section">
@@ -193,80 +220,64 @@ function chgUserInfo(e) {
         <table className="tbl my-info" style={{ width: "80%", margin: "0 auto" }}>
           <tbody>
             <tr>
-              <th>
-                <label htmlFor="userId">아이디</label>
-              </th>
+              <th><label htmlFor="userId">아이디</label></th>
               <td className="left">
                 <div className="input-item">
-                  <input type="text" name="userId" id="userId"  value={user.userId || ""} readOnly/>
+                  <input type="text" id="userId" value={user.userId || ""} readOnly />
                 </div>
               </td>
             </tr>
             <tr>
-              <th>
-                <label htmlFor="userNickname">닉네임</label>
-              </th>
+              <th><label htmlFor="userNickname">닉네임</label></th>
               <td className="left">
                 <div className="input-item">
-                  <input type="text" name="userNickname" id="userNickname"  value={user.userNickname || ""} onChange={chgUserInfo}/>
+                  <input type="text" id="userNickname" value={user.userNickname || ""} onChange={chgUserInfo} />
                 </div>
               </td>
             </tr>
             <tr>
-              <th>
-                <label htmlFor="userEmail">이메일</label>
-              </th>
+              <th><label htmlFor="userEmail">이메일</label></th>
               <td className="left">
                 <div className="input-item">
-                    <input type="text" name="userEmail" id="userEmail" value={user.userEmail || ""} onChange={chgUserInfo}/>
+                  <input type="text" id="userEmail" value={user.userEmail || ""} onChange={chgUserInfo} />
                 </div>
               </td>
             </tr>
             <tr>
-
-              <th>
-                <label htmlFor="userRole">등급</label>
-              </th>
+              <th><label htmlFor="userRole">등급</label></th>
               <td className="left">
                 <div className="input-item">
-                    <input type="text" name="userRole" id="userRole"  value={user.userRole ?? ""} readOnly/>
+                  <input type="text" id="userRole" value={user.userRole ?? ""} readOnly />
                 </div>
               </td>
             </tr>
             <tr>
-              <th>
-                <label htmlFor="userProfileImg">프로필 이미지</label>
-              </th>
+              <th><label htmlFor="userProfileImg">프로필 이미지</label></th>
               <td className="left">
-                {
-                  <img src={
-                    loginMember.userProfileImg 
-                    ? serverUrl + "/user/profile" + loginMember.userProfileImg.substring(0,8) + "/" + loginMember.userProfileImg
-                    : '/images/default.png'
-                  } 
-                  onClick={function(){
-                    profileImgEl.current.click()
-                  }}/>
-                }
+                <img
+                src={getImageSrc()}
+                alt="프로필 이미지"
+                onClick={function () {
+                  profileImgEl.current.click();
+                }}
+                onError={function (e) {
+                  e.target.src = "/images/default.png";
+                }}
+              />
                 <div className="input-item">
-                  <input type="file" id="userProfileImg" accept="image/*" style={{display : 'none'}} ref={profileImgEl} onChange={chgProfileImg} />
+                  <input type="file" id="userProfileImg" accept="image/*" style={{ display: "none" }} ref={profileImgEl} onChange={chgProfileImg} />
                 </div>
-               
               </td>
             </tr>
             <tr>
               <th>회원등급</th>
-              <td className="left">
-                
-              </td>
+              <td className="left"></td>
             </tr>
           </tbody>
         </table>
 
         <div className="button-zone" style={{ marginTop: "20px" }}>
-          <button type="submit" className="btn-primary lg">
-            정보수정
-          </button>
+          <button type="submit" className="btn-primary lg">정보수정</button>
           <button
             type="button"
             className="btn-secondary lg"
