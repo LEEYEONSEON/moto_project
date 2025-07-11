@@ -102,8 +102,8 @@ export default function UserList(props) {
     if(updatedRows.length == 0) {
       Swal.fire({
         title: "알림",
-        text: "변경된 회원이 없습니다.",
-        icon: "info",
+        text: "변경할 항목이 존재하지 않습니다.",
+        icon: "warning",
         confirmButtonText: "확인"
       });
       return; 

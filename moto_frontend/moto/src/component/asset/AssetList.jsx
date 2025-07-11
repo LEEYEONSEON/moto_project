@@ -441,7 +441,7 @@ export default function AssetList() {
               {notEnoughCash && <p style={{ color: "red" }}>보유 현금이 부족합니다.</p>}
 
               <button onClick={handleTradeSubmit} disabled={notEnoughCash}>
-                {tradeType === "BUY" ? "매수" : "매도"} 실행
+                {tradeType == "BUY" ? "매수" : "매도"} 실행
               </button>
               <button
                 onClick={function () {

@@ -1,0 +1,91 @@
+/* PostView.etoro.css */
+
+.post-view-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.post-item {
+  border-bottom: 1px solid #eaeaea;
+  padding: 1rem 0;
+  transition: background 0.2s ease;
+}
+
+.post-item:hover {
+  background: #f9f9f9;
+}
+
+.post-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.post-content {
+  color: #555;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.post-footer {
+  margin-top: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #999;
+}
+
+/* PostWrite.etoro.css */
+
+.post-write-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.07);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.post-textarea {
+  width: 100%;
+  min-height: 180px;
+  padding: 1rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  resize: vertical;
+}
+
+.upload-label {
+  display: block;
+  margin: 1rem 0 0.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.upload-input {
+  border: none;
+  padding: 0.5rem;
+}
+
+.submit-button {
+  margin-top: 1.5rem;
+  background-color: #00c281;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #00a06f;
+}

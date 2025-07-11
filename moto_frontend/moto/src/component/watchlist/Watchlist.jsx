@@ -31,6 +31,10 @@ export default function Watchlist() {
     const [watchlistCode, setWatchlistCode] = useState([]); //즐겨찾기 토글 위한, 종목별 코드 리스트.
     const [loading, setLoading] = useState(true); //로딩 중 표시
     const [error, setError] = useState(null); //에러 메시지
+    const [selectedAsset, setSelectedAsset] = useState(null);
+    const [tradeType, setTradeType] = useState("BUY");
+    const [amount, setAmount] = useState(1);
+    const [walletCash, setWalletCash] = useState(0);
 
     const serverUrl = import.meta.env.VITE_BACK_SERVER;
 
@@ -39,11 +43,23 @@ export default function Watchlist() {
     const {loginMember, kakaoMember} = useUserStore(); //userNo 가져오기
     const navigate = useNavigate();
     let member = null;
+    const totalPrice = selectedAsset != null ? selectedAsset.currentPrice * amount : 0;
+
+    const notEnoughCash = tradeType === "BUY" && totalPrice > walletCash;
     
     if(loginMember != null){
         member = loginMember;
     }else if(kakaoMember != null){
         member = kakaoMember;
+    }
+
+    let userNo;
+    if(loginMember != null){
+        userNo = loginMember.userNo
+    }else if(kakaoMember != null){
+        userNo = kakaoMember.userNo
+    }else{
+        userNo = null;
     }
 
     //워치리스트 목록 조회 == 처음 랜더링 시에만 필요 (불러올 항목, assetCode, assetName, high_52, low_52)
@@ -126,6 +142,8 @@ export default function Watchlist() {
                     });
                 });
             });
+
+
         
         return function() {
             eventSource.close(); //컴포넌트가 화면에서 사라질 때 실행
@@ -191,6 +209,53 @@ export default function Watchlist() {
             
         }
 
+        // 로그인 회원 지갑 정보 조회
+        useEffect(function () {
+            if (!userNo) return; // userNo 없으면 요청 안 함
+            
+
+            const options = {
+            url: serverUrl + "/wallet/" + userNo,
+            method: "get",
+            };
+
+            axiosInstance(options)
+            .then(function (res) {
+                setWalletCash(res.data.resData.walletCashBalance);
+            })
+            .catch(function (err) {
+                console.error("지갑 조회 오류:", err);
+            });
+        }, [userNo]);
+
+        // 거래 요청 함수 (컴포넌트 내부에 선언)
+        function handleTradeSubmit(e) {
+            if (selectedAsset == null) return;
+            if (notEnoughCash) return;
+
+            alert(tradeType + " 요청 완료 (총 금액: " + totalPrice + ")");
+            setSelectedAsset(null);
+            console.log(watchlistCode);
+
+
+                const options = {
+                url: serverUrl + "/asset/insert", 
+                method: "post",
+                data: {
+                    userNo: userNo,
+                    tradeType: tradeType,
+                    amount: amount,
+                    currentPrice: selectedAsset.currentPrice,
+                    assetNo : watchlist.assetNo
+                },
+                };
+    
+        axiosInstance(options)
+          .then(function (res) {
+            
+          })
+    
+    }
     return (
         <>
 
@@ -288,23 +353,75 @@ export default function Watchlist() {
 
 
                         <td>
-                            <button className='buy'>매수</button>
-                            <button className='sell'>매도</button>
-                        </td>
+                      <button
+                        onClick={function () {
+                          setSelectedAsset(asset);
+                          setTradeType("BUY");
+                          setAmount(1);
+                        }}
+                      >
+                        매수
+                      </button>
+                      <button
+                        onClick={function () {
+                          setSelectedAsset(asset);
+                          setTradeType("SELL");
+                          setAmount(1);
+                        }}
+                      >
+                        매도
+                      </button>
+                    </td>
                     </tr>
                     );
                 })}
                 </tbody>
             </table>
-            )
-            
-        }
+            )}
+            {/* 매수/매도 모달 */}
+        {selectedAsset != null && (
+          <div className="modal">
+            <div className="modal-content">
+              <h3>{tradeType === "BUY" ? "매수" : "매도"} 확인</h3>
+              <p>종목명: {selectedAsset.assetName}</p>
+              <p>현재가: {selectedAsset.currentPrice.toLocaleString()} 원</p>
+              <p>현재 회원 자산: {walletCash.toLocaleString()} 원</p>
+
+              <label>
+                수량:
+                <input
+                  type="number"
+                  min="1"
+                  value={amount}
+                  onChange={function (e) {
+                    setAmount(parseInt(e.target.value));
+                  }}
+                />
+              </label>
+
+
+              <p>총 금액: {totalPrice.toLocaleString()} 원</p>
+
+              {notEnoughCash && <p style={{ color: "red" }}>보유 현금이 부족합니다.</p>}
+
+              <button onClick={handleTradeSubmit} disabled={notEnoughCash}>
+                {tradeType === "BUY" ? "매수" : "매도"} 실행
+              </button>
+              <button
+                onClick={function () {
+                  setSelectedAsset(null);
+                }}
+              >
+                취소
+              </button>
+            </div>
+          </div>
+        )}
+        
         
         </section>
-        )}
+    )}
         </>
-
-
 
     )
 
