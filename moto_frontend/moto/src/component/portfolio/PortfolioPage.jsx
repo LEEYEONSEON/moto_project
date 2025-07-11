@@ -6,7 +6,7 @@ export default function PortfolioPage() {
     return(
         <>
         <Routes>
-            <Route path="" element={<Portfolio />} />
+            <Route path="/portfolio" element={<Portfolio />} />
         </Routes>
             
        </>     

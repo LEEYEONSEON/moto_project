@@ -40,7 +40,7 @@ export default function DetailSidebar(props) {
             </div>
 
             <div className="menu-item" style={{ paddingBottom: "40px" }}>
-                <Link to={"/users/me/portfolio?filter = TYPE"} style={{fontSize:"25px", color:"white"}}>
+                <Link to={"/portfolio"} style={{fontSize:"25px", color:"white"}}>
                    포트폴리오
                 </Link>
             </div>

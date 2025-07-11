@@ -3,6 +3,7 @@ package kr.or.iei.wallet.model.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import kr.or.iei.asset.model.dto.TradeDto;
 import kr.or.iei.wallet.model.dao.WalletDao;
 import kr.or.iei.wallet.model.dto.Wallet;
 
@@ -25,6 +26,7 @@ public class WalletService {
 		return dao.updateWallet(wallet);
 	}
 	
+
 
 
 }

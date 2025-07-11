@@ -263,6 +263,7 @@ export default function AssetList() {
     console.log(selectedAsset.assetNo);
 
     
+      if(tradeType == 'BUY'){
         const options = {
           url: serverUrl + "/asset/insert", 
           method: "post",
@@ -279,7 +280,24 @@ export default function AssetList() {
           .then(function (res) {
             
           })
+    }else if(tradeType == "SELL"){
+      const options = {
+                url: serverUrl + "/asset/sellAsset", 
+                method: "patch",
+                data: {
+                    userNo: userNo,
+                    tradeType: tradeType,
+                    amount: amount,
+                    currentPrice: selectedAsset.currentPrice,
+                    assetCode : selectedAsset.assetCode
+                },
+                };
     
+        axiosInstance(options)
+          .then(function (res) {
+            
+          })
+    }
     }
 
   return (
@@ -415,7 +433,7 @@ export default function AssetList() {
         )}
 
         {/* 매수/매도 모달 */}
-        {selectedAsset != null && (
+        {selectedAsset != null &&(
           <div className="modal">
             <div className="modal-content">
               <h3>{tradeType === "BUY" ? "매수" : "매도"} 확인</h3>

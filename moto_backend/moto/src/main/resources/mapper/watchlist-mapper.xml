@@ -25,6 +25,114 @@
 	    WHERE w.user_no = #{_parameter}
 	</select>
 	
+	<!-- 위치리스트 주식 고유 번호 조회 -->
+	<select id="selectAssetNo"
+	parameterType="int"
+	resultType="int">
+	
+	select asset_No as assetNo 
+	from tbl_asset 
+	where asset_code = #{assetCode}
+	
+	</select>
+	
+	<!-- 워치리스트 매수 -->
+	<insert id="insertWatchlistBuyAsset"
+	parameterType="TradeDto">
+	
+	insert into tbl_trade values
+	(
+	seq_trade_no.nextval,
+	#{userNo},
+	#{assetNo},
+	#{tradeType},
+	#{amount},
+	#{currentPrice},
+	default
+	)	
+	
+	</insert>
+	
+	<!-- 포트폴리오 테이블 저장 -->
+	<insert id="insertPortFolio"
+	parameterType="TradeDto">
+	
+	insert into tbl_portfolio values
+	(
+	seq_portfolio_no.nextval,
+	#{userNo},
+	(select user_nickname || 'portfolio' from tbl_user where user_no = #{userNo}	
+	) 
+	</insert>
+	
+	
+<update id="mergeHolding" parameterType="TradeDto">
+  MERGE INTO tbl_holding h
+  USING dual
+  ON (h.user_no = #{userNo} AND h.asset_no = #{assetNo})
+  WHEN MATCHED THEN
+    UPDATE SET 
+      holding_asset_quantity = h.holding_asset_quantity + #{amount},
+      holding_avg_price = 
+        ROUND((
+          h.holding_asset_quantity * h.holding_avg_price + #{amount} * #{currentPrice}
+        ) / (h.holding_asset_quantity + #{amount}), 2)
+  WHEN NOT MATCHED THEN
+    INSERT (
+      holding_no,
+      user_no,
+      asset_no,
+      portfolio_no,
+      holding_asset_quantity,
+      holding_avg_price
+    ) VALUES (
+      SEQ_HOLDING_NO.NEXTVAL,
+      #{userNo},
+      #{assetNo},
+      (SELECT portfolio_no FROM tbl_portfolio WHERE user_no = #{userNo}),
+      #{amount},
+      #{currentPrice}
+    )
+</update>
+	
+	
+	<!-- 매수 지갑 업데이트 -->
+	<update id="resultPayWallet"
+	parameterType="TradeDto">
+	
+	update tbl_wallet
+		set wallet_cash_balance = wallet_cash_balance - (#{amount}*#{currentPrice})
+	  where user_no = #{userNo}
+	</update>
+	
+	
+		<!-- 워치리스트 매도 -->
+	<update id="watchListSellAsset"
+	parameterType="TradeDto">
+	
+	update tbl_trade
+		set trade_quantity = trade_quantity - #{amount},
+		 	trade_price = #{currentPrice}
+		 where user_no = #{userNo} and asset_no = #{assetNo}	
+	
+	</update>
+	
+	<!-- 매도 지갑 업데이트 -->
+	<update id="resultSellPayWallet" parameterType="TradeDto">
+  UPDATE tbl_wallet w
+  SET w.wallet_total_valuation = w.wallet_cash_balance + (
+    SELECT NVL(SUM(h.holding_asset_quantity * a.asset_price), 0)
+    FROM tbl_holding h
+    JOIN tbl_asset a ON h.asset_no = a.asset_no
+    WHERE h.user_no = w.user_no
+  )
+  WHERE w.user_no = #{userNo}
+</update>
+	
+	
+	
+	
+	
 	<!-- 워치리스트 메인 페이지 조회 -->
 	
 	

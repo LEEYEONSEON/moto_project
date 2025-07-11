@@ -235,18 +235,28 @@ export default function Watchlist() {
 
             alert(tradeType + " 요청 완료 (총 금액: " + totalPrice + ")");
             setSelectedAsset(null);
-            console.log(watchlistCode);
+            console.log(selectedAsset.assetCode);
 
+            if(selectedAsset.currentPrice == 0){
+                Swal.fire([
+                    title = "알림",
+                    text = "해당 종목이 업데이트 되지 않았습니다.",
+                    icon = "error",
+                    confirmButtonText = "확인"
+                ]);
 
+                return navigate("/");
+            }
+                if(tradeType == 'BUY'){
                 const options = {
-                url: serverUrl + "/asset/insert", 
+                url: serverUrl + "/watchlist/insert", 
                 method: "post",
                 data: {
                     userNo: userNo,
                     tradeType: tradeType,
                     amount: amount,
                     currentPrice: selectedAsset.currentPrice,
-                    assetNo : watchlist.assetNo
+                    assetCode : selectedAsset.assetCode
                 },
                 };
     
@@ -255,6 +265,25 @@ export default function Watchlist() {
             
           })
     
+    }else if(tradeType == 'SELL'){
+        
+        const options = {
+                url: serverUrl + "/watchlist/sellAsset", 
+                method: "patch",
+                data: {
+                    userNo: userNo,
+                    tradeType: tradeType,
+                    amount: amount,
+                    currentPrice: selectedAsset.currentPrice,
+                    assetCode : selectedAsset.assetCode
+                },
+                };
+    
+        axiosInstance(options)
+          .then(function (res) {
+            
+          })
+    }
     }
     return (
         <>
@@ -379,7 +408,7 @@ export default function Watchlist() {
             </table>
             )}
             {/* 매수/매도 모달 */}
-        {selectedAsset != null && (
+        {selectedAsset != null  && (
           <div className="modal">
             <div className="modal-content">
               <h3>{tradeType === "BUY" ? "매수" : "매도"} 확인</h3>

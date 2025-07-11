@@ -50,7 +50,7 @@ public class PostService {
 
 	public HashMap<String, Object> selectPostList(int reqPage) {
 		
-		int viewCnt = 3;
+		int viewCnt = 1;
 		int pageNaviSize = 5;
 		int totalCount = dao.selectPostListCnt();
 		
