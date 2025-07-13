@@ -408,7 +408,7 @@ export default function Watchlist() {
             </table>
             )}
             {/* 매수/매도 모달 */}
-        {selectedAsset != null  && (
+        {selectedAsset != null && selectedAsset.currentPrice != 0 && (
           <div className="modal">
             <div className="modal-content">
               <h3>{tradeType === "BUY" ? "매수" : "매도"} 확인</h3>

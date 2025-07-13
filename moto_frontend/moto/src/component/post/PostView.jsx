@@ -124,6 +124,8 @@ export default function PostView() {
 
       <PageNavi pageInfo={pageInfo} reqPage={reqPage} setReqPage={setReqPage} />
 
+
+
       {modalState.open == true && modalState.post != null && (
         <PostUpdateModal
           key={modalState.post.postNo}

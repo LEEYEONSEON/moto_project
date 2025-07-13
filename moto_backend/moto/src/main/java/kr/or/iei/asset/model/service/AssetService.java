@@ -28,8 +28,11 @@ public class AssetService {
 
 	@Transactional
 	public int insertBuyAsset(TradeDto trade) {
+		
 		// 1. 매수
 		int result = dao.insertBuyAsset(trade);
+		System.out.println(trade);
+		System.out.println(result);
 		
 		// 2. 포트폴리오 추가
 		int insPortFolio = dao.insertPortFolio(trade);
@@ -49,9 +52,11 @@ public class AssetService {
 	@Transactional
 	public int watchListSellAsset(TradeDto trade) {
 		int assetNo = dao.selectAssetNo(trade.getAssetCode());
-		trade.setAssetNo(assetNo);
 		
 		int result = dao.watchListSellAsset(trade);
+		
+		
+		
 		if(result > 0) {
 			dao.resultSellPayWallet(trade);
 			return result;

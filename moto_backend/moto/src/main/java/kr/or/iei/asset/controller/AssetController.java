@@ -62,16 +62,21 @@ public class AssetController {
 	@PostMapping("/insert")
 	public ResponseEntity<ResponseDTO> insertBuyAsset(@RequestBody TradeDto trade){
 		ResponseDTO res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "주식 구매 중, 오류가 발생하였습니다.", false, "error");
-		System.out.println(trade);
+		
 		try {
 		
 		int result = service.insertBuyAsset(trade);
 		
 		if(result > 0) {
+			System.out.println(result);
 			res = new ResponseDTO(HttpStatus.OK, "주식 매수가 완료되었습니다.", true, "success");
 		}else {
 			res = new ResponseDTO(HttpStatus.OK, "주식 매수 중, 오류가 발생하였습니다.", false, "warning");
 		}
+			
+		} catch (IllegalArgumentException e) {
+		
+			res = new ResponseDTO(HttpStatus.BAD_REQUEST, e.getMessage(), false, "warning");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
