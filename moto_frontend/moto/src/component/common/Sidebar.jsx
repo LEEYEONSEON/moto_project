@@ -42,13 +42,15 @@ export default function Sidebar() {
         <div
             className="side-menu"
             style={{
+                position: "fixed",
+                left: 0,
+                top: 0,
                 width: sidebarWidth,
-                transition: "width 0.3s ease-in-out",
-                backgroundColor: "rgb(44, 44, 44)",
                 height: "100vh",
-                textAlign: "center",
+                backgroundColor: "rgb(44, 44, 44)",
+                transition: "width 0.3s ease-in-out",
                 overflow: "hidden",
-                position: "relative",
+                zIndex: 1000,
             }}
         >
             {
