@@ -60,11 +60,8 @@ export default function WalletInfo() {
   // 실제 화면 렌더링 (JSX 반환)
   return (
   <div className="wallet-container" style={{ width: "100%" }}>
-    {wallet == null ? (
-      // 지갑이 없을 경우: 지갑 만들기 버튼
-      <button type="button">지갑 만들기</button>
-    ) : (
-      // 지갑이 존재할 경우: 전체 JSX 묶음
+   
+      {/* 지갑이 존재할 경우: 전체 JSX 묶음*/}
       <div>
         {/* 상단: 타이틀 및 화폐 단위 */}
         <div className="wallet-header">
@@ -100,11 +97,22 @@ export default function WalletInfo() {
             <div className="wallet-label">현금 보유</div>
           </div>
         </div>
+ 
+        <div className="wallet-header">
+          <div className="wallet-title">남은 자산</div>
+          <div className="wallet-currency">KRW</div>
+        </div>
 
+        {/* 자산 금액 출력 */}
+        <div className="wallet-total" style={{paddingBottom:"20px"}}>
+          {wallet.walletCashBalance.toLocaleString()} 원
+        </div>
+        
         {/* 현금 추가 버튼 */}
         <div className="wallet-add-button">💰 현금 추가</div>
+
       </div>
-    )}
+      
   </div>
 );
 }

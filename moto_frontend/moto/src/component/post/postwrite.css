@@ -1,0 +1,197 @@
+/* ================================
+   📌 최상단 작성 영역 (Post Input)
+   ================================ */
+.notice-write {
+  display: flex;
+  justify-content: center;
+  background-color: #000;
+  padding: 40px;
+  border-top: 1px solid #222;
+  font-family: "Helvetica Neue", sans-serif;
+  height: 100px;
+}
+
+.write-table {
+  width: 600px;
+  background-color: #111;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.write-table td {
+  vertical-align: top;
+  padding: 12px;
+}
+
+.profile-img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #333;
+}
+
+.write-input {
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 15px;
+  color: #ccc;
+  background-color: #1a1a1a;
+  border-radius: 18px;
+  border: 1px solid #333;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.write-input:hover {
+  background-color: #222;
+  border-color: #444;
+}
+
+/* ✅ 개선된 파일 선택 영역 스타일 */
+.file-upload-wrap {
+  display: inline-flex;
+  align-items: center;
+  padding-left: 4px;
+  color: #ccc;
+  font-size: 13px;
+  margin-top: 4px;
+  cursor: pointer;
+  width: 100px;
+}
+
+.file-icon {
+  cursor: pointer;
+  fill: #666;
+  transition: fill 0.2s ease;
+}
+
+.file-icon:hover {
+  fill: #aaa;
+}
+
+label[for="inputFile"] {
+  cursor: pointer;
+  color: white;
+  width: auto;
+}
+
+#inputFile {
+  display: none;
+}
+
+.write-table input#write {
+  margin-top: 4px;
+}
+
+.write-table td:first-child {
+  width: 60px;
+}
+
+/* ================================
+   📌 모달 영역 (Post Modal)
+   ================================ */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-box {
+  width: 90%;
+  max-width: 500px;
+  background-color: #111;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(255,255,255,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  color: #eee;
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #fff;
+}
+
+.modal-textarea {
+  resize: none;
+  height: 100px;
+  border: none;
+  background-color: #1a1a1a;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 14px;
+  color: #ddd;
+  outline: none;
+}
+
+/* ✅ 첨부파일 목록 + 텍스트 색상 */
+.file-list {
+  font-size: 13px;
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  padding: 8px;
+  color: white;
+}
+
+.file-list p {
+  display: flex;
+  justify-content: space-between;
+  margin: 4px 0;
+  padding: 4px 0;
+  border-bottom: 1px solid #333;
+  color: white;
+}
+
+.del-file-icon {
+  color: #dc3545;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.modal-buttons button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.modal-buttons button[type="submit"] {
+  background-color: #00c88f;
+  color: white;
+}
+
+.modal-buttons button[type="submit"]:hover {
+  background-color: #00a676;
+}
+
+.modal-buttons button[type="button"] {
+  background-color: #333;
+  color: #eee;
+}
+
+.modal-buttons button[type="button"]:hover {
+  background-color: #444;
+}

@@ -98,6 +98,7 @@ public class UserService {
 		return dao.updateUserInfo(user);
 	}
 	
+
 	public int updateUserProfileImage(int userNo, String imageUrl) {
 		// User 객체를 이용해 DB에 프로필 이미지 URL을 업데이트하는 작업
 		User user = new User();
@@ -105,15 +106,25 @@ public class UserService {
 		user.setUserProfileImg(imageUrl);  // userProfileImg 필드를 사용
 		return dao.updateUserProfileImage(user);  
 	}
-	
-	public User getUserProfile(String userId) {
-		return dao.getUserProfile(userId);
+
+	@Transactional
+	public int updateUserRole(User user) {
+
+		return dao.updateUserRole(user);
 	}
 	
 	@Transactional
 	public int deleteUser(int userNo) {
+		
 		return dao.deleteUser(userNo);
 	}
+	
+
+	public User getUserProfile(String userId) {
+		return dao.getUserProfile(userId);
+	}
+	
+
 	@Transactional
 	public boolean checkUserPassword(User user) {
 		User u = dao.searchUserInfo(user.getUserNo());

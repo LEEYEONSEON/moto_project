@@ -1,0 +1,285 @@
+/* 전체 컨테이너 */
+.post-view-container {
+  padding: 24px;
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* 게시글 목록 */
+.post-list-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* 개별 게시글 박스 */
+.post-item {
+  background-color: #2a2a2a;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  transition: background-color 0.3s;
+  width: 550px;
+}
+
+.post-item:hover {
+  background-color: #333333;
+}
+
+/* 상단 사용자 닉네임 & 수정 버튼 */
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 150px;
+}
+
+.post-title {
+  font-weight: bold;
+  font-size: 1rem;
+  color: #ffffff;
+}
+
+.post-edit-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #999999;
+  padding: 4px;
+  width: 300px;
+}
+
+.post-edit-button:hover {
+  color: #ffffff;
+}
+
+/* 게시글 본문 */
+.post-body {
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+
+.post-content {
+  white-space: pre-line;
+  line-height: 1.5;
+  font-size: 0.95rem;
+  color: #dddddd;
+}
+
+/* 이미지 슬라이더 */
+.image-slider {
+  position: relative;
+  margin-top: 12px;
+  text-align: center;
+}
+
+.post-image {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 8px;
+  object-fit: contain;
+  border: 1px solid #444;
+}
+
+/* 슬라이더 버튼과 인덱스 */
+.slider-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 8px;
+  gap: 10px;
+}
+
+.slider-buttons button {
+  background-color: #444;
+  color: #ccc;
+  border: none;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  width: 100px;
+}
+
+.slider-buttons button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.slider-buttons button:hover:enabled {
+  background-color: #666;
+}
+
+.slider-index {
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+/* ===== 모달에 재사용되는 클래스 ===== */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* ===== 모달 전체 영역 ===== */
+.modal-content {
+  background-color: #111;               /* 다크 배경 */
+  border-radius: 16px;                  /* 둥근 모서리 */
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 24px;
+  width: 480px;
+  font-family: 'Noto Sans KR', sans-serif;
+  max-height: 90%;
+  overflow-y: auto;
+  transition: all 0.3s ease;
+}
+
+/* ===== 제목 ===== */
+.modal-content h4 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #eee;
+}
+
+/* ===== textarea 입력란 ===== */
+.modal-textarea {
+  width: 100%;
+  height: 120px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background-color: #1c1c1c;
+  color: white;
+  padding: 12px;
+  font-size: 15px;
+  resize: none;
+  margin-bottom: 24px;
+}
+
+/* ===== 파일 섹션 공통 ===== */
+.modal-file-section {
+  margin-bottom: 20px;
+}
+
+.modal-file-section h5 {
+  text-align: center;
+  font-size: 14px;
+  color: #aaa;
+  margin: 12px 0 8px;
+}
+
+/* ===== 파일 리스트 ===== */
+.modal-file-section ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.modal-file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1e1e1e;
+  padding: 10px 14px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: #ccc;
+  border: 1px solid #2c2c2c;
+}
+
+/* ===== 파일 없음 안내 ===== */
+.file-empty-text {
+  text-align: center;
+  font-size: 13px;
+  color: #777;
+  margin: 12px 0;
+}
+
+/* ===== 삭제 버튼 ===== */
+.delete-btn {
+  background: none;
+  border: none;
+  color: #ff5c5c;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: color 0.2s;
+}
+
+.delete-btn:hover {
+  color: #ff9b9b;
+}
+
+/* ===== 파일 업로드 영역 ===== */
+.modal-upload {
+  margin: 20px 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #999;
+}
+
+.modal-upload input[type="file"] {
+  background: none;
+  color: #ccc;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* ===== 하단 버튼 영역 ===== */
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+}
+
+.modal-buttons button {
+  flex: 1;
+  margin: 0 6px;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* ===== 수정 버튼 (초록) ===== */
+.modal-buttons .submit-btn {
+  background-color: #00c084;
+  color: white;
+}
+
+.modal-buttons .submit-btn:hover {
+  background-color: #00a371;
+}
+
+/* ===== 삭제 / 취소 버튼 ===== */
+.modal-buttons .cancel-btn,
+.modal-buttons .delete-btn {
+  background-color: #2a2a2a;
+  color: white;
+}
+
+.modal-buttons .cancel-btn:hover,
+.modal-buttons .delete-btn:hover {
+  background-color: #3a3a3a;
+}

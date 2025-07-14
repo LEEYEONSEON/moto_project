@@ -123,7 +123,7 @@ export default function Login() {
                 /*
                 res.data                        == ResponseDTO
                 res.data.resData                == LoginUser
-                res.data.resData.user         == User
+                res.data.resData.user           == User
                 res.data.resData.accessToken    == 요청시마다 헤더에 포함시킬 토큰
                 res.data.resData.refreshToken   == accessToken 만료 시, 재발급 요청할 때 필요한 토큰
 

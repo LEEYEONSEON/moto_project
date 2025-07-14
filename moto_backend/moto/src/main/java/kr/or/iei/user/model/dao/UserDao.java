@@ -35,6 +35,10 @@ public interface UserDao {
 
 	int updateUserProfileImage(User user);
 
+	int updateUserRole(User user);
+
+
+
 	
 	
 

@@ -2,6 +2,7 @@ package kr.or.iei.wallet.model.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import kr.or.iei.asset.model.dto.TradeDto;
 import kr.or.iei.wallet.model.dto.Wallet;
 
 @Mapper
@@ -13,6 +14,8 @@ public interface WalletDao {
 	int createWallet(int userNo);
 
 	int updateWallet(Wallet wallet);
+
+
 
 
 
