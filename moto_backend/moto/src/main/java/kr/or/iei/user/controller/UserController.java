@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import kr.or.iei.common.annotation.NoTokenCheck;
 import kr.or.iei.common.model.dto.ResponseDTO;
+import kr.or.iei.post.model.service.PostService;
 import kr.or.iei.user.model.dto.LoginUser;
 import kr.or.iei.user.model.dto.User;
 import kr.or.iei.user.model.service.UserService;
@@ -22,6 +23,8 @@ import kr.or.iei.wallet.model.service.WalletService;
 @CrossOrigin("http://localhost:5173")
 @RequestMapping("/user")
 public class UserController {
+
+    private final PostService postService;
 	
 	
 	
@@ -30,6 +33,11 @@ public class UserController {
 	
 	@Autowired
 	private WalletService walletService;
+
+
+    UserController(PostService postService) {
+        this.postService = postService;
+    }
 	
 	
 	@PostMapping("/local/test")
@@ -134,18 +142,21 @@ public class UserController {
 		@PostMapping("/login")
 		@NoTokenCheck
 		public ResponseEntity<ResponseDTO> userLogin(@RequestBody User user){
-			
-			
+		
 			ResponseDTO res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "로그인 중, 오류가 발생하였습니다.", null, "error");
 			
 			try {
 				LoginUser loginUser = service.userLogin(user);
 				
 				if(loginUser == null) {
-					res = new ResponseDTO(HttpStatus.OK, "아이디 및 비밀번호를 확인하세요.", null, "warning");
-				}else {
+					res = new ResponseDTO(HttpStatus.OK, "아이디 또는 비밀번호를 확인하세요.", null, "warning");
+				}else if(loginUser.getUser().getUserRole().equals("3")){
+					res = new ResponseDTO(HttpStatus.OK, "회원은 정지상태입니다. 문의사항은 motuGuide@naver.com으로 연락주세요.", null, "error");
+				}else {					
 					res = new ResponseDTO(HttpStatus.OK, "", loginUser, "");
 				}
+				
+
 				
 			}catch(Exception e) {
 				e.printStackTrace();

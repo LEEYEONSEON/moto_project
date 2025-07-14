@@ -12,7 +12,7 @@ export default function DetailSidebar(props) {
         setIsLogined(false);
         setAccessToken(null);
         setRefreshToken(null);
-        navigate('/');
+        navigate('/login');
     }
 
     function close(){

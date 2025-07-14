@@ -22,6 +22,13 @@ export default function Sidebar() {
     const axiosInstance = createInstance();
     const serverUrl = import.meta.env.VITE_BACK_SERVER;
 
+    let user;
+    if(loginMember){
+        user = loginMember;
+    }else if(kakaoMember){
+        user = kakaoMember;
+    }
+
     const handleLogout = async () => {
     try {
       if (kakaoMember) {
