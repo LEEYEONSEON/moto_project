@@ -34,6 +34,29 @@ export default function AssetList() {
     userNo = null;
   }
 
+
+
+  const serverUrl = import.meta.env.VITE_BACK_SERVER;
+  const axiosInstance = createInstance();
+
+  //웹 소켓 사용해서 KIS 한국 투자증권 시세 연결 시작 하기 위한 용도 == 한번만 실행되도록 Zustand 로 wsStarted 상태 관리
+    const { wsStarted, setWsStarted } = useWsStore();
+
+        useEffect(function () {
+        if (!wsStarted) {
+            fetch(serverUrl + "/asset/ws-start")
+            .then(function(res) {
+                if (res.ok) {
+                setWsStarted(true); // 한번만 실행되게!
+                }
+            })
+            .catch(function(err) {
+                console.log("WS 연결 오류", err)
+            });
+        }
+    }, []);
+
+
   // 자산 목록 초기 조회
   useEffect(function () {
     getAsset()
@@ -57,8 +80,6 @@ export default function AssetList() {
       });
   }, []);
 
-  const serverUrl = import.meta.env.VITE_BACK_SERVER;
-  const axiosInstance = createInstance();
 
   // SSE 실시간 가격 업데이트
   useEffect(function () {
@@ -259,23 +280,6 @@ export default function AssetList() {
           .then(function (res) {
             
           })
-    }else if(tradeType == "SELL"){
-      const options = {
-                url: serverUrl + "/asset/sellAsset", 
-                method: "patch",
-                data: {
-                    userNo: userNo,
-                    tradeType: tradeType,
-                    amount: amount,
-                    currentPrice: selectedAsset.currentPrice,
-                    assetCode : selectedAsset.assetCode
-                },
-                };
-    
-        axiosInstance(options)
-          .then(function (res) {
-            
-          })
     }
     }
 
@@ -394,15 +398,7 @@ export default function AssetList() {
                       >
                         매수
                       </button>
-                      <button
-                        onClick={function () {
-                          setSelectedAsset(asset);
-                          setTradeType("SELL");
-                          setAmount(1);
-                        }}
-                      >
-                        매도
-                      </button>
+                      
                     </td>
                   </tr>
                 );
