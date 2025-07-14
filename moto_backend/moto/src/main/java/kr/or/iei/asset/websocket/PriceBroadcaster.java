@@ -23,7 +23,10 @@ public class PriceBroadcaster {
 
     
     public SseEmitter subscribe() {
-        SseEmitter emitter = new SseEmitter(60 * 60 * 1000L); // 1시간 유지
+        
+    	
+    	
+    	SseEmitter emitter = new SseEmitter(60 * 60 * 1000L); // 1시간 유지
         emitters.add(emitter);
 
         emitter.onCompletion(new Runnable() {

@@ -21,23 +21,9 @@ public interface UserDao {
 
 	ArrayList<User> selectAllList();
 
-	int updateUserInfo(User user);
-
-	int updateUserPassword(User user);
-
-	User getUserProfile(String userId);
-
-	User searchUserInfo(int userNo);
-
-	int deleteUser(int userNo);
-
-	int updateProfileImage(int userNo, String filePath);
-
-	int updateUserProfileImage(User user);
-
 	int updateUserRole(User user);
 
-
+	int deleteUser(int userNo);
 
 	
 	
