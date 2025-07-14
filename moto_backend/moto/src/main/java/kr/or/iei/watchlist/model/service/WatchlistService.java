@@ -47,7 +47,7 @@ public class WatchlistService {
 		trade.setAssetNo(assetNo);
 		int result = dao.insertWatchlistBuyAsset(trade);
 		
-		int insPortFolio = dao.insertPortFolio(trade);
+		dao.mergePortfolio(trade);
 		dao.mergeHolding(trade);
 		if(result > 0) {
 			dao.resultPayWallet(trade);
@@ -66,6 +66,7 @@ public class WatchlistService {
 		
 		
 		int result = dao.watchListSellAsset(trade);
+		
 		if(result > 0) {
 			dao.resultSellPayWallet(trade);
 			return result;

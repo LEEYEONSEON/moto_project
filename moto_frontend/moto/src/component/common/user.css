@@ -87,37 +87,3 @@
     justify-content: center;
     gap: 30px;
 }
-
-/* UserEditForm.jsx*/
-/* 비밀번호 변경 스타일 (Join 스타일과 일치시킴) */
-.pwChg-section {
-  width: 400px;
-  margin: 0 auto;
-  align-self: center;
-}
-
-.pwChg-section .input-wrap {
-  padding: 10px 30px;
-}
-
-.pwChg-section .join-button-box {
-  padding: 20px 30px;
-}
-
-.pwChg-section .join-button-box > button {
-  width: 100%;
-}
-
-.input-msg {
-  font-size: 13px;
-  padding-left: 5px;
-  margin-top: 5px;
-}
-
-.input-msg.valid {
-  color: green;
-}
-
-.input-msg.invalid {
-  color: red;
-}

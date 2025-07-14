@@ -95,7 +95,7 @@ export default function Portfolio() {
                     profitRate: profitRate.toFixed(2)
                 };
             }
-            console.log(asset);
+            
             return asset;
             });
         });

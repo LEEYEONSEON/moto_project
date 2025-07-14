@@ -16,6 +16,8 @@ import kr.or.iei.common.filter.EncodingFilter;
 @Configuration //이 어노테이션이 작성된 클래스는 IoC 컨테이너가 초기화될 때 실행
 public class WebConfig implements WebMvcConfigurer{ //이 클래스는 Spring MVC 관련 설정을 커스터마이징 할 때 작성
     
+	
+	
 
 	@Override
     public void addCorsMappings(CorsRegistry registry) {

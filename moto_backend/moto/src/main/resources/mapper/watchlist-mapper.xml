@@ -53,18 +53,28 @@
 	
 	</insert>
 	
-	<!-- 포트폴리오 테이블 저장 -->
-	<insert id="insertPortFolio"
-	parameterType="TradeDto">
-	
-	insert into tbl_portfolio values
-	(
-	seq_portfolio_no.nextval,
-	#{userNo},
-	(select user_nickname || 'portfolio' from tbl_user where user_no = #{userNo}	
-	) 
-	</insert>
-	
+<insert id="mergePortfolio" parameterType="TradeDto">
+    MERGE INTO tbl_portfolio p
+    USING (
+        SELECT 
+            #{userNo} AS user_no,
+            (SELECT user_nickname || 'portfolio' FROM tbl_user WHERE user_no = #{userNo}) AS portfolio_name
+        FROM dual
+    ) src
+    ON (
+        p.user_no = src.user_no AND 
+        p.portfolio_name = src.portfolio_name
+    )
+    WHEN NOT MATCHED THEN
+    INSERT (
+        portfolio_no, user_no, portfolio_name
+    )
+    VALUES (
+        seq_portfolio_no.nextval,
+        src.user_no,
+        src.portfolio_name
+    )
+</insert>
 	
 <update id="mergeHolding" parameterType="TradeDto">
   MERGE INTO tbl_holding h
@@ -121,7 +131,7 @@
 	<update id="resultSellPayWallet" parameterType="TradeDto">
   UPDATE tbl_wallet w
   SET w.wallet_total_valuation = w.wallet_cash_balance + (
-    SELECT NVL(SUM(h.holding_asset_quantity * a.asset_price), 0)
+    SELECT NVL(SUM(h.holding_asset_quantity * a.current_price), 0)
     FROM tbl_holding h
     JOIN tbl_asset a ON h.asset_no = a.asset_no
     WHERE h.user_no = w.user_no

@@ -12,7 +12,7 @@ export default function DetailSidebar(props) {
         setIsLogined(false);
         setAccessToken(null);
         setRefreshToken(null);
-        navigate('/login');
+        navigate('/');
     }
 
     function close(){
@@ -40,7 +40,7 @@ export default function DetailSidebar(props) {
             </div>
 
             <div className="menu-item" style={{ paddingBottom: "40px" }}>
-                <Link to={"/portfolio"} style={{fontSize:"25px", color:"white"}}>
+                <Link to={"/portfolio?filter=TYPE"} style={{fontSize:"25px", color:"white"}}>
                    포트폴리오
                 </Link>
             </div>
@@ -51,9 +51,9 @@ export default function DetailSidebar(props) {
                 </Link>
             </div>
 
-            <div className="menu-item" style={{ paddingBottom: "40px" }}>
-                <Link to={"/watchlists/{id}"} style={{fontSize:"25px", color:"white"}}>
-                   지갑
+           <div className="menu-item" style={{ paddingBottom: "40px" }}>
+                 <Link to={"/wallet"} style={{fontSize:"25px", color:"white"}}>
+                    지갑
                 </Link>
             </div>
 
@@ -63,18 +63,12 @@ export default function DetailSidebar(props) {
                 </Link>
             </div>
 
-             <div className="menu-item" style={{ paddingBottom: "80px" }}>
-                <Link to={"/news/all"} style={{fontSize:"25px", color:"white"}}>
-                    뉴스
-                </Link>
-            </div>
-
              <div className="menu-item" style={{ paddingBottom: "40px", margin:"0 auto" }}>
-                 {
-                    loginMember
-                    ?
-                    <button onClick={logout} style={{border:"none", backgroundColor: "transparent", color:"white", fontSize:"20px", width:"200px" }} >로그아웃</button>
-                    : <button onClick={logout} style={{border:"none", backgroundColor: "transparent", color:"white", fontSize:"20px", width:"200px"}}>로그아웃</button>
+                {
+                loginMember &&
+                <button onClick={logout} style={{ border: "none", backgroundColor: "transparent", color: "white", fontSize: "20px", width: "200px" }}>
+                로그아웃
+                </button>
                 }
             </div>
 

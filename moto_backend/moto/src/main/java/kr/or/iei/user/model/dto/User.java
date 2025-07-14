@@ -1,5 +1,6 @@
 package kr.or.iei.user.model.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

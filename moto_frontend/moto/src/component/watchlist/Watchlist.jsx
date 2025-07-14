@@ -140,15 +140,6 @@ export default function Watchlist() {
     return hour < 9 || (hour === 15 && minute > 30) || hour > 15;
     }   
     
-    
-
-
-
-
-
-
-
-
     //즐겨찾기 토글
     function handleToggleWatchlist(assetCode) {
             
@@ -247,24 +238,6 @@ export default function Watchlist() {
             
           })
     
-    }else if(tradeType == 'SELL'){
-        
-        const options = {
-                url: serverUrl + "/watchlist/sellAsset", 
-                method: "patch",
-                data: {
-                    userNo: userNo,
-                    tradeType: tradeType,
-                    amount: amount,
-                    currentPrice: selectedAsset.currentPrice,
-                    assetCode : selectedAsset.assetCode
-                },
-                };
-    
-        axiosInstance(options)
-          .then(function (res) {
-            
-          })
     }
     }
     return (
@@ -293,7 +266,7 @@ export default function Watchlist() {
                         <th style={{width:"15%"}}>현재가</th>
                         <th style={{width: "30%"}}>52주 최저 최고가</th>
                         <th style={{width:"15%"}}>변동률(%)</th>
-                        <th style={{width:"15%"}}>매수/매도</th>
+                        <th style={{width:"15%"}}>매수</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -387,15 +360,6 @@ export default function Watchlist() {
                         }}
                       >
                         매수
-                      </button>
-                      <button
-                        onClick={function () {
-                          setSelectedAsset(asset);
-                          setTradeType("SELL");
-                          setAmount(1);
-                        }}
-                      >
-                        매도
                       </button>
                     </td>
                     </tr>

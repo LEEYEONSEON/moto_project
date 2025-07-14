@@ -5,6 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../../store/useUserStore";
 import createInstance from "../../axios/Interceptor";
+
 //로그인
 export default function Login() {
     //부모 컴포넌트에게 전달받은 데이터 추출
@@ -13,16 +14,17 @@ export default function Login() {
     const setLoginMember = props.setLoginMember;
     */
 
-    //스토리지에 저장한 데이터 추출하기. 
-    const {isLogined, setIsLogined, setLoginMember, setAccessToken, setRefreshToken, setKakaoMember, setTokenExpiresIn, setRefreshTokenExpiresIn} = useUserStore();
 
+   //스토리지에 저장한 데이터 추출하기. 
+const {isLogined, setIsLogined, setLoginMember, setAccessToken, setRefreshToken} = useUserStore();
 
-    useEffect(function(){
-        if(!isLogined){ //외부에서 강제 로그아웃 시킨 경우
-            setLoginMember(null);
-        }
-    },[]);
+useEffect(function(){
+       if(!isLogined){ //외부에서 강제 로그아웃 시킨 경우
+        setLoginMember(null);
+    }
+},[]);
 
+    const [test, setTest] = useState('');
 
     //환경변수 파일에 저장된 변수 읽어오기
     const serverUrl = import.meta.env.VITE_BACK_SERVER;
@@ -56,51 +58,6 @@ export default function Login() {
     //정상 로그인 시, 컴포넌트 전환을 위함.
     const navigate = useNavigate();
 
-
-   /**
-   * 카카오 인가 코드 요청
-   */
-  function requestKakaoAuth() {
-    window.location.href = `${serverUrl}/auth/oauth2/kakao/authorize`;
-  }
-
-
-      // ======================================
-  // 1) 콜백 URL 에 코드가 있으면 자동 처리
-  // ======================================
-  useEffect(() => {
-  const params = new URLSearchParams(window.location.search);
-  const code = params.get("code");
-  if (!code) return;
-
-  axiosInstance
-    .get(`${serverUrl}/auth/oauth2/kakao/callback`, { params: { code } })
-    .then((response) => {
-      const { resData: loginUser } = response.data;
-
-      // 토큰 부분
-      const { accessToken, refreshToken, expiresIn, refreshTokenExpiresIn } = loginUser.tokens;
-      setAccessToken(accessToken);
-      setRefreshToken(refreshToken);
-      setTokenExpiresIn(expiresIn);
-      setRefreshTokenExpiresIn(refreshTokenExpiresIn);
-
-      // 유저 정보
-      setKakaoMember(loginUser.user);
-
-      setIsLogined(true);
-      navigate("/");
-    })
-    .catch((err) => {
-      console.error("카카오 로그인 처리 중 오류:", err);
-      Swal.fire("오류", "카카오 로그인에 실패했습니다.", "error");
-    })
-     .finally(() => {
-        // 쿼리스트링만 제거하려면 현재 경로 기준 replace
-        const cleanPath = window.location.pathname;
-        window.history.replaceState(null, "", cleanPath);
-    });
-}, []);
     //로그인 요청
     function login(){
         if(user.userId == '' || user.userPassword == ''){
@@ -116,74 +73,13 @@ export default function Login() {
             options.url = serverUrl + '/user/login';
             options.method = 'post'; //로그인(일치하는 회원을 조회) == 조회 == GET == 로그인과 같은 민감한 정보일때에는 기존과 같이 POST로
             options.data = user;
-            options.withCredentials = true; // 세션 쿠키를 클라이언트에 저장하도록 설정
 
             axiosInstance(options)
             .then(function(res){
                 /*
                 res.data                        == ResponseDTO
-                res.data.resData                == LoginUser
-                res.data.resData.user           == User
-                res.data.resData.accessToken    == 요청시마다 헤더에 포함시킬 토큰
-                res.data.resData.refreshToken   == accessToken 만료 시, 재발급 요청할 때 필요한 토큰
-
-                */
-                if(res.data.resData == null){
-                    Swal.fire({
-                        title : '알림',
-                        text : res.data.clientMsg,
-                        icon : res.data.alertIcon,
-                        confirmButtonText : '확인'
-                    });
-                }else{
-                    //정상 로그인 (State 변수 변경)
-                    /*
-                    setIsLogin(true);
-                    setLoginMember(res.data.resData);
-                    */
-
-                    const loginMember = res.data.resData; //LoginUser 객체
-
-
-                    //정상 로그인 (스토리지 데이터 변경)
-                    setIsLogined(true);
-                    setLoginMember(loginMember.user);
-                
-                    //스토리지에 토큰 저장
-                    setAccessToken(loginMember.accessToken);
-                    setRefreshToken(loginMember.refreshToken);
-
-
-                    //Main 컴포넌트로 전환
-                    navigate('/');
-                }
-                
-            })
-            .catch(function(err){
-                console.log(err);
-                Swal.fire({
-                    title: '오류',
-                    text: '로그인 요청 중 오류가 발생했습니다.',
-                    icon: 'error',
-                    confirmButtonText: '확인'
-                });
-            });
-        }
-    }
-
-    function kakaoLogin(){
-        let options = {};
-            // 백엔드 OAuth 컨트롤러의 인가 코드 엔드포인트
-            const kakaoAuthUrl = `${serverUrl}/auth/oauth2/kakao/authorize`;
-            options.method = 'post'; //로그인(일치하는 회원을 조회) == 조회 == GET == 로그인과 같은 민감한 정보일때에는 기존과 같이 POST로
-            options.data = user;
-
-            axiosInstance(options)
-            .then(function(res){
-                /*
-                res.data                        == ResponseDTO
-                res.data.resData                == LoginUser
-                res.data.resData.user         == User
+                res.data.resData                == LoginMember
+                res.data.resData.member         == Member
                 res.data.resData.accessToken    == 요청시마다 헤더에 포함시킬 토큰
                 res.data.resData.refreshToken   == accessToken 만료 시, 재발급 요청할 때 필요한 토큰
 
@@ -207,7 +103,7 @@ export default function Login() {
 
                     //정상 로그인 (스토리지 데이터 변경)
                     setIsLogined(true);
-                    setKakaoMember(loginMember.user);
+                    setLoginMember(loginMember.user);
                     //스토리지에 토큰 저장
                     setAccessToken(loginMember.accessToken);
                     setRefreshToken(loginMember.refreshToken);
@@ -227,17 +123,9 @@ export default function Login() {
                     confirmButtonText: '확인'
                 });
             });
+        }
     }
-    /**
-     * 카카오 인가 코드 요청 함수
-     * 클릭 시 백엔드로 리디렉트하여 인가 코드(authorization code)를 요청합니다.
-     */
-    function requestKakaoAuth() {
-        // 백엔드 OAuth 컨트롤러의 인가 코드 엔드포인트
-        const kakaoAuthUrl = `${serverUrl}/auth/oauth2/kakao/authorize`;
-        // 실제 리디렉트 수행
-        window.location.href = kakaoAuthUrl; // 주석: 클라이언트를 해당 URL로 이동시켜 인가 코드를 요청
-    }
+
 
     return (
         <section className="section login-wrap">
@@ -268,16 +156,6 @@ export default function Login() {
                     </button>
                 </div>
             </form>
-            {/* 카카오 소셜 로그인 버튼 추가 */}
-            <div className="social-login">
-                <img
-                src="/images/kakao_login_medium_wide.png" // public 폴더에서 제공되는 이미지 경로
-                alt="카카오 로그인 버튼"
-                className="kakao-login-btn"
-                onClick={requestKakaoAuth} // 주석: 버튼 클릭 시 카카오 OAuth 인가 코드 요청
-                style={{ cursor: 'pointer' }}
-                />
-            </div>
         </section>
     );
 }

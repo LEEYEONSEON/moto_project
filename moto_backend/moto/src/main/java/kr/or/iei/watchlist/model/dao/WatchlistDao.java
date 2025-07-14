@@ -27,11 +27,11 @@ public interface WatchlistDao {
 
 	void resultSellPayWallet(TradeDto trade);
 
-	int insertPortFolio(TradeDto trade);
-
 
 
 	void mergeHolding(TradeDto trade);
+
+	void mergePortfolio(TradeDto trade);
 
 
 
