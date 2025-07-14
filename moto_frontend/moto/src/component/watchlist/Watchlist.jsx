@@ -8,24 +8,6 @@ import useWsStore from "../../store/useWsStore";
 
 //워치리스트 리스트
 export default function Watchlist() {
-    
-    //웹 소켓 사용해서 KIS 한국 투자증권 시세 연결 시작 하기 위한 용도 == asset 재사용 해봄. == 한번만 실행되도록 Zustand 로 wsStarted 상태 관리
-    const { wsStarted, setWsStarted } = useWsStore();
-
-        useEffect(function () {
-        if (!wsStarted) {
-            fetch(serverUrl + "/asset/ws-start")
-            .then(function(res) {
-                if (res.ok) {
-                setWsStarted(true); // 한번만 실행되게!
-                }
-            })
-            .catch(function(err) {
-                console.log("WS 연결 오류", err)
-            });
-        }
-    }, []);
-        
         
     const [watchlist, setWatchlist] = useState([]); //서버에서 받아온 즐겨찾기 목록 
     const [watchlistCode, setWatchlistCode] = useState([]); //즐겨찾기 토글 위한, 종목별 코드 리스트.
@@ -223,8 +205,6 @@ export default function Watchlist() {
                 <tbody>
                 {watchlist.map(function(asset, index) {
 
-
-
                     return (
                     <tr key={"asset" + index}>
                         <td>
@@ -240,22 +220,39 @@ export default function Watchlist() {
 
                         </td>
                         <td><Link to={"/asset/" + asset.assetCode}>{asset.assetName}</Link></td>
-                        <td>{asset.currentPrice != null ? asset.currentPrice == 0 ? "로딩 중" : parseFloat(asset.currentPrice).toFixed(0) : ""}</td>
+                        <td className={asset.currentPrice != null ? asset.currentPrice == 0 ? "zero" : parseFloat(asset.currentPrice).toFixed(0) : ""}>
+                            {asset.currentPrice != null ? asset.currentPrice == 0 ? "로딩 중..." : parseFloat(asset.currentPrice).toFixed(0) : ""}</td>
                         <td>
 
                             
                             <div className="range-cell">
                             <div className="range-bar">
-                                <div className="range-fill"
-                                    style={{
-                                    width: `${((asset.currentPrice - asset.low52) / (asset.high52 - asset.low52)) * 100}%`
-                                    }}
-                                ></div>
+                            <div
+                            className="range-fill"
+                            style={{
+                                width:
+
+                                
+                                asset.currentPrice < asset.low52 
+                                ? "0%" 
+                                :asset.currentPrice > asset.high52 
+                                ? "100%"
+                                :
+                                ((asset.currentPrice - asset.low52) / (asset.high52 - asset.low52)) * 100 + "%"
+                                }}>
+                                
+                            </div>
 
                                 {/* 화살표 표시용 */}
-                                <div className="range-indicator"
+                                <div
+                                    className="range-indicator"
                                     style={{
-                                    left: `${((asset.currentPrice - asset.low52) / (asset.high52 - asset.low52)) * 100}%`
+                                    left:
+                                        asset.currentPrice < asset.low52 
+                                        ? "0%" 
+                                        :asset.currentPrice > asset.high52 
+                                        ? "100%"
+                                        : ((asset.currentPrice - asset.low52) / (asset.high52 - asset.low52)) * 100 + "%",
                                     }}
                                 >
                                     ▲
@@ -279,8 +276,8 @@ export default function Watchlist() {
                                     : 'negative'
                         }>
                             {
-                                asset.priceChangeRate != null && parseFloat(asset.priceChangeRate) === 0 
-                                    ? (isMarketClosed() ? '장마감' : '0.00%')
+                                asset.currentPrice != null && parseFloat(asset.currentPrice) === 0 
+                                    ? (isMarketClosed() ? '장마감' : '로딩 중...')
                                     : (asset.priceChangeRate != null ? parseFloat(asset.priceChangeRate).toFixed(2) + '%' : "")
                             }
                         </td>

@@ -3,6 +3,7 @@ import createInstance from "../../axios/Interceptor";
 import useUserStore from "../../store/useUserStore";
 import PageNavi from "../common/PageNavi";
 import Swal from "sweetalert2";
+import CommentItem from "./CommentItem"
 
 // PostView 컴포넌트
 export default function PostView() {
@@ -169,6 +170,10 @@ export default function PostView() {
                     </div>
                   </div>
                 ) : null}
+
+
+                <CommentItem postNo={post.postNo} />
+
               </div>
             );
           })

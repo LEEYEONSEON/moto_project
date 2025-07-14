@@ -1,5 +1,7 @@
 package kr.or.iei.asset.websocket;
 
+import java.io.EOFException;
+import java.net.SocketException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +18,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.or.iei.asset.model.dto.Asset;
@@ -27,9 +28,10 @@ import okhttp3.WebSocketListener;
 
 @Component
 public class KisWebSocket extends WebSocketListener{
-
+	 	private List<Asset> assetList; // 전역으로 한 번만 받아서 저장
 		private final ObjectMapper objectMapper = new ObjectMapper();
 		private WebSocket webSocket;
+		private long approvalKeyIssuedAt = 0;
 		 
 		@Value("${kis.app.key}")
 	    private String appKey;
@@ -42,6 +44,8 @@ public class KisWebSocket extends WebSocketListener{
 	    
 	    private String approvalKey;
 	    
+	    private String accessToken;
+	    
 	    @Autowired
 	    private AssetService service;
 	    
@@ -51,6 +55,10 @@ public class KisWebSocket extends WebSocketListener{
 
 	    // 한국투자증권 클라이언트 ID(AppKey), Secret(AppSecret) 이용해서 한투 access token 발급받는 작업
 	    public String getAccessToken() {
+	    	
+	    	if(accessToken != null) {
+	    		return accessToken;
+	    	}
 	        RestTemplate rt = new RestTemplate();
 	
 	        HttpHeaders headers = new HttpHeaders();
@@ -68,7 +76,7 @@ public class KisWebSocket extends WebSocketListener{
 	
 	        ResponseEntity<Map> response = rt.postForEntity(url, entity, Map.class);
 	        if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-	            String accessToken = Objects.requireNonNull(response.getBody().get("access_token")).toString();
+	            accessToken = Objects.requireNonNull(response.getBody().get("access_token")).toString();
 	            return accessToken;
 	        }
 	        return response.getBody().get("access_token").toString(); // <-- 발급된 토큰 반환
@@ -76,17 +84,19 @@ public class KisWebSocket extends WebSocketListener{
 	    
 	    
 	    public String getApprovalKey() {
-	    	if(approvalKey != null) {
-	    		return approvalKey;
-	    	}
 	    	
+	    	long now = System.currentTimeMillis();
+	        if (approvalKey != null && now - approvalKeyIssuedAt < 60 * 60 * 1000) { //한투에서 apporvalKey == 1시간 유효
+	            return approvalKey;
+	        }
+	        
 	        RestTemplate rt = new RestTemplate();
 	
 	        HttpHeaders headers = new HttpHeaders();
 	        headers.setContentType(MediaType.APPLICATION_JSON);
 	        
 	        
-	        String accessToken = getAccessToken();
+	        accessToken = getAccessToken();
 	        
 	        if (accessToken == null || accessToken.isEmpty()) {
 	            System.out.println("accessToken 발급 안됨.");
@@ -108,7 +118,9 @@ public class KisWebSocket extends WebSocketListener{
 	        ResponseEntity<Map> response = rt.postForEntity(url, entity, Map.class);
 	        
 	        if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-	            String approvalKey = Objects.requireNonNull(response.getBody().get("approval_key")).toString();
+	        	
+	            approvalKey = Objects.requireNonNull(response.getBody().get("approval_key")).toString();
+	            approvalKeyIssuedAt = System.currentTimeMillis(); // 발급된 시점 저장
 	            System.out.println("appporval key 발급 완료"); 
 	            System.out.println(approvalKey);
 	            return approvalKey;
@@ -119,6 +131,9 @@ public class KisWebSocket extends WebSocketListener{
 	    }
 	    
 	    public void connectAndSend() {
+	    	
+	    	this.assetList = service.selectAllAsset(); // 리스트 단 한번만 DB 조회!
+	    	
 	        OkHttpClient client = new OkHttpClient();
 
 	        Request request = new Request.Builder()
@@ -134,6 +149,8 @@ public class KisWebSocket extends WebSocketListener{
 	    //연결 성공 시, 호출되는 메소드
 	    @Override
 	    public void onOpen(WebSocket webSocket, Response response) {
+	    	
+	    	
 	        this.webSocket = webSocket;
 	        
 	        System.out.println("WebSocket 연결 성공");
@@ -144,37 +161,40 @@ public class KisWebSocket extends WebSocketListener{
             header.put("tr_type", "1");				//1 : 등록, 2 : 해제
             header.put("content-type", "utf-8");
             
-            
-            List<Asset> assetList = service.selectAllAsset();
-            
+                        
             for(int i=0; i<assetList.size(); i++) {
                Asset asset = assetList.get(i);
             
-            Map<String, String> input = new HashMap<>();
-            input.put("tr_id", "H0STCNT0");
-            input.put("tr_key", asset.getAssetCode());
+	            Map<String, String> input = new HashMap<>();
+	            input.put("tr_id", "H0STCNT0");
+	            input.put("tr_key", asset.getAssetCode());
+	            
+	            Map<String, Object> body = new HashMap<>();
+	            body.put("input", input);
+	            
+	            Map<String, Object> request = new HashMap<>();
+	            request.put("header", header);
+	            request.put("body", body);
+	            	            
+	            try {
+					String requestJson = objectMapper.writeValueAsString(request);
+					Thread.sleep(100);
+					// 간단한 딜레이 주기 (100ms)
+	            	webSocket.send(requestJson);
+	            		
+            	} catch (Exception e) {
+        		    if (e instanceof SocketException || e.getMessage().contains("Connection reset by peer")) {
+        		        System.out.println("✅ 장 마감 또는 KIS 서버 연결 종료");
+        		    } else {
+        		        e.printStackTrace();
+        		    }
+        		}
+            //webSocket.send(requestJson);
             
-            Map<String, Object> body = new HashMap<>();
-            body.put("input", input);
-            
-            Map<String, Object> request = new HashMap<>();
-            request.put("header", header);
-            request.put("body", body);
-            
-            String requestJson = "";
-            
-            try {
-				requestJson = objectMapper.writeValueAsString(request);
-			} catch (JsonProcessingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-            
-            webSocket.send(requestJson);
 	        //System.out.println("메세지 전송 : " + requestJson);
             
+	             
             }
-
 	       
 	    }
 	    
@@ -238,8 +258,7 @@ public class KisWebSocket extends WebSocketListener{
 	            String endType        = fields[44];  // 임의종료구분코드
 	            String viBasePrice    = fields[45];  // 정적VI발동기준가
 	            
-	            List<Asset> assetList = service.selectAllAsset();
-	            
+
 	            for(int i=0; i<assetList.size(); i++) {
 	                 Asset asset = assetList.get(i);
 	                 if (asset.getAssetCode().equals(assetCode)) {
@@ -277,10 +296,14 @@ public class KisWebSocket extends WebSocketListener{
 
 	    @Override
 	    public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-	        System.err.println("WebSocket 오류");
-	        
-	        //t.printStackTrace(); // 오류 이유 확인용.
-	    }
+	        if (t instanceof SocketException ||
+                t instanceof EOFException ||
+                (t.getMessage() != null && t.getMessage().contains("Connection reset by peer"))) {
+                System.out.println("장 마감 또는 KIS 서버 연결 종료");
+            } else {
+                t.printStackTrace();
+            }
+        }
 
 	
 

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="kr.or.iei.comment.model.dao.CommentDao">
+	<select id="selectCommentList" parameterType="_int" resultType="kr.or.iei.comment.model.dto.Comment">
+	  SELECT c.comment_no AS commentNo,
+	         c.post_no AS postNo,
+	         c.user_no AS userNo,
+	         u.user_nickname AS userNickname,
+	         c.comment_content AS commentContent,
+	         c.comment_date AS commentDate,
+	         c.parent_comment_no AS parentCommentNo,
+	         c.comment_like_cnt AS commentLikeCnt
+	    FROM tbl_comment c
+	    JOIN tbl_user u ON c.user_no = u.user_no
+	   WHERE c.post_no = #{postNo}
+	</select>
+	
+	<!-- 댓글 작성 시, 댓글 DB 에 등록 -->
+	<insert id="insertComment" parameterType="kr.or.iei.comment.model.dto.Comment">
+		INSERT INTO tbl_comment (
+		    comment_no,
+		    post_no,
+		    user_no,
+		    comment_content,
+		    comment_date,
+		    parent_comment_no,
+		    comment_like_cnt
+		  	) VALUES (
+		    seq_comment_no.NEXTVAL,
+		    #{postNo},
+		    #{userNo},
+		    #{commentContent},
+		    SYSDATE,
+		    #{parentCommentNo},
+		    DEFAULT
+		)
+	</insert>
+	
+	<delete id="deleteComment" parameterType="string">
+		DELETE from tbl_comment where comment_no = #{_parameter}
+	</delete>
+	
+	<update id="updateComment" parameterType ="kr.or.iei.comment.model.dto.Comment">
+		UPDATE tbl_comment set comment_content = #{commentContent} where comment_no = #{commentNo}
+	</update>
+</mapper>
