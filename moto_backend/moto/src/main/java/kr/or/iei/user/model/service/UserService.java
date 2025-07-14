@@ -88,5 +88,17 @@ public class UserService {
 		return dao.selectAllList();
 	}
 	
+	@Transactional
+	public int updateUserRole(User user) {
+
+		return dao.updateUserRole(user);
+	}
+	
+	@Transactional
+	public int deleteUser(int userNo) {
+		
+		return dao.deleteUser(userNo);
+	}
+	
 	
 }

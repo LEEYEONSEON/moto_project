@@ -86,7 +86,27 @@ public class AssetController {
 		
 		return new ResponseEntity<ResponseDTO>(res,res.getHttpStatus());
 	}
-
+	
+	@PatchMapping("/sellAsset")
+	public ResponseEntity<ResponseDTO> watchListSellAsset(@RequestBody TradeDto trade){
+		ResponseDTO res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "주식 매도 중, 오류가 발생하였습니다.", false, "error");
+		
+		try {
+			
+		int result = service.watchListSellAsset(trade);
+		if(result > 0) {
+			res = new ResponseDTO(HttpStatus.OK, "주식 매도가 완료되었습니다.", true, "success");
+		}else {
+			res = new ResponseDTO(HttpStatus.OK, "주식 매도 중, 오류가 발생하였습니다.", false, "warning");
+		}
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus());  
+				
+	}
 
 
 	

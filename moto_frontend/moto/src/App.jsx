@@ -3,7 +3,6 @@ import Footer from './component/common/Footer';
 import Join from './component/user/Join'
 import Login from './component/user/Login'
 import './App.css'
-import PageMain from './component/PageMain';
 import Sidebar from './component/common/Sidebar';
 import { Route, Routes } from 'react-router-dom';
 import AssetPage from './component/asset/AssetPage';
@@ -14,6 +13,8 @@ import AdminMainPage from './component/admin/AdminMainPage';
 import PortfolioPage from './component/portfolio/PortfolioPage';
 import { useEffect } from "react";
 import useWsStore from "./store/useWsStore";
+import PageMain from './component/PageMain';
+
 
 
 

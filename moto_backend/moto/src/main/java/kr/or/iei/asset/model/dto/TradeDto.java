@@ -14,4 +14,5 @@ public class TradeDto {
 	private int amount;
 	private int currentPrice;
 	private int assetNo;
+	private int assetCode;
 }

@@ -6,7 +6,9 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import kr.or.iei.asset.model.dto.TradeDto;
 import kr.or.iei.watchlist.model.dao.WatchlistDao;
 import kr.or.iei.watchlist.model.dto.Watchlist;
 
@@ -37,4 +39,39 @@ public class WatchlistService {
 	public List<Watchlist> selectWatchlistByUserNo(String userNo) {
 		return dao.selectWatchlistByUserNo(userNo);
 	}
+
+	@Transactional
+	public int insertWatchlistBuyAsset(TradeDto trade) {
+		int assetNo = dao.selectAssetNo(trade.getAssetCode());
+		
+		trade.setAssetNo(assetNo);
+		int result = dao.insertWatchlistBuyAsset(trade);
+		
+		int insPortFolio = dao.insertPortFolio(trade);
+		dao.mergeHolding(trade);
+		if(result > 0) {
+			dao.resultPayWallet(trade);
+			 return result;
+		}
+		return result;
+	}
+
+	@Transactional
+	public int watchListSellAsset(TradeDto trade) {
+		
+		
+		int assetNo = dao.selectAssetNo(trade.getAssetCode());
+		trade.setAssetNo(assetNo);
+		
+		
+		
+		int result = dao.watchListSellAsset(trade);
+		if(result > 0) {
+			dao.resultSellPayWallet(trade);
+			return result;
+		}
+		return result;
+	}
+	
+	
 }

@@ -4,7 +4,10 @@ import Sidebar from "./common/Sidebar";
 import createInstance from "../axios/Interceptor";
 import PostWrite from "./post/PostWrite";
 import PostView from "./post/PostView";
+
+
 export default function PageMain(){
+
 
 
 
