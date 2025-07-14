@@ -11,6 +11,8 @@ import WalletInfo from './component/wallet/WalletInfo';
 import KakaoLogout from './component/common/KakaoLogout';
 import AdminMainPage from './component/admin/AdminMainPage';
 import PortfolioPage from './component/portfolio/PortfolioPage';
+import { useEffect } from "react";
+import useWsStore from "./store/useWsStore";
 import PageMain from './component/PageMain';
 
 
@@ -20,6 +22,29 @@ import PageMain from './component/PageMain';
 
 function App() {
   
+
+    //웹 소켓 사용해서 KIS 한국 투자증권 시세 연결 시작 하기 위한 용도 == 한번만 실행되도록 Zustand 로 wsStarted 상태 관리
+    //앱에서 딱 한번 선언.  
+    const { wsStarted, setWsStarted } = useWsStore();
+    const serverUrl = import.meta.env.VITE_BACK_SERVER;
+
+    useEffect(() => {
+      if (!wsStarted) {
+        fetch(serverUrl + "/asset/ws-start")
+          .then(res => {
+            if (res.ok) {
+              setWsStarted(true);
+              console.log("✅ WebSocket 연결 요청 보냄");
+            }
+          })
+          .catch(err => {
+            console.log("❌ WebSocket 연결 오류", err);
+          });
+      }
+    }, []);
+
+
+
   return (
     <div className='wrap'>
       <Header/>

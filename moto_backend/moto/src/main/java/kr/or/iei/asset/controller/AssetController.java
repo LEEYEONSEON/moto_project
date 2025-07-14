@@ -79,7 +79,14 @@ public class AssetController {
 			res = new ResponseDTO(HttpStatus.BAD_REQUEST, e.getMessage(), false, "warning");
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			
+			if (e instanceof java.net.SocketException &&
+			        e.getMessage() != null &&
+			        e.getMessage().contains("Connection reset by peer")) {
+			        System.err.println("❌ KIS 서버에서 연결 거부");
+			    }
+			
+			//e.printStackTrace();
 		}
 		
 		return new ResponseEntity<ResponseDTO>(res,res.getHttpStatus());

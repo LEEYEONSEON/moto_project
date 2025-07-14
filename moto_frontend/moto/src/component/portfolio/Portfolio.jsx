@@ -21,24 +21,6 @@ export default function Portfolio() {
   const serverUrl = import.meta.env.VITE_BACK_SERVER;
   const axiosInstance = createInstance();
 
-  //웹 소켓 사용해서 KIS 한국 투자증권 시세 연결 시작 하기 위한 용도 == 한번만 실행되도록 Zustand 로 wsStarted 상태 관리
-    const { wsStarted, setWsStarted } = useWsStore();
-
-        useEffect(function () {
-        if (!wsStarted) {
-            fetch(serverUrl + "/asset/ws-start")
-            .then(function(res) {
-                if (res.ok) {
-                setWsStarted(true); // 한번만 실행되게!
-                }
-            })
-            .catch(function(err) {
-                console.log("WS 연결 오류", err)
-            });
-        }
-    }, []);
-
-
     //보유중인 자산 불러오기
     useEffect(function() {
 
@@ -134,7 +116,7 @@ export default function Portfolio() {
 
     }   
 
-
+    
 
 
 
@@ -161,14 +143,38 @@ export default function Portfolio() {
                 100
             ).toFixed(2);
 
+            let className = "";
+            //console.log(item.currentPrice);
+            if (profit > 0) {
+                className = "positive";
+            } else if (profit == 0) {
+                className = isMarketClosed() ? "closed" : "zero";
+            } else if (item.currentPrice == 0) {
+                className = "zero";
+            } else {
+                className = "negative";
+            }
+
             return (
                 <tr key={item.assetCode}>
                 <td>{item.assetName}</td>
-                <td>{item.currentPrice ? item.currentPrice.toLocaleString() : "로딩 중..."}</td>
+                <td className={item.currentPrice ? "" : "zero"}>{item.currentPrice ? item.currentPrice.toLocaleString() : "로딩 중..."}</td>
                 <td>{item.quantity}</td>
                 <td>{item.avgBuyPrice.toLocaleString()}</td>
-                <td>{profit.toLocaleString()}</td>
-                <td>{profitRate}%</td>
+                <td className={className}>
+                    {item.currentPrice 
+                    ?
+                    profit.toLocaleString()
+                    : "로딩 중..."}
+                </td>
+                <td className={className}>
+                    {item.currentPrice 
+                    ?
+                    profitRate + "%"
+                    : "로딩 중..."
+                    }
+                    
+                </td>
                 </tr>
             );
             })}
