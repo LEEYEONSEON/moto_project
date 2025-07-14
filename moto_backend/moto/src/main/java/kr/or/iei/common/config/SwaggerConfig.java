@@ -15,16 +15,19 @@ import springfox.documentation.spring.web.plugins.Docket;
 
 @Configuration
 public class SwaggerConfig {
+
 	private ApiInfo swaggerInfo() {
 		//title : API 문서 제목
 		//description : API 문서 설명
 		
 		return new ApiInfoBuilder().title("MEMBER API").description("회원관리 기능 CRUD 문서").build();
 		
+
 	}
 	
 	//테스트 시, 요청 형식 지정
 	private Set<String> getConsumeContentType(){
+
 		
 		Set<String> consumes = new HashSet<String>();
 		//문서에서 테스트 요청 시, JSON 타입 또는 Form 태그 형식의 요청을 허용하기 위한 코드.
@@ -35,7 +38,9 @@ public class SwaggerConfig {
 	}
 	
 	//테스트 시, 응답 형식 지정
-	private Set<String> getProduceContentType() {
+
+	private Set<String> getProduceContentType(){
+
 		Set<String> produces = new HashSet<String>();
 		
 		produces.add("application/json; charset=utf-8");
@@ -44,7 +49,9 @@ public class SwaggerConfig {
 		return produces;
 	}
 	
-	//Swagger
+
+	//Swagger API 문서 객체 생성
+
 	@Bean
 	public Docket swaggerApi() {
 		return new Docket(DocumentationType.SWAGGER_2)
@@ -55,5 +62,6 @@ public class SwaggerConfig {
 				.paths(PathSelectors.any())					//모든 URL 패턴을 문서에 포함시킴
 				.build()									//최종적으로 Docket(문서 객체) 생성
 				.useDefaultResponseMessages(false);			//swagger 기본적으로 제공하는 응답메시지 설정 비활성화.
+
 	}
 }

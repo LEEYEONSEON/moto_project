@@ -25,6 +25,16 @@ public interface UserDao {
 
 	int deleteUser(int userNo);
 
+	User searchUserInfo(int userNo);
+
+	int updateUserInfo(User user);
+
+	int updateUserProfileImage(User user);
+
+	User getUserProfile(String userId);
+
+	int updateUserPassword(User user);
+
 	
 	
 

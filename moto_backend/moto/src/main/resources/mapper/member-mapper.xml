@@ -92,6 +92,23 @@
 	
 	</select>
 	
+	<!-- 회원 정보 조회 -->
+	<select id="searchUserInfo" parameterType="int" resultType="User">
+    SELECT user_no AS userNo,
+           user_id AS userId,
+           user_nickname AS userNickname,
+           user_email AS userEmail,
+           user_role AS userRole,
+           user_join_date AS userJoinDate,
+           user_post_like_count AS userPostLikeCount,
+           user_comment_like_count AS userCommentLikeCount,
+           user_sanction_count AS userSanctionCount,
+           user_social_type AS userSocialType
+    FROM tbl_user
+    WHERE user_no = #{userNo}
+</select>
+	
+	
 
 	<!-- 회원 등급 변경 -->
 	<update id="updateUserRole"
