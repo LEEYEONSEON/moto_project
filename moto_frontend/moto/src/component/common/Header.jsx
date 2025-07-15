@@ -61,8 +61,7 @@ function HeaderLink () {
 
     const {isLogined, setIsLogined, loginMember, kakaoMember, setLoginMember, setAccessToken, setRefreshToken, setKakaoMember, setTokenExpiresIn, setRefreshTokenExpiresIn} = useUserStore();
     const navigate = useNavigate();
-    console.log('header의 로그인 멤버 : ',loginMember);
-    console.log('header의 kakao로그인 멤버 : ',kakaoMember);
+
 
     //로그아웃 Link 클릭 시, 동작 함수
     function logout(e){
@@ -81,7 +80,7 @@ function HeaderLink () {
     }
     function requestKakaoLogout(e){
         e.preventDefault();
-        console.log("requestKakaoLogout");
+
         window.location.href = `${serverUrl}/auth/oauth2/kakao/logout`;
     }
 
@@ -102,7 +101,7 @@ function HeaderLink () {
             res.data.resData.refreshToken   == accessToken 만료 시, 재발급 요청할 때 필요한 토큰
 
             */
-           console.log(res.data.resData);
+
             if(res.data.resData == null){}});
     }
     function localTest(e){
@@ -122,7 +121,7 @@ function HeaderLink () {
             res.data.resData.refreshToken   == accessToken 만료 시, 재발급 요청할 때 필요한 토큰
 
             */
-           console.log(res.data.resData);
+
             if(res.data.resData == null){}});
     }
 
@@ -137,7 +136,7 @@ function HeaderLink () {
                 {loginMember ? (
                     <>
                         <li>
-                        <Link to="/member">{loginMember.userId}</Link>
+                        <Link to="/users/me">{loginMember.userId}</Link>
                         </li>
                         <li>
                         <a href="#" onClick={logout}>로그아웃</a>

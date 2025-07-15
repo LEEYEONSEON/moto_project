@@ -33,7 +33,7 @@ export default function Comment(props) {
     axiosInstance(options)
       .then(function (res) {
 
-        console.log(res.data.resData);
+
         setCommentList(res.data.resData);
       
       })

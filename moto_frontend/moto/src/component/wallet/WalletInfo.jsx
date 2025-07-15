@@ -107,9 +107,6 @@ export default function WalletInfo() {
         <div className="wallet-total" style={{paddingBottom:"20px"}}>
           {wallet.walletCashBalance.toLocaleString()} 원
         </div>
-        
-        {/* 현금 추가 버튼 */}
-        <div className="wallet-add-button">💰 현금 추가</div>
 
       </div>
       

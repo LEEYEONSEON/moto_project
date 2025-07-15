@@ -12,7 +12,7 @@ export default function KakaoLogout(){
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const state = params.get("state");
-        console.log(state);
+
 
 
         setIsLogined(false);
