@@ -102,16 +102,18 @@
 </update>
 	
 	
-	<!-- 종목리스트 매도 -->
-	<update id="watchListSellAsset"
-	parameterType="TradeDto">
-	
-	update tbl_trade
-		set trade_quantity = trade_quantity - #{amount},
-		 	trade_price = #{currentPrice}
-		 where user_no = #{userNo} and asset_no = #{assetNo}	
-	
-	</update>
+	<!-- 매도 내역 insert -->
+	<insert id="watchListSellAsset" parameterType="TradeDto">
+  		INSERT INTO tbl_trade VALUES (
+    		seq_trade_no.nextval,
+    		#{userNo},
+    		#{assetNo},
+    		'SELL',
+    		#{amount},
+    		#{currentPrice},
+    	  	DEFAULT
+  		)
+	</insert>
 	
 	
 	<!-- 매수 한 만큼 지갑 차감 -->
@@ -134,7 +136,7 @@
   		 UPDATE tbl_wallet w
     SET w.wallet_total_valuation = (
         w.wallet_cash_balance + (
-            SELECT NVL(SUM(h.holding_asset_quantity * a.current_price), 0)
+            SELECT NVL(SUM(h.holding_asset_quantity * #{currentPrice}), 0)
             FROM tbl_holding h
             JOIN tbl_asset a ON h.asset_no = a.asset_no
             WHERE h.user_no = w.user_no

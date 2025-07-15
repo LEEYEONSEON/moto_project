@@ -115,7 +115,7 @@ useEffect(function(){
                 
             })
             .catch(function(err){
-                console.log(err);
+
                 Swal.fire({
                     title: '오류',
                     text: '로그인 요청 중 오류가 발생했습니다.',

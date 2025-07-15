@@ -22,22 +22,31 @@ export default function UserInfo() {
     setLoginMember,
     setIsLogined,
     setAccessToken,
-    setRefreshToken
+    setRefreshToken,
+    kakaoMember
   } = useUserStore();
   
+  let member;
   const navigate = useNavigate();
   const [prevUserImage, setPreveUserImg] = useState();
   const profileImgEl = useRef(null);
 
+  if(kakaoMember){
+    member = kakaoMember;
+  }else if(loginMember){
+    member = loginMember;
+  }else{
+    member = null;
+  }
   useEffect(function () {
-    if (!loginMember || !loginMember.userNo) {
-      console.log("로그인 정보가 없거나 user_no가 없습니다.");
+    if (!member || !member.userNo) {
+ 
       return;
     }
 
-    console.log(loginMember.userNo);
+
     let options = {};
-    options.url = serverUrl + "/user/" + loginMember.userNo;
+    options.url = serverUrl + "/user/" + member.userNo;
     options.method = "get";
 
     axiosInstance(options)
@@ -87,7 +96,7 @@ export default function UserInfo() {
 
   function fetchUserData() {
     let options = {};
-    options.url = serverUrl + "/user/" + loginMember.userNo;
+    options.url = serverUrl + "/user/" + member.userNo;
     options.method = "get";
 
     axiosInstance(options)
@@ -120,7 +129,7 @@ export default function UserInfo() {
             userRole: user.userRole
           })
           .then(function () {
-            console.log("기본 정보 수정 완료");
+
 
           
             if (user.userProfileImg && user.userProfileImg instanceof File) {
@@ -130,7 +139,7 @@ export default function UserInfo() {
               axiosInstance
                 .patch(serverUrl + "/user/updateProfileImage/" + user.userNo, formData)
                 .then(function () {
-                  console.log("프로필 이미지 수정 완료");
+ 
                   Swal.fire("성공", "회원 정보가 수정되었습니다.", "success");
                   fetchUserData(); 
                   setPreveUserImg(null);

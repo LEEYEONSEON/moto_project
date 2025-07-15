@@ -58,21 +58,19 @@ public class WatchlistService {
 
 	@Transactional
 	public int watchListSellAsset(TradeDto trade) {
-		
-		
-		int assetNo = dao.selectAssetNo(trade.getAssetCode());
-		trade.setAssetNo(assetNo);
-		
-		
-		
-		int result = dao.watchListSellAsset(trade);
-		
-		if(result > 0) {
-			dao.resultSellPayWallet(trade);
-			return result;
-		}
-		return result;
+	    int assetNo = dao.selectAssetNo(trade.getAssetCode());
+	    trade.setAssetNo(assetNo);
+
+	    int result = dao.watchListSellAsset(trade); // 거래 내역 추가
+
+	    if(result > 0) {
+	        dao.mergeHoldingSell(trade);            // 보유 수량 감소
+	        dao.addSellCashToWallet(trade);        // 
+	        dao.resultSellPayWallet(trade);         // 지갑 반영
+	        return result;
+	    }
+	    return result;
 	}
-	
+
 	
 }

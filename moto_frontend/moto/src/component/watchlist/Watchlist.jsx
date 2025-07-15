@@ -96,7 +96,7 @@ export default function Watchlist() {
         const eventSource = new EventSource(serverUrl + "/asset/price-stream");
 
         eventSource.addEventListener("asset", function (event) { //"asset" 이벤트 오면 실행됨
-        //console.log(event.data);         
+
         if (!event || !event.data) return; //event.data 없으면 중단 (ping 같은 거 거르기) 
 
         //!event : event가 null, undefined, false 등
@@ -235,7 +235,7 @@ export default function Watchlist() {
     
         axiosInstance(options)
           .then(function (res) {
-            
+            window.location.reload();
           })
     
     }
@@ -348,8 +348,6 @@ export default function Watchlist() {
                                     : (asset.priceChangeRate != null ? parseFloat(asset.priceChangeRate).toFixed(2) + '%' : "")
                             }
                         </td>
-
-
 
                         <td>
                       <button

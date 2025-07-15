@@ -3,130 +3,174 @@
 <mapper namespace="kr.or.iei.user.model.dao.UserDao">
   
   <!-- 아이디 중복 체크 -->
-	<select id="chkUserId" 
-	parameterType="string" 
-	resultType="_int">
-	select count(*)
-	  from tbl_user
-	 where user_id = #{_parameter}
-	</select>
+   <select id="chkUserId" 
+   parameterType="string" 
+   resultType="_int">
+   select count(*)
+     from tbl_user
+    where user_id = #{_parameter}
+   </select>
   
   <!-- 이메일 중복 체크 -->
-	<select id="chkUserEmail" 
-	parameterType="string" 
-	resultType="_int">
-	select count(*)
-	  from tbl_user
-	 where user_email = #{_parameter}
-	</select>
-	
-	<!-- 회원가입 -->
-	<insert id="insertUser"
-	parameterType="User">
-	insert into tbl_user
-		(
-		user_no,
-		user_id,
-		user_nickname,
-		user_email,
-		user_password,
-		user_role,
-		user_join_date,
-		user_post_like_count,
-		user_comment_like_count,
-		user_sanction_count,
-		user_social_type
-		)
-	values 
-		(
-		seq_user_no.nextval, 
-		#{userId},
-		#{userNickname},
-		#{userEmail},
-		#{userPassword},
-		default,
-		sysdate,
-		default,
-		default,
-		default,
-		'LOCAL'
-		)
-	</insert>
-	
-	<!-- 로그인 -->
-	<select id="userLogin"
-	parameterType="string"
-	resultType="User">
-	select user_no as userNo,
-			user_id as userId,
-			user_nickname as userNickname,
-			user_email as userEmail,
-		   user_password as userPassword,
-		   user_role as userRole,
-		   user_join_date as userJoinDate,
-		   user_post_like_count as userPostLikeCount,
-		   user_comment_like_count as userCommentLikeCount,
-		   user_sanction_count as userSanctionCount,
-		   user_social_type as userSocialType,
-		   user_profile_img as userProfileImg
-	  from tbl_user
-	 where user_id = #{_parameter}
-	</select>
-	
-	<select id="selectCurrUserNo" resultType="int">
-		SELECT seq_user_no.CURRVAL FROM dual
-	</select>
+   <select id="chkUserEmail" 
+   parameterType="string" 
+   resultType="_int">
+   select count(*)
+     from tbl_user
+    where user_email = #{_parameter}
+   </select>
+   
+   <!-- 회원가입 -->
+   <insert id="insertUser"
+   parameterType="User">
+   insert into tbl_user
+      (
+      user_no,
+      user_id,
+      user_nickname,
+      user_email,
+      user_password,
+      user_role,
+      user_join_date,
+      user_post_like_count,
+      user_comment_like_count,
+      user_sanction_count,
+      user_social_type
+      )
+   values 
+      (
+      seq_user_no.nextval, 
+      #{userId},
+      #{userNickname},
+      #{userEmail},
+      #{userPassword},
+      default,
+      sysdate,
+      default,
+      default,
+      default,
+      'LOCAL'
+      )
+   </insert>
+   
+   <!-- 로그인 -->
+   <select id="userLogin"
+   parameterType="string"
+   resultType="User">
+   select user_no as userNo,
+         user_id as userId,
+         user_nickname as userNickname,
+         user_email as userEmail,
+         user_password as userPassword,
+         user_role as userRole,
+         user_join_date as userJoinDate,
+         user_post_like_count as userPostLikeCount,
+         user_comment_like_count as userCommentLikeCount,
+         user_sanction_count as userSanctionCount,
+         user_social_type as userSocialType,
+         user_profile_img as userProfileImg
+     from tbl_user
+    where user_id = #{_parameter}
+   </select>
+   
+   <select id="selectCurrUserNo" resultType="int">
+      SELECT seq_user_no.CURRVAL FROM dual
+   </select>
 
-	<!-- 회원 정보 전체 조회 -->
-	<select id="selectAllList"
-	resultType="User">
-	
-	select user_no as userNo,
-		   user_id as userId,
-		   user_Nickname as userNickname,
-		   user_email as userEmail,
-		   user_role as userRole,
-		   user_Join_date as userJoinDate,
-		   user_social_type as userSocialType
-		from tbl_user
-	
-	</select>
-	
-	<!-- 회원 정보 조회 -->
-	<select id="searchUserInfo" parameterType="int" resultType="User">
-    SELECT user_no AS userNo,
-           user_id AS userId,
-           user_nickname AS userNickname,
-           user_email AS userEmail,
-           user_role AS userRole,
-           user_join_date AS userJoinDate,
-           user_post_like_count AS userPostLikeCount,
-           user_comment_like_count AS userCommentLikeCount,
-           user_sanction_count AS userSanctionCount,
-           user_social_type AS userSocialType
-    FROM tbl_user
-    WHERE user_no = #{userNo}
+   <!-- 회원 정보 전체 조회 -->
+   <select id="selectAllList"
+   resultType="User">
+   
+   select user_no as userNo,
+         user_id as userId,
+         user_Nickname as userNickname,
+         user_email as userEmail,
+         user_role as userRole,
+         user_Join_date as userJoinDate,
+         user_social_type as userSocialType
+      from tbl_user
+   
+   </select>
+   
+   <!-- 회원 정보 조회 -->
+   <select id="searchUserInfo" parameterType="int" resultType="User">
+    select user_no as userNo,
+           user_id as userId,
+           user_nickname as userNickname,
+           user_email as userEmail,
+           user_password as userPassword,
+           user_role as userRole,
+           user_join_date as userJoinDate,
+           user_post_like_count as userPostLikeCount,
+           user_comment_like_count as userCommentLikeCount,
+           user_sanction_count as userSanctionCount,
+           user_social_type as userSocialType,
+           user_profile_img as userProfileImg
+    from tbl_user
+    where user_no = #{userNo}
 </select>
-	
-	
 
-	<!-- 회원 등급 변경 -->
-	<update id="updateUserRole"
-	parameterType="User">
-	
-	update tbl_user
-		set user_role = #{userRole}
-	  where user_no = #{userNo}
-	
-	</update>
-	
-	<!-- 회원 정보 삭제 -->
-	<delete id="deleteUser"
-	parameterType="int">
-	
-	delete from tbl_user where user_no = #{userNo}
+   <!-- 회원 정보 수정 -->
+   <update id="updateUserInfo" parameterType="User">
+    update tbl_user
+         set
+         user_nickname = #{userNickname},
+         user_email = #{userEmail},
+         user_profile_img = #{userProfileImg}
+    where user_no = #{userNo}
+   </update>
+   
+   <!-- 프로필 이미지 경로 업데이트 -->
+   <update id="updateUserProfileImage" parameterType="User">
+    update tbl_user
+           set
+           user_profile_img = #{userProfileImg}
+     where user_no = #{userNo}
+   </update>
+   
+   <!-- 비밀번호 변경 -->
+   <update id="updateUserPassword" parameterType="User">
+     update tbl_user
+     set user_password = #{userPassword}
+      where user_no = #{userNo}
+   </update>
+   
+   <!-- 유저 프로필 정보 -->
+   <select id="getUserProfile" parameterType="string" resultType="User">
+     select user_no as userNo,
+         user_id as userId,
+         user_nickname as userNickname,
+         user_email as userEmail,
+         user_password as userPassword,
+         user_role as userRole,
+         user_join_date as userJoinDate,
+         user_post_like_count as userPostLikeCount,
+         user_comment_like_count as userCommentLikeCount,
+         user_sanction_count as userSanctionCount,
+         user_social_type as userSocialType,
+         user_profile_img as userProfileImg
+    from tbl_user
+   where user_id = #{_parameter}
+   </select>
+   
+   
 
-	
-	</delete>
+   <!-- 회원 등급 변경 -->
+   <update id="updateUserRole"
+   parameterType="User">
+   
+   update tbl_user
+      set user_role = #{userRole}
+     where user_no = #{userNo}
+   
+   </update>
+   <!-- 회원 정보 삭제 -->
+   <delete id="deleteUser"
+   parameterType="int">
+   
+   delete from tbl_user where user_no = #{userNo}
+
+   
+   </delete>
 
 </mapper>

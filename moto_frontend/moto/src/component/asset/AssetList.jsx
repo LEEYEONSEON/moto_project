@@ -51,7 +51,7 @@ export default function AssetList() {
                 }
             })
             .catch(function(err) {
-                console.log("WS 연결 오류", err)
+            
             });
         }
     }, []);
@@ -167,7 +167,7 @@ export default function AssetList() {
             .then(function(res) {
 
                 const assetList = res.data.resData;
-                //console.log("watchlist 응답", res.data.resData);
+               
                 if (res.data.resData != null) {
                     const newWatchlist = (assetList.map(function(item, index) {
                         return item.assetCode;
@@ -260,8 +260,7 @@ export default function AssetList() {
 
     alert(tradeType + " 요청 완료 (총 금액: " + totalPrice + ")");
     setSelectedAsset(null);
-    console.log(selectedAsset.assetNo);
-
+   
     
       if(tradeType == 'BUY'){
         const options = {
@@ -278,7 +277,16 @@ export default function AssetList() {
     
         axiosInstance(options)
           .then(function (res) {
-            
+            Swal.fire({
+              title : "알림",
+              text : res.data.clientMsg,
+              icon : res.data.alertIcon,
+              confirmButtonText : "확인"
+            }).then(function(res){
+              if(res.isConfirmed){
+                window.location.reload();
+              }
+            })
           })
     }
     }
@@ -408,7 +416,7 @@ export default function AssetList() {
         )}
 
         {/* 매수/매도 모달 */}
-        {selectedAsset != null && selectedAsset.currentPrice != 0 &&(
+        {selectedAsset != null &&(
           <div className="modal">
             <div className="modal-content">
               <h3>{tradeType === "BUY" ? "매수" : "매도"} 확인</h3>
@@ -427,10 +435,7 @@ export default function AssetList() {
                   }}
                 />
               </label>
-
-
               <p>총 금액: {totalPrice.toLocaleString()} 원</p>
-
               {notEnoughCash && <p style={{ color: "red" }}>보유 현금이 부족합니다.</p>}
 
               <button onClick={handleTradeSubmit} disabled={notEnoughCash}>
@@ -447,10 +452,5 @@ export default function AssetList() {
           </div>
         )}
       </section>
-
   );
-
-
-
-
 }

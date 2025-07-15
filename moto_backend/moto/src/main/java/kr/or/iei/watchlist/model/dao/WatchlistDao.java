@@ -33,6 +33,10 @@ public interface WatchlistDao {
 
 	void mergePortfolio(TradeDto trade);
 
+	void mergeHoldingSell(TradeDto trade);
+
+	void addSellCashToWallet(TradeDto trade);
+
 
 
 }
