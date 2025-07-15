@@ -73,6 +73,7 @@ export default function PostView() {
   }
 
   return (
+    
     <div className="post-view-container">
       <div className="post-list-wrap">
         {postList.length == 0 ? (

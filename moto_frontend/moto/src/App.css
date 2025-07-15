@@ -1,8 +1,10 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
+  box-sizing: border-box;
+  padding-left: 60px;
+  
+
 }
 
 .logo {
@@ -40,3 +42,102 @@
 .read-the-docs {
   color: #888;
 }
+
+/* layout 전체 너비를 100%로 유지 */
+.layout {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+
+/* sidebar 열릴 때 main을 밀도록 수정 */
+.layout.shifted .main {
+  margin-left: 240px;
+  transition: margin-left 0.3s ease;
+}
+
+/* 기본 메인 설정 */
+.main {
+  width: 100%;
+  min-height: 100vh;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #111;
+  transition: margin-left 0.3s ease;
+  
+}
+
+
+
+.main-content {
+  padding-top: 64px;       /* 헤더 높이 */
+  padding-bottom: 100px;   /* 푸터 공간 확보 */
+  min-height: fit-content;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 auto;
+
+
+  transition: padding-left 0.3s; /* 애니메이션 효과 optional */
+}
+
+
+
+
+
+
+
+/* 사이드바 있는 경우 푸쉬될 요소들 */
+.layout.shifted section,
+.layout.shifted .header,
+.layout.shifted .wallet-container,
+.layout.shifted .login-wrap {
+  margin-left: 130px; 
+  transition: margin-left 0.3s ease;
+}
+
+
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  background-color: #121212;
+  z-index: 99;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  transition: margin-left 0.3s ease;
+}
+
+.content-wrap {
+  width: 100%;
+  flex : 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar {
+  width: 60px;
+  transition: width 0.3s;
+}
+.sidebar.open {
+  width: 240px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

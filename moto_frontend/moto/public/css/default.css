@@ -68,24 +68,44 @@ a {
   position: sticky; 
   top: 0;
   z-index:1;
+
 }
 .header > div {
-  padding: 10px;
-  min-width: 1400px;
   margin: 0 auto;
   display: flex; 
   align-items: center;
+  margin-left: 13%;
+  margin-right: 15%;
 }
 .header a {
   color: var(--gray8);
 }
 .logo {
   margin-right: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.2;
 }
 .logo > a {
   font-family: ns-black;
   font-size: 28px;
+  color : #646cff;
 }
+
+.logo-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #647eff;
+  text-decoration: none;
+}
+
+.logo-sub {
+  font-size: 14px;
+  color: #ccc;
+  margin-top: 2px;
+}
+
 .nav {
   flex: 1;
 }
@@ -177,11 +197,10 @@ a {
   color: var(--line5);
 }
 
-section.section {
-  padding: 20px;
-  border-radius: 10px; 
-  background-color: var(--gray8);
-}
+
+
+
+
 section.section.bg-section {
   background-color: var(--box-bg);
 }
@@ -540,4 +559,13 @@ section.section.bg-section {
 .pagination .page-item.active-page {
   background-color: var(--main2);
   color: #fff;
+}
+
+
+.swal2-confirm {
+  padding: 10px 24px !important;
+  font-size: 16px !important;
+  min-width: 80px;
+  height: auto;
+  line-height: 1.4;
 }

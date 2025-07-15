@@ -46,8 +46,19 @@ export default function Watchlist() {
 
     //워치리스트 목록 조회 == 처음 랜더링 시에만 필요 (불러올 항목, assetCode, assetName, high_52, low_52)
     useEffect(function() {
-         
-        if (member != null) { // 로그인 되어 있을 때만 요청
+        
+        if (member == null) {
+        //로그인 하지 않은 회원인 경우
+                Swal.fire({
+                    title : "알림",
+                    text:"로그인후 이용 가능합니다.",
+                    icon: "warning",
+                    confirmButtonText:"확인"
+                });
+    
+                navigate("/login");
+    
+            }else { // 로그인 되어 있을 때만 요청
             let userNo = member.userNo;
             
             let options = {

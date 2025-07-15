@@ -239,8 +239,8 @@ export default function Login() {
     }
 
     return (
-        <section className="section login-wrap">
-            <div className="page-title">로그인</div>
+        <section className="login-wrap">
+            <div>
             <form autoComplete="off" onSubmit={function(e){
                 e.preventDefault(); //form태그 기본 이벤트 제어
                 login();            //로그인 요청 함수 호출
@@ -261,22 +261,24 @@ export default function Login() {
                         <input type="password" id="userPassword" value={user.userPassword} onChange={chgUser}/>
                     </div>
                 </div>
-                <div className="login-button-box">
-                    <button type="submit" className="btn-primary lg">
+                <div className="button-group">
+                    <button type="submit" className="btn-primary lg" style={{ padding: "5px 25px" }}>
                         로그인
                     </button>
+                
+                {/* 카카오 소셜 로그인 버튼 추가 */}
+                    <img
+                    src="/images/kakao_login_medium_wide.png" // public 폴더에서 제공되는 이미지 경로
+                    alt="카카오 로그인 버튼"
+                    className="kakao-login-btn"
+                    onClick={requestKakaoAuth} // 주석: 버튼 클릭 시 카카오 OAuth 인가 코드 요청
+                    style={{ cursor: 'pointer' }}
+                    />
                 </div>
             </form>
-            {/* 카카오 소셜 로그인 버튼 추가 */}
-            <div className="social-login">
-                <img
-                src="/images/kakao_login_medium_wide.png" // public 폴더에서 제공되는 이미지 경로
-                alt="카카오 로그인 버튼"
-                className="kakao-login-btn"
-                onClick={requestKakaoAuth} // 주석: 버튼 클릭 시 카카오 OAuth 인가 코드 요청
-                style={{ cursor: 'pointer' }}
-                />
+
             </div>
+            
         </section>
     );
 }

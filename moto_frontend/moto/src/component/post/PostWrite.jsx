@@ -228,6 +228,7 @@ function PostWrite() {
                     </tbody>
                 </table>
             </form>
+
         </div>
     );
 }

@@ -59,7 +59,7 @@ export default function WalletInfo() {
 
   // 실제 화면 렌더링 (JSX 반환)
   return (
-  <div className="wallet-container" style={{ width: "100%" }}>
+  <div className="wallet-container">
    
       {/* 지갑이 존재할 경우: 전체 JSX 묶음*/}
       <div>

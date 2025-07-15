@@ -1,9 +1,10 @@
 /* ================================
    📌 최상단 작성 영역 (Post Input)
    ================================ */
-.notice-write {
+
+
+  .notice-write {
   display: flex;
-  justify-content: center;
   background-color: #000;
   padding: 40px;
   border-top: 1px solid #222;

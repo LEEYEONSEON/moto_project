@@ -135,13 +135,81 @@ export default function CommentList(props) {
     });
   }
 
+
+                        
+  //좋아요 기능을 위한 상태변수 == 댓글 번호를 key로 해서 상태 저장
+  const [likedMap, setLikedMap] = useState({});      // {17: true, 18: false, ...} 댓글 No 에 대한 로그인유저의 좋아요 상태
+  const [likeCountMap, setLikeCountMap] = useState({}); // {17: 4, 18: 1, ...} 각 댓글에 좋아요 갯수
+
+  useEffect(function() {
+  const initialLiked = {};
+  const initialCount = {};
+
+    for (let i = 0; i < props.commentList.length; i++) {
+      const comment = props.commentList[i];
+      initialLiked[comment.commentNo] = comment.commentLikeYn;
+      initialCount[comment.commentNo] = comment.commentLikeCnt;
+    }
+
+    setLikedMap(initialLiked);
+    setLikeCountMap(initialCount);
+  }, [props.commentList]);
+
+
+  function toggleLike(commentNo) {
+    const liked = likedMap[commentNo]; // 현재 상태
+    const newLiked = !liked; //토글 누를 시, 현재상태 반전.
+
+    //비로그인 유저 막기
+    if (!member || !member.userNo) {
+      Swal.fire("로그인 필요", "로그인 후 이용해주세요", "warning");
+      return;
+    }
+
+    // 백엔드로 토글 요청 보내기
+
+    let options = {};
+    options.method = "post";
+    options.url = serverUrl + "/like/toggle";
+    options.data = {
+      userNo: member.userNo,
+      likeTargetType : "COMMENT",
+      likeTargetId : commentNo
+    }
+
+    axiosInstance(options)
+    .then(function(res) {
+      // 프론트 상태 변경
+      setLikedMap(function(prev) {
+        return { ...prev, [commentNo]: newLiked };
+      });
+
+      setLikeCountMap(function(prev) {
+        return {
+          ...prev,
+          [commentNo]: newLiked ? prev[commentNo] + 1 : prev[commentNo] - 1
+        };
+      });
+
+    })
+    .catch(function(err) {
+      Swal.fire("오류", "좋아요 실패", "error");
+      return;
+    })
+
+  }
+
+
+
+
+
   return (
     
      <div className="comment-wrap">
+      <div className="comment-innerWrap">
       <table className="tbl comment-list comment-table">
         <tbody>
-          {parentComments.map(function (parent) {
-            
+          {parentComments.map(function (parent) {         
             //대댓글 갯수.
             const replyCount = commentList.filter(function (e) {
               return e.parentCommentNo === parent.commentNo;
@@ -169,7 +237,7 @@ export default function CommentList(props) {
                       </>
                     ) : (
                       // 수정 중이 아니면 원래 댓글 내용 표시
-                      <span>{parent.commentContent}</span>
+                      <span className="comment" >{parent.commentContent}</span>
                     )}
                   </td>
                   
@@ -178,6 +246,11 @@ export default function CommentList(props) {
                 <tr className="reply-settings-child">
                     <td colSpan={2}>
                       
+                      
+                      <span className="edit-link" onClick={function() { toggleLike(parent.commentNo); }}>
+                        {likedMap[parent.commentNo] ? "♥" : "♡"} {likeCountMap[parent.commentNo]} likes
+                      </span>
+
                       {replyCount > 0 && (
                         <span className="toggle-replies" onClick={function () {
                         toggleReplies(parent.commentNo);
@@ -241,10 +314,16 @@ export default function CommentList(props) {
 
                           ) : (
                             // 수정 중이 아니면 원래 댓글 내용 표시
-                            <span>{child.commentContent}</span>
+                            <span className="comment" >{child.commentContent}</span>
                           )}
-                        
+
+                          <span className="edit-link" onClick={function() { toggleLike(child.commentNo); }}>
+                            {likedMap[child.commentNo] ? "♥" : "♡"} {likeCountMap[child.commentNo]} likes
+                          </span>
+                          
                           {member !== null && member.userNo === child.userNo ? (
+                          
+                          
                           <span className="more-options">
                             
                             <a
@@ -276,6 +355,7 @@ export default function CommentList(props) {
           })}
         </tbody>
       </table>
+      </div>
     </div>
 
   );

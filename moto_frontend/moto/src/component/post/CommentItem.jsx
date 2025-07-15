@@ -23,7 +23,11 @@ export default function Comment(props) {
     
     let options = {};
     options.method = "get";
-    options.url = serverUrl + "/comment/list/" + postNo;
+    options.url = serverUrl + "/comment/list"
+    options.params = {
+      postNo: postNo,
+      loginUserNo: loginMember !== null ? loginMember.userNo : ""
+    }
 
     
     axiosInstance(options)
@@ -31,6 +35,7 @@ export default function Comment(props) {
 
         console.log(res.data.resData);
         setCommentList(res.data.resData);
+      
       })
       .catch(function (err) {
         console.error("댓글 불러오기 실패", err);
@@ -88,7 +93,8 @@ export default function Comment(props) {
 
   return (
  
-    <div className="comment-wrap">
+    <div className="comment-wrap" style={{ padding: "0px 0px" }}>
+      <div className="comment-innerWrap">
 
       <CommentList postNo = {postNo} commentList={commentList} setCommentList={setCommentList} onReply={handleReplyClick} />
       
@@ -126,6 +132,7 @@ export default function Comment(props) {
       ) : (
         <p>로그인 후 댓글 작성이 가능합니다.</p>
       )}
+      </div>
     </div>
 
   );

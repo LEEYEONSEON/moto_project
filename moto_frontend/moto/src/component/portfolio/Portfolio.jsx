@@ -14,13 +14,13 @@ export default function Portfolio() {
   const [error, setError] = useState(null);
 
   const { loginMember, kakaoMember } = useUserStore();
-
+  const member = loginMember || kakaoMember;
 
 
 
   const serverUrl = import.meta.env.VITE_BACK_SERVER;
   const axiosInstance = createInstance();
-
+  const navigate = useNavigate();
     //보유중인 자산 불러오기
     useEffect(function() {
 
@@ -32,6 +32,20 @@ export default function Portfolio() {
                 }else{
                     userNo = null;
             }
+
+        if (member == null) {
+        //로그인 하지 않은 회원인 경우
+            Swal.fire({
+                title : "알림",
+                text:"로그인후 이용 가능합니다.",
+                icon: "warning",
+                confirmButtonText:"확인"
+            });
+
+            navigate("/login");
+
+        }else{
+                
         //console.log(userNo);
         let options = {
             url: serverUrl + "/portfolio/" + userNo, // ← userNo path로 전달
@@ -67,9 +81,10 @@ export default function Portfolio() {
             console.error("포트폴리오 조회 실패", err);
             setLoading(false);
         });
+    }
     
     }, []);
-
+    
 
     
     // SSE 실시간 가격 업데이트

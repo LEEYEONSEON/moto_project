@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kr.or.iei.comment.model.dto.Comment;
 import kr.or.iei.comment.model.service.CommentService;
 import kr.or.iei.common.annotation.NoTokenCheck;
 import kr.or.iei.common.model.dto.ResponseDTO;
+import kr.or.iei.like.model.dto.Like;
 
 @RestController
 @CrossOrigin("http://localhost:5173")
@@ -29,14 +31,17 @@ public class CommentController {
 	@Autowired private CommentService service;
 	
 	@NoTokenCheck
-	@GetMapping("/list/{postNo}")
-	public ResponseEntity<ResponseDTO> selectCommentList(@PathVariable int postNo){
+	@GetMapping("/list")
+	public ResponseEntity<ResponseDTO> selectCommentList(@RequestParam int postNo, @RequestParam String loginUserNo) {
 
 		ResponseDTO res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "댓글 조회 중, 오류가 발생하였습니다.", false, "error");
-		
-		try {
 			
-			List<Comment> commentList = service.selectCommentList(postNo);
+		try {
+				Comment comment = new Comment();
+			 	comment.setPostNo(postNo);
+			 	comment.setLoginUserNo(loginUserNo);
+				
+				List<Comment> commentList = service.selectCommentList(comment);
 			
 
 				res = new ResponseDTO(HttpStatus.OK, "", commentList , "");
@@ -106,5 +111,9 @@ public class CommentController {
 		
 		return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus());
 	}
+	
+	
+	
+	
 	
 }

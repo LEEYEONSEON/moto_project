@@ -14,7 +14,7 @@ td {
 
 .comment {
     color: white !important;   
-    margin-right: 30px;
+    margin-right: 0px;
 
 }
 
@@ -25,14 +25,10 @@ td {
 .comment-table {
     width: 100%;
     border-collapse: collapse;
-    width: 100%;
     table-layout: fixed !important;
 
 }
 
-.comment-wrap {
-    display: flex;
-}
 
 
 .parent-comment, .parent-comment td {
@@ -75,7 +71,6 @@ a.edit-link:hover {
 
 .child-comment-cancel {
     width : 50px;
-    background: #000000;
     color: white;
     padding-top: none !important;
     margin-top: none;
@@ -114,18 +109,19 @@ textarea:focus {
 }
 
 .edit-link {
-    margin-left: 10px;
+    margin-right: 10px;
     font-size: 10px;
     color: rgba(128, 128, 128, 0.794); 
     cursor: pointer;
+
 }
 
 td.parent-comment-content {
     padding-right: 0px;
-    padding-bottom: 0px !important;
-    margin-bottom: 0px !important;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
     font-size: 12px;
-    vertical-align: text-top !important;
+    vertical-align: text-top;
 }
 
 
@@ -145,10 +141,11 @@ td.child-comment-second-col {
 
 
 .comment-wrap {
-  padding: 10px;
   font-size: 14px;
   display: flex;
   flex-direction: column;
+  padding: 0px, 0px;
+
 }
 
 .comment-item {
@@ -275,5 +272,6 @@ td.reply-settings {
 .cancel-re-reply {
     padding-top : 0px !important;
     text-align: left;
-    padding-left: 515px;
+    padding-left: 400px;
+    
 }

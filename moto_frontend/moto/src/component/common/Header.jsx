@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import useUserStore from "../../store/useUserStore";
 import createInstance from "../../axios/Interceptor";
+import "./header.css";
 
 //화면 상단 헤더
 export default function Header () {
@@ -16,17 +17,20 @@ export default function Header () {
 
     return (
         <header className="header">
-            <div>
-                <div className="logo">
-                    <Link to="/">MoTo</Link>
-                </div>
-                <MainNavi />
+            <div className="header-sub">
+                    <div className="logo" style={{ marginTop: "10px"}}>
+                        <Link to="/">MOTU
+                        <span className="logo-sub">&nbsp;&nbsp;모두의 투자</span>
+
+                        </Link>
+                    </div>                    
                 <HeaderLink />
             </div>
         </header>
     );
 }
 
+{/*
 //헤더 중앙 메뉴
 function MainNavi () {
     return (
@@ -37,6 +41,8 @@ function MainNavi () {
         </nav>
     );
 }
+
+*/}
 
 //헤더 우측 메뉴
 function HeaderLink () {
@@ -124,6 +130,7 @@ function HeaderLink () {
 
 
     return (
+        <>
         <ul className="user-menu" >
             {isLogined ? (
             <>
@@ -136,9 +143,12 @@ function HeaderLink () {
                         <a href="#" onClick={logout}>로그아웃</a>
                         
                         </li>
+                        
+                        {/*
                         <li>
                         <a href="#" onClick={localTest}>localJwtTest</a>
                         </li>
+                        */}
                         {loginMember.userRole == 1
                         ? <li><Link to="/admin">관리자페이지</Link></li>
                         :""}
@@ -167,5 +177,7 @@ function HeaderLink () {
             </>
             )}
         </ul>
+        <div className="header-spacer" />
+        </>
     );
 }

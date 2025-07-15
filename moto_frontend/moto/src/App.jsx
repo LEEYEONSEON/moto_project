@@ -11,7 +11,7 @@ import WalletInfo from './component/wallet/WalletInfo';
 import KakaoLogout from './component/common/KakaoLogout';
 import AdminMainPage from './component/admin/AdminMainPage';
 import PortfolioPage from './component/portfolio/PortfolioPage';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useWsStore from "./store/useWsStore";
 import PageMain from './component/PageMain';
 
@@ -27,6 +27,7 @@ function App() {
     //앱에서 딱 한번 선언.  
     const { wsStarted, setWsStarted } = useWsStore();
     const serverUrl = import.meta.env.VITE_BACK_SERVER;
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false); // 기본은 닫힘
 
     useEffect(() => {
       if (!wsStarted) {
@@ -43,30 +44,36 @@ function App() {
       }
     }, []);
 
+     function handleToggleSidebar() {
+      setIsSidebarOpen(!isSidebarOpen);
+    }
+
 
 
   return (
-    <div className='wrap'>
-      <Header/>
-      <main className='content' style={{display:"flex"}}>
-      <Sidebar/>
-      <Routes>
-      <Route path='/' element={<PageMain />} />
-      <Route path='/main/:reqPage' element={<PageMain />} />
-      <Route path='/join' element={<Join />} />
-      <Route path='/login' element={<Login/>} />
-      <Route path='/kakaoLogout' element={<KakaoLogout />} />
-      <Route path="/asset/*" element={<AssetPage />} />
-      <Route path='/wallet' element={<WalletInfo/>} />
-      <Route path='/admin' element={<AdminMainPage />} />
-      <Route path="/watchlist/*" element={<WatchlistPage />} />
-      <Route path="/portfolio/*" element={<PortfolioPage />} />
-      </Routes>
-      </main>
-
-      <Footer/>
+     <div className={`layout ${isSidebarOpen ? 'shifted' : ''}`}>
+      <Sidebar onToggleSidebar={handleToggleSidebar}/>
+      <div className="content-wrap">
+        <Header />
+        <main className={`main-content ${isSidebarOpen ? 'shifted' : ''}`}>
+          <Routes>
+            <Route path='/' element={<PageMain />} />
+            <Route path='/main/:reqPage' element={<PageMain />} />
+            <Route path='/join' element={<Join />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/kakaoLogout' element={<KakaoLogout />} />
+            <Route path="/asset/*" element={<AssetPage />} />
+            <Route path='/wallet' element={<WalletInfo />} />
+            <Route path='/admin' element={<AdminMainPage />} />
+            <Route path="/watchlist/*" element={<WatchlistPage />} />
+            <Route path="/portfolio/*" element={<PortfolioPage />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
     </div>
   );
 }
+
 
 export default App;
