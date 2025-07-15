@@ -16,6 +16,7 @@ import PortfolioPage from './component/portfolio/PortfolioPage';
 import { useEffect, useState } from "react";
 import useWsStore from "./store/useWsStore";
 import PageMain from './component/PageMain';
+import Mypage from './component/user/Mypage';
 
 
 
@@ -70,6 +71,7 @@ function App() {
             <Route path='/admin' element={<AdminMainPage />} />
             <Route path="/watchlist/*" element={<WatchlistPage />} />
             <Route path="/portfolio/*" element={<PortfolioPage />} />
+            <Route path="/users/me/*" element={<Mypage />} />
           </Routes>
         </main>
         <Footer />

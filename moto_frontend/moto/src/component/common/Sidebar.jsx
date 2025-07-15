@@ -1,42 +1,55 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { Link, Route, Routes, useNavigate } from "react-router-dom";
 import useUserStore from "../../store/useUserStore";
+import { useState } from "react";
 import DetailSidebar from "./DetailSidebar";
 import createInstance from "../../axios/Interceptor";
 import Swal from "sweetalert2";
 import "./sidebar.css";
 export default function Sidebar({ onToggleSidebar }) {
     const navigate = useNavigate();
-    const {
-        loginMember,
-        kakaoMember,
-        setAccessToken,
-        setRefreshToken,
-        setIsLogined,
-        setLoginMember,
-        setKakaoMember,
+     const {
+    loginMember,
+    kakaoMember,
+    setAccessToken,
+    setRefreshToken,
+    setIsLogined,
+    setLoginMember,
+    setKakaoMember,
+    setTokenExpiresIn,
+    setRefreshTokenExpiresIn,
     } = useUserStore();
 
-    const [showDetail, setShowDetail] = useState(false);
+    const axiosInstance = createInstance();
+    const serverUrl = import.meta.env.VITE_BACK_SERVER;
 
     const handleLogout = async () => {
-        try {
-            if (kakaoMember) {
-                window.location.href = `${import.meta.env.VITE_BACK_SERVER}/auth/oauth2/kakao/logout`;
-            } else {
-                setAccessToken(null);
-                setRefreshToken(null);
-                setLoginMember(null);
-                setIsLogined(false);
-                navigate("/login");
-            }
-        } catch (error) {
-            console.error("로그아웃 실패:", error);
-            Swal.fire("오류", "로그아웃 중 오류가 발생했습니다.", "error");
-        }
-    };
+    try {
+      if (kakaoMember) {
+        // 카카오 소셜 로그인 사용자 로그아웃 처리
+        
+        console.log("requestKakaoLogout");
+        window.location.href = `${serverUrl}/auth/oauth2/kakao/logout`;
 
-    const sidebarWidth = showDetail ? "250px" : "13%";
+      } else {
+        // 일반 로그인 사용자 로그아웃 처리
+        setAccessToken(null);
+        setRefreshToken(null);
+        setLoginMember(null);
+        setIsLogined(false);
+        navigate("/login");
+      }
+    } catch (error) {
+      console.error("로그아웃 실패:", error);
+      Swal.fire("오류", "로그아웃 중 오류가 발생했습니다.", "error");
+    }
+  };
+    const [showDetail, setShowDetail] = useState(false); // 슬라이드 상태
+
+
+
+    function toggleDetailSidebar() {
+        setShowDetail(!showDetail);
+    }
 
     return (
         <div
