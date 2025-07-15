@@ -3,6 +3,7 @@ import createInstance from "../../axios/Interceptor";
 import useUserStore from "../../store/useUserStore";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import './UserInfo.css';
 
 export default function UserInfo() {
   const [user, setUser] = useState({
@@ -21,21 +22,31 @@ export default function UserInfo() {
     setLoginMember,
     setIsLogined,
     setAccessToken,
-    setRefreshToken
+    setRefreshToken,
+    kakaoMember
   } = useUserStore();
   
+  let member;
   const navigate = useNavigate();
   const [prevUserImage, setPreveUserImg] = useState();
   const profileImgEl = useRef(null);
 
+  if(kakaoMember){
+    member = kakaoMember;
+  }else if(loginMember){
+    member = loginMember;
+  }else{
+    member = null;
+  }
   useEffect(function () {
-    if (!loginMember || !loginMember.userNo) {
-      console.log("로그인 정보가 없거나 user_no가 없습니다.");
+    if (!member || !member.userNo) {
+ 
       return;
     }
 
+
     let options = {};
-    options.url = serverUrl + "/user/" + loginMember.userNo;
+    options.url = serverUrl + "/user/" + member.userNo;
     options.method = "get";
 
     axiosInstance(options)
@@ -85,7 +96,7 @@ export default function UserInfo() {
 
   function fetchUserData() {
     let options = {};
-    options.url = serverUrl + "/user/" + loginMember.userNo;
+    options.url = serverUrl + "/user/" + member.userNo;
     options.method = "get";
 
     axiosInstance(options)
@@ -118,7 +129,7 @@ export default function UserInfo() {
             userRole: user.userRole
           })
           .then(function () {
-            console.log("기본 정보 수정 완료");
+
 
           
             if (user.userProfileImg && user.userProfileImg instanceof File) {
@@ -128,7 +139,7 @@ export default function UserInfo() {
               axiosInstance
                 .patch(serverUrl + "/user/updateProfileImage/" + user.userNo, formData)
                 .then(function () {
-                  console.log("프로필 이미지 수정 완료");
+ 
                   Swal.fire("성공", "회원 정보가 수정되었습니다.", "success");
                   fetchUserData(); 
                   setPreveUserImg(null);
@@ -210,7 +221,7 @@ function getImageSrc() {
 
   return (
     <section className="section member-info-section">
-      <div className="page-title">내 정보</div>
+      
       <form
         onSubmit={function (e) {
           e.preventDefault();
@@ -253,7 +264,7 @@ function getImageSrc() {
             </tr>
             <tr>
               <th><label htmlFor="userProfileImg">프로필 이미지</label></th>
-              <td className="left">
+              <td className="left" style={{textAlign:"center", cursor:"pointer"}}>
                 <img
                 src={getImageSrc()}
                 alt="프로필 이미지"
@@ -263,15 +274,12 @@ function getImageSrc() {
                 onError={function (e) {
                   e.target.src = "/images/default.png";
                 }}
+                style={{width:"100px", height:"100px"}}
               />
                 <div className="input-item">
-                  <input type="file" id="userProfileImg" accept="image/*" style={{ display: "none" }} ref={profileImgEl} onChange={chgProfileImg} />
+                  <input type="file" id="userProfileImg" accept="image/*" style={{ display: "none"}} ref={profileImgEl} onChange={chgProfileImg} />
                 </div>
               </td>
-            </tr>
-            <tr>
-              <th>회원등급</th>
-              <td className="left"></td>
             </tr>
           </tbody>
         </table>

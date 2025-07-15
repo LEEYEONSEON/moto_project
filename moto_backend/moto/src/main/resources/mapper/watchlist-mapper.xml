@@ -53,18 +53,28 @@
 	
 	</insert>
 	
-	<!-- 포트폴리오 테이블 저장 -->
-	<insert id="insertPortFolio"
-	parameterType="TradeDto">
-	
-	insert into tbl_portfolio values
-	(
-	seq_portfolio_no.nextval,
-	#{userNo},
-	(select user_nickname || 'portfolio' from tbl_user where user_no = #{userNo}	
-	) 
-	</insert>
-	
+<insert id="mergePortfolio" parameterType="TradeDto">
+    MERGE INTO tbl_portfolio p
+    USING (
+        SELECT 
+            #{userNo} AS user_no,
+            (SELECT user_nickname || 'portfolio' FROM tbl_user WHERE user_no = #{userNo}) AS portfolio_name
+        FROM dual
+    ) src
+    ON (
+        p.user_no = src.user_no AND 
+        p.portfolio_name = src.portfolio_name
+    )
+    WHEN NOT MATCHED THEN
+    INSERT (
+        portfolio_no, user_no, portfolio_name
+    )
+    VALUES (
+        seq_portfolio_no.nextval,
+        src.user_no,
+        src.portfolio_name
+    )
+</insert>
 	
 <update id="mergeHolding" parameterType="TradeDto">
   MERGE INTO tbl_holding h
@@ -106,28 +116,51 @@
 	</update>
 	
 	
-		<!-- 워치리스트 매도 -->
-	<update id="watchListSellAsset"
-	parameterType="TradeDto">
+	<!-- 매도 내역 insert -->
+	<insert id="watchListSellAsset" parameterType="TradeDto">
+  		INSERT INTO tbl_trade VALUES (
+    		seq_trade_no.nextval,
+    		#{userNo},
+    		#{assetNo},
+    		#{tradeType},
+    		#{amount},
+    		#{currentPrice},
+    	  	DEFAULT
+  		)
+	</insert>
 	
-	update tbl_trade
-		set trade_quantity = trade_quantity - #{amount},
-		 	trade_price = #{currentPrice}
-		 where user_no = #{userNo} and asset_no = #{assetNo}	
+	<!-- 보유 수량 감소 -->
+	<update id="mergeHoldingSell" parameterType="TradeDto">
+  		UPDATE tbl_holding
+  		SET holding_asset_quantity = holding_asset_quantity - #{amount}
+  		WHERE user_no = #{userNo} AND asset_no = #{assetNo}
+	</update>
 	
+	<!-- 매도 시 지갑 현금 증가 -->
+	<update id="addSellCashToWallet" parameterType="TradeDto">
+  		UPDATE tbl_wallet	
+  			SET wallet_cash_balance = wallet_cash_balance + (#{amount} * #{currentPrice})
+  		  WHERE user_no = #{userNo}
 	</update>
 	
 	<!-- 매도 지갑 업데이트 -->
 	<update id="resultSellPayWallet" parameterType="TradeDto">
-  UPDATE tbl_wallet w
-  SET w.wallet_total_valuation = w.wallet_cash_balance + (
-    SELECT NVL(SUM(h.holding_asset_quantity * a.asset_price), 0)
-    FROM tbl_holding h
-    JOIN tbl_asset a ON h.asset_no = a.asset_no
-    WHERE h.user_no = w.user_no
-  )
-  WHERE w.user_no = #{userNo}
-</update>
+  	 UPDATE tbl_wallet w
+  		SET wallet_total_valuation = wallet_cash_balance + (
+    		SELECT NVL(SUM(h.holding_asset_quantity * t2.trade_price), 0)
+          FROM tbl_holding h
+    			JOIN tbl_trade t2 ON h.asset_no = t2.asset_no
+    		WHERE h.user_no = w.user_no
+      			AND t2.user_no = w.user_no
+      			AND t2.trade_date = (
+        			SELECT MAX(t3.trade_date)
+        		  	FROM tbl_trade t3
+        		      WHERE t3.asset_no = h.asset_no
+          					AND t3.user_no = w.user_no
+      				)
+  			 )
+  		  WHERE w.user_no = #{userNo}
+	 </update>
 	
 	
 	

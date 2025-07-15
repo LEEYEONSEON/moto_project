@@ -69,24 +69,14 @@ public class AssetController {
 		
 		if(result > 0) {
 			System.out.println(result);
+			System.out.println("결과값 : " + result);
 			res = new ResponseDTO(HttpStatus.OK, "주식 매수가 완료되었습니다.", true, "success");
 		}else {
 			res = new ResponseDTO(HttpStatus.OK, "주식 매수 중, 오류가 발생하였습니다.", false, "warning");
 		}
 			
-		} catch (IllegalArgumentException e) {
-		
-			res = new ResponseDTO(HttpStatus.BAD_REQUEST, e.getMessage(), false, "warning");
-			
-		} catch (Exception e) {
-			
-			if (e instanceof java.net.SocketException &&
-			        e.getMessage() != null &&
-			        e.getMessage().contains("Connection reset by peer")) {
-			        System.err.println("❌ KIS 서버에서 연결 거부");
-			    }
-			
-			//e.printStackTrace();
+		}  catch (Exception e) {
+			e.printStackTrace();
 		}
 		
 		return new ResponseEntity<ResponseDTO>(res,res.getHttpStatus());

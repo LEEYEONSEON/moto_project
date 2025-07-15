@@ -23,26 +23,15 @@ public interface AssetDao {
 
 	int watchListSellAsset(TradeDto trade);
 
-
-	void resultSellPayWallet(TradeDto trade);
-
-
 	int insertPortFolio(TradeDto trade);
 
-
-	
-
-
-	int selectPortfolioNo(TradeDto trade);
-
-
-	int searchHoldingAssetNo(TradeDto trade);
-
-
-	
-
-
 	void mergeHolding(TradeDto trade);
+
+	void mergePortfolio(TradeDto trade);
+
+	void resultSellPayWalletStep1(TradeDto trade);
+
+	void resultSellPayWalletStep2(TradeDto trade);
 
 
 

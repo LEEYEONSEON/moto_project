@@ -12,14 +12,32 @@ export default function Portfolio() {
   const [myAsset, setMyAsset] = useState([]); //내 보유 자산 불러오기
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const [selectedAsset, setSelectedAsset] = useState(null);
+  const [tradeType, setTradeType] = useState("");
+  const [amount, setAmount] = useState(1);
+  const [walletCash, setWalletCash] = useState(0);
   const { loginMember, kakaoMember } = useUserStore();
 
+  // 총 거래 금액 계산
+  const totalPrice = selectedAsset != null ? selectedAsset.currentPrice * amount : 0;
 
+  // 매수 시 보유 현금 부족 여부
+  const notEnoughCash = tradeType === "BUY" && totalPrice > walletCash;
 
 
   const serverUrl = import.meta.env.VITE_BACK_SERVER;
   const axiosInstance = createInstance();
+  const navigate = useNavigate();
+
+   let userNo;
+  
+  if(loginMember){
+    userNo = loginMember.userNo
+  }else if(kakaoMember){
+    userNo = kakaoMember.userNo
+  }else{
+    userNo = null;
+  }
 
     //보유중인 자산 불러오기
     useEffect(function() {
@@ -32,7 +50,7 @@ export default function Portfolio() {
                 }else{
                     userNo = null;
             }
-        //console.log(userNo);
+        
         let options = {
             url: serverUrl + "/portfolio/" + userNo, // ← userNo path로 전달
             method: "get"
@@ -42,7 +60,7 @@ export default function Portfolio() {
         .then(function(res) {
 
             if (res.data.resData!=null) {
-            //console.log(res.data.resData);
+            
             const assetList = res.data.resData;
 
             const updatedAssetList = assetList.map(function(asset) {
@@ -56,7 +74,7 @@ export default function Portfolio() {
 
             
             });
-            //console.log(updatedAssetList);
+            
             setMyAsset(updatedAssetList); // ← 리스트 저장
         
             }
@@ -95,7 +113,7 @@ export default function Portfolio() {
                     profitRate: profitRate.toFixed(2)
                 };
             }
-            console.log(asset);
+            
             return asset;
             });
         });
@@ -103,7 +121,23 @@ export default function Portfolio() {
 
     }, []);
 
+    // 로그인 회원 지갑 정보 조회
+      useEffect(function () {
+        if (!userNo) return; // userNo 없으면 요청 안 함
     
+        const options = {
+          url: serverUrl + "/wallet/" + userNo,
+          method: "get",
+        };
+    
+        axiosInstance(options)
+          .then(function (res) {
+            setWalletCash(res.data.resData.walletCashBalance);
+          })
+          .catch(function (err) {
+            console.error("지갑 조회 오류:", err);
+          });
+      }, [userNo]);
 
 
 
@@ -117,9 +151,69 @@ export default function Portfolio() {
     }   
 
     
-
-
-
+    // 거래 요청 함수 (컴포넌트 내부에 선언)
+            function handleTradeSubmit(e) {
+                if (selectedAsset == null) return;
+                if (notEnoughCash) return;
+    
+                alert(tradeType + " 요청 완료 (총 금액: " + totalPrice + ")");
+                setSelectedAsset(null);
+                
+                    if(tradeType == 'BUY'){
+                    const options = {
+                    url: serverUrl + "/watchlist/insert", 
+                    method: "post",
+                    data: {
+                        userNo: userNo,
+                        tradeType: tradeType,
+                        amount: amount,
+                        currentPrice: selectedAsset.currentPrice,
+                        assetCode : selectedAsset.assetCode
+                    },
+                    };
+        
+            axiosInstance(options)
+              .then(function (res) {
+                Swal.fire({
+                  title : "알림",
+                  text : res.data.clientMsg,
+                  icon : res.data.alertIcon,
+                  confirmButtonText : "확인"
+                }).then(function(res){
+                  if(res.isConfirmed){
+                      window.location.reload();
+                  }
+            })
+       })
+        
+        }else if(tradeType == "SELL"){
+      const options = {
+                url: serverUrl + "/watchlist/sellAsset", 
+                method: "patch",
+                data: {
+                    userNo: userNo,
+                    tradeType: 'SELL',
+                    amount: amount,
+                    currentPrice: selectedAsset.currentPrice,
+                    assetCode : selectedAsset.assetCode
+                },
+                };
+    
+        axiosInstance(options)
+          .then(function (res) {
+             Swal.fire({
+                title : "알림",
+                text : res.data.clientMsg,
+                icon : res.data.alertIcon,
+                confirmButtonText : "확인"
+            }).then(function(res){
+              if(res.isConfirmed){
+                 window.location.reload();
+              }
+                })
+      })      
+    }
+        }
 
   return (
     <section className="section asset-list">
@@ -133,6 +227,7 @@ export default function Portfolio() {
             <th>평균단가₩</th>
             <th>손익(P/L)₩</th>
             <th>손익률(%)</th>
+            <th>매수/매도</th>
             </tr>
         </thead>
         <tbody>
@@ -144,7 +239,7 @@ export default function Portfolio() {
             ).toFixed(2);
 
             let className = "";
-            //console.log(item.currentPrice);
+            
             if (profit > 0) {
                 className = "positive";
             } else if (profit == 0) {
@@ -175,11 +270,69 @@ export default function Portfolio() {
                     }
                     
                 </td>
+                <td>
+                      <button
+                        onClick={function () {
+                          setSelectedAsset(item);
+                          setTradeType("BUY");
+                          setAmount(1);
+                        }}
+                      >
+                        매수
+                      </button>
+                      <button
+                        onClick={function () {
+                          setSelectedAsset(item);
+                          setTradeType("SELL");
+                          setAmount(1);
+                        }}
+                      >
+                        매도
+                      </button>
+                    </td>
                 </tr>
             );
             })}
         </tbody>
         </table>
+        {selectedAsset != null  &&(
+          <div className="modal">
+            <div className="modal-content">
+              <h3>{tradeType === "BUY" ? "매수" : "매도"} 확인</h3>
+              <p>종목명: {selectedAsset.assetName}</p>
+              <p>현재가: {selectedAsset.currentPrice.toLocaleString()} 원</p>
+              <p>현재 회원 자산: {walletCash.toLocaleString()} 원</p>
+
+              <label>
+                수량:
+                <input
+                  type="number"
+                  min="1"
+                  value={amount}
+                  onChange={function (e) {
+                    setAmount(parseInt(e.target.value));
+                  }}
+                />
+              </label>
+
+
+              <p>총 금액: {totalPrice.toLocaleString()} 원</p>
+
+              {notEnoughCash && <p style={{ color: "red" }}>보유 현금이 부족합니다.</p>}
+
+              <button onClick={handleTradeSubmit} disabled={notEnoughCash}>
+                {tradeType == "BUY" ? "매수" : "매도"} 실행
+              </button>
+              <button
+                onClick={function () {
+                  setSelectedAsset(null);
+                }}
+              >
+                취소
+              </button>
+            </div>
+          </div>
+        )}
     </section>
     );
 

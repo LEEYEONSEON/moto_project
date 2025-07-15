@@ -70,7 +70,7 @@ export default function Join() {
                 }
             })
             .catch(function(err){
-                console.log(err);
+
             });
 
         }
@@ -105,7 +105,7 @@ export default function Join() {
                 }
             })
             .catch(function (err) {
-                console.log(err);
+
             });
     }
 
@@ -226,7 +226,7 @@ export default function Join() {
             });
         })
         .catch(function(err) {
-            console.log(err);
+
         });
 }
 

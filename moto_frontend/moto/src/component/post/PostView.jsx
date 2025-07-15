@@ -68,7 +68,7 @@ export default function PostView() {
   }
 
   function openModal(post) {
-    console.log("수정 버튼 클릭됨, postNo:", post.postNo);
+
     setModalState({ open: true, post: post });
   }
 
@@ -159,7 +159,7 @@ function PostUpdateModal(props) {
     setContent(post.postContent);
     setExistingFiles(fileList);
     setNewFiles([]);
-    console.log("모달 열림 - 상태 초기화", post.postNo);
+
   }, [post, fileList]);
 
   function chgContent(e) {
@@ -181,7 +181,7 @@ function PostUpdateModal(props) {
   }
 
   useEffect(function () {
-    console.log("newFiles 상태 변화:", newFiles);
+
   }, [newFiles]);
 
   function deleteExistingFile(fileToDelete) {
@@ -257,7 +257,7 @@ function PostUpdateModal(props) {
 
     axiosInstance(options)
       .then(function (res) {
-        console.log(res);
+
       })
       .catch(function (err) {});
   }
@@ -277,7 +277,7 @@ function PostUpdateModal(props) {
               existingFiles.map(function (file) {
                 return (
                   <li key={file.postImgNo} className="modal-file-item">
-                    <span>{file.postImgPath}</span>
+                    <span style={{color:"white"}}>{file.postImgPath}</span>
                     
                     <span className="material-icons del-file-icon" onClick={function () { deleteExistingFile(file); }}>
                       delete

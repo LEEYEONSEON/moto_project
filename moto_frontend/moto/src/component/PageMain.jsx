@@ -13,7 +13,7 @@ export default function PageMain(){
 
     return (
         <>
-         <section className="section" style={{width:"100%", backgroundColor:"black", display:"flex"}}>
+         <section className="section" style={{width:"100%", backgroundColor:"black", display:"flex", justifyContent:"center"}}>
            <div className="main-content" style={{width:"700px"}}>
            <PostWrite />
            <hr />

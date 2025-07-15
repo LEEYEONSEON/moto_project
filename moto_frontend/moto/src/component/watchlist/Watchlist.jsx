@@ -96,7 +96,7 @@ export default function Watchlist() {
         const eventSource = new EventSource(serverUrl + "/asset/price-stream");
 
         eventSource.addEventListener("asset", function (event) { //"asset" 이벤트 오면 실행됨
-        //console.log(event.data);         
+
         if (!event || !event.data) return; //event.data 없으면 중단 (ping 같은 거 거르기) 
 
         //!event : event가 null, undefined, false 등
@@ -140,15 +140,6 @@ export default function Watchlist() {
     return hour < 9 || (hour === 15 && minute > 30) || hour > 15;
     }   
     
-    
-
-
-
-
-
-
-
-
     //즐겨찾기 토글
     function handleToggleWatchlist(assetCode) {
             
@@ -244,27 +235,9 @@ export default function Watchlist() {
     
         axiosInstance(options)
           .then(function (res) {
-            
+            window.location.reload();
           })
     
-    }else if(tradeType == 'SELL'){
-        
-        const options = {
-                url: serverUrl + "/watchlist/sellAsset", 
-                method: "patch",
-                data: {
-                    userNo: userNo,
-                    tradeType: tradeType,
-                    amount: amount,
-                    currentPrice: selectedAsset.currentPrice,
-                    assetCode : selectedAsset.assetCode
-                },
-                };
-    
-        axiosInstance(options)
-          .then(function (res) {
-            
-          })
     }
     }
     return (
@@ -293,7 +266,7 @@ export default function Watchlist() {
                         <th style={{width:"15%"}}>현재가</th>
                         <th style={{width: "30%"}}>52주 최저 최고가</th>
                         <th style={{width:"15%"}}>변동률(%)</th>
-                        <th style={{width:"15%"}}>매수/매도</th>
+                        <th style={{width:"15%"}}>매수</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -376,8 +349,6 @@ export default function Watchlist() {
                             }
                         </td>
 
-
-
                         <td>
                       <button
                         onClick={function () {
@@ -387,15 +358,6 @@ export default function Watchlist() {
                         }}
                       >
                         매수
-                      </button>
-                      <button
-                        onClick={function () {
-                          setSelectedAsset(asset);
-                          setTradeType("SELL");
-                          setAmount(1);
-                        }}
-                      >
-                        매도
                       </button>
                     </td>
                     </tr>

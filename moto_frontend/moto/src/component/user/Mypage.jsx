@@ -5,28 +5,28 @@ import UserInfo from "./UserInfo";
 import UserEditForm from "./UserEditForm";  
 
 export default function Mypage() {
-  const { loginMember } = useUserStore();
+  const { loginMember, kakaoMember } = useUserStore();
   const navigate = useNavigate();
 
   const [menuList, setMenuList] = useState([
     { url: '/pwChg', text: '비밀번호 변경' }, 
   ]);
 
-  // 관리자 메뉴 추가
-  useEffect(function () {
-    if (loginMember && loginMember.memberLevel === 1) {
-      if (!menuList.some(function(m) { return m.url === '/admin'; })) {
-        setMenuList(function(prev) { return [...prev, { url: '/admin', text: '관리자 페이지' }]; });
-      }
-    }
-  }, [loginMember, menuList]);
-
+  let member;
+  if(kakaoMember){
+    member = kakaoMember
+  }else if(loginMember){
+    member = loginMember
+  }else{
+    member = null;
+  }
+  
   // 로그인 상태에 따라 메인 페이지 이동
   useEffect(function () {
-    if (loginMember) {
+    if (member) {
       navigate('/users/me/info');  // 로그인 후 기본 경로로 이동
     }
-  }, [loginMember, navigate]);
+  }, [member, navigate]);
 
   return (
     <div className="mypage-wrap">

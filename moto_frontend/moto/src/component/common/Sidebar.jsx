@@ -19,6 +19,13 @@ export default function Sidebar() {
 
     const [showDetail, setShowDetail] = useState(false);
 
+    let user;
+    if(loginMember){
+        user = loginMember;
+    }else if(kakaoMember){
+        user = kakaoMember;
+    }
+
     const handleLogout = async () => {
         try {
             if (kakaoMember) {

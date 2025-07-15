@@ -12,7 +12,7 @@ export default function DetailSidebar(props) {
         setIsLogined(false);
         setAccessToken(null);
         setRefreshToken(null);
-        navigate('/');
+        navigate('/login');
     }
 
     function close(){
@@ -54,6 +54,7 @@ export default function DetailSidebar(props) {
            <div className="menu-item" style={{ paddingBottom: "40px" }}>
                  <Link to={"/wallet"} style={{fontSize:"25px", color:"white"}}>
                     지갑
+
                 </Link>
             </div>
 

@@ -14,8 +14,19 @@ export default function UserEditForm() {
     setLoginMember,
     setAccessToken,
     setRefreshToken,
-    loginMember
+    loginMember,
+    kakaoMember
   } = useUserStore();
+
+  let member;
+
+  if(loginMember){
+    member = loginMember;
+  }else if(kakaoMember){
+    member = kakaoMember;
+  }else{
+    member = null;
+  }
 
   // 유저 정보 (userId, userNo, userPassword)
   // userPassword는 입력된 비밀번호를 담는 용도
@@ -40,21 +51,21 @@ export default function UserEditForm() {
 
   // 로그인 멤버가 변경될 때마다 user 상태 초기화
   useEffect(function () {
-    if (loginMember) {
+    if (member) {
       setUser({
-        userId: loginMember.userId,
-        userNo: loginMember.userNo,
+        userId: member.userId,
+        userNo: member.userNo,
         userPassword: "" // 비밀번호는 빈 문자열로 초기화
       });
     }
-  }, [loginMember]);
+  }, [member]);
 
   // user가 준비되지 않았으면 렌더링하지 않음
   if (!user) return null;
 
   // 비밀번호 입력값 변경 핸들러
   function chgUserPw(e) {
-    const newUser = { ...user, [e.target.id]: e.target.value };
+    const newUser = { ...user, [e.target.id] : e.target.value };
     setUser(newUser);
   }
 
@@ -92,7 +103,7 @@ export default function UserEditForm() {
   // 새 비밀번호 서버 업데이트 요청 함수
   function updatePw() {
     // 비밀번호 정규표현식: 영문, 숫자, 특수문자 포함 6~30자
-    const regExp = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$])[a-zA-Z0-9!@#$]{6,30}$/;
+    const regExp = /^[a-zA-Z0-9!@#$]{6,30}$/;
 
     // 새 비밀번호가 기존 비밀번호와 같으면 오류 처리
     if (user.userPassword === originalPw) {
@@ -170,7 +181,7 @@ export default function UserEditForm() {
                   value={user.userPassword}
                   onChange={chgUserPw}
                   onBlur={function () {
-                    const regExp = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$])[a-zA-Z0-9!@#$]{6,30}$/;
+                    const regExp = /^[a-zA-Z0-9!@#$]{6,30}$/;
                     if (!regExp.test(user.userPassword)) {
                       setPwChk(2); // 형식 오류
                     } else if (user.userPassword === originalPw) {
@@ -237,7 +248,7 @@ export default function UserEditForm() {
                 value={user.userPassword}
                 onChange={chgUserPw}
                 onBlur={function () {
-                  const regExp = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$])[a-zA-Z0-9!@#$]{6,30}$/;
+                  const regExp = /^[a-zA-Z0-9!@#$]{6,30}$/;
                   if (!regExp.test(user.userPassword)) {
                     setPwChk(2); // 형식 오류
                   } else {
