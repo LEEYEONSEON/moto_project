@@ -16,6 +16,8 @@ import kr.or.iei.common.filter.EncodingFilter;
 @Configuration //이 어노테이션이 작성된 클래스는 IoC 컨테이너가 초기화될 때 실행
 public class WebConfig implements WebMvcConfigurer{ //이 클래스는 Spring MVC 관련 설정을 커스터마이징 할 때 작성
     
+	
+	
 
 	@Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -49,13 +51,15 @@ public class WebConfig implements WebMvcConfigurer{ //이 클래스는 Spring MV
 	//자원 요청에 대한 접근 권한 부여
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/post/**")  							 //요청 URL
-		        .addResourceLocations("file:///" + uploadPath + "/board/"); //자원이 위치한 경로
-		registry.addResourceHandler("/user/**")
-		        .addResourceLocations("file:///" + uploadPath + "/user/"); 
-		
+
+	    registry.addResourceHandler("/post/**")
+	            .addResourceLocations("file:///" + uploadPath + "/board/");
+
+	    registry.addResourceHandler("/user/**")
+	            .addResourceLocations("file:///" + uploadPath + "/user/");
+
+	    registry.addResourceHandler("/userProfile/**")
+	            .addResourceLocations("file:///" + uploadPath + "/userProfile/");
 	}
-	
-	
 	
 }

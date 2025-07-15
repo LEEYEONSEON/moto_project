@@ -16,56 +16,13 @@
 
 /* Login.jsx */
 .login-wrap {
-  
-  width: 500px;
-  min-height: 630px;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Pretendard', sans-serif;
-
-
-
-
+    width: 500px;
+    margin :0 auto;
+    align-self: center;
 }
-
-.login-wrap >div {
-    margin-left: 1250px !important;
-    margin-top: 100px !important;
-
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
-    padding: 44px;
-    background: white;
-    border-radius: 12px;
-}
-
-
 .login-wrap .input-wrap {
     padding: 30px;
 }
-
-.button-group {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  align-items: center;
-}
-
-.button-group > button,
-.button-group > img {
-  flex: 1;
-  height: 35px;
-}
-
-.button-group > button {
-    width: 150px;
-    text-align: center;
-}
-
 .login-button-box{
     padding: 30px;
 }
@@ -129,38 +86,4 @@
     display: flex;
     justify-content: center;
     gap: 30px;
-}
-
-/* UserEditForm.jsx*/
-/* 비밀번호 변경 스타일 (Join 스타일과 일치시킴) */
-.pwChg-section {
-  width: 400px;
-  margin: 0 auto;
-  align-self: center;
-}
-
-.pwChg-section .input-wrap {
-  padding: 10px 30px;
-}
-
-.pwChg-section .join-button-box {
-  padding: 20px 30px;
-}
-
-.pwChg-section .join-button-box > button {
-  width: 100%;
-}
-
-.input-msg {
-  font-size: 13px;
-  padding-left: 5px;
-  margin-top: 5px;
-}
-
-.input-msg.valid {
-  color: green;
-}
-
-.input-msg.invalid {
-  color: red;
 }
