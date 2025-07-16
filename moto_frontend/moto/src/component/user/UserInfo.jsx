@@ -3,8 +3,6 @@ import createInstance from "../../axios/Interceptor";
 import useUserStore from "../../store/useUserStore";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import './UserInfo.css';
-
 export default function UserInfo() {
   const [user, setUser] = useState({
     userNo: 0,
@@ -228,7 +226,7 @@ function getImageSrc() {
           updateUserInfo();
         }}
       >
-        <table className="tbl my-info" style={{ width: "80%", margin: "0 auto" }}>
+        <table className="tbl my-info" >
           <tbody>
             <tr>
               <th><label htmlFor="userId">아이디</label></th>
@@ -264,7 +262,7 @@ function getImageSrc() {
             </tr>
             <tr>
               <th><label htmlFor="userProfileImg">프로필 이미지</label></th>
-              <td className="left" style={{textAlign:"center", cursor:"pointer"}}>
+              <td className="left" style={{ cursor:"pointer"}}>
                 <img
                 src={getImageSrc()}
                 alt="프로필 이미지"

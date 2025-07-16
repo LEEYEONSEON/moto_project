@@ -3,9 +3,8 @@
 
 .post-view-container {
   padding: 24px;
-  background-color: #1e1e1e;
   color: #e0e0e0;
-  
+  border: none !important;
   min-height: 100vh;
   font-family: 'Segoe UI', sans-serif;
 }
@@ -19,24 +18,27 @@
 
 /* 개별 게시글 박스 */
 .post-item {
-  background-color: #2a2a2a;
+  background-color: #111111;
   border-radius: 12px;
-  padding: 16px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  padding: 30px;
   transition: background-color 0.3s;
   width: 550px;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 4px 24px rgba(255, 255, 255, 0.007);
 }
 
+
 .post-item:hover {
-  background-color: #333333;
+  background-color: #151515;
 }
 
 /* 상단 사용자 닉네임 & 수정 버튼 */
 .post-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding-left: 150px;
+  width: 790px;
+  padding-left: 30px;
 }
 
 .post-title {
@@ -51,7 +53,7 @@
   cursor: pointer;
   color: #999999;
   padding: 4px;
-  width: 300px;
+  width: 50px;
 }
 
 .post-edit-button:hover {
@@ -76,14 +78,22 @@
   position: relative;
   margin-top: 12px;
   text-align: center;
+  background-color: rgba(255, 255, 255, 0.04);
+  padding: 30px;
+  border-radius: 12px;
+}
+
+.post-header, .post-body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin-bottom: 30px;
 }
 
 .post-image {
-  max-width: 100%;
-  max-height: 300px;
+  width: 600px;
+  height: 600px;
   border-radius: 8px;
   object-fit: contain;
-  border: 1px solid #444;
+  
 }
 
 /* 슬라이더 버튼과 인덱스 */

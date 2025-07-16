@@ -1,17 +1,12 @@
 /* Join.jsx */
-.join-wrap {
-    width: 400px;
-    margin :0 auto;
-    align-self: center;
-}
+
 .join-wrap .input-wrap {
     padding: 10px 30px;
 }
 .join-button-box {
-    padding: 20px 30px;
 }
 .join-button-box>button {
-    width: 100%;
+    width: 400px;
 }
 
 /* Login.jsx */
@@ -27,10 +22,6 @@
   align-items: center;
   justify-content: center;
   font-family: 'Pretendard', sans-serif;
-
-
-
-
 }
 
 .login-wrap >div {
@@ -43,9 +34,119 @@
     border-radius: 12px;
 }
 
+.join-wrap {
+    width: 1200px;
+    max-height: 800px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Pretendard', sans-serif;
+}
+
+
+
+.join-wrap >div {
+    margin-left: 460px !important;
+    margin-top: 50px !important;
+    width: 500px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+    padding: 44px;
+    background: white;
+    border-radius: 12px;
+    justify-content: center;
+}
+
+.mypage-wrap {
+    width: 1800px;
+    max-height: 620px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Pretendard', sans-serif;
+
+}
+
+
+.mypage-div {
+    margin-top: 80px !important;
+    width: 800px;
+    height: 600px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    
+}
+
+.tbl {
+  width: 700px;
+  margin: 0 auto;
+}
+
+.tbl th,
+.tbl td {
+  padding: 12px 16px;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid #ccc;
+}
+
+
+
+.page-title {
+    color: black !important;
+}
+
+#pwChg-title {
+    color: white !important;
+}
+
+
+/* th 별도 스타일 */
+.tbl th {
+  width: 140px;
+  font-weight: bold;
+  background-color: #f8f8f8;
+}
+
+/* td 안에 input 스타일 */
+.input-item input[type="text"] input-item input[type="password"]{
+  width: 600px;
+  padding: 8px 10px;
+  border: 1px solid #ccc !important;
+  border-radius: 6px;
+  box-sizing: border-box;
+  
+}
+
+.pwChg input[type="password"] {
+  width: 200px !important;
+}
+
+/* 프로필 이미지 스타일 */
+.profile-img-preview {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  margin-bottom: 10px;
+  justify-content: left;
+}
 
 .login-wrap .input-wrap {
     padding: 30px;
+}
+
+.pwChg-wrap {
+    width: 50%;
+    margin-left: 25%;
 }
 
 .button-group {
@@ -78,89 +179,53 @@
     gap: 30px;
 }
 
-/* MemberMain.jsx */
-.mypage-wrap {
-    width :1200px;
-    display: flex;
-    gap : 10px;
+.member-info-section input {
+    background-color: #121212;
+    outline: none;
+    border-bottom: none;
+    color: white;
+    padding-left: 15px !important;
+
 }
-.mypage-side {
-    width: 20%;
+
+.my-info th {
+    background-color: black;
+    width: 300px;
+    color: white !important;
 }
-.mypage-content {
-    flex : 1;
-}
+
+
 .account-box {
- margin-bottom: 10px;   
+    display: flex;
+
 }
+
 .account-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px 0px;
+    width: 100%;
+
 }
-.account-info > span:first-child {
-    font-size: 40px;
-    color: var(--main2);
-}
-.account-info > span:last-child {
+.account-info > span {
     font-size: 20px;
-    font-family: ns-b;
-}
- 
-/* MemberLeft.jsx */
-.side-menu li {
-    padding: 20px;
-}
-.side-menu li span:hover{
-    color : var(--main2);
+    color: white;
 }
 
-/* MemberInfo.jsx */
-.member-info-section {
-    min-height: 600px;
-}
-.my-info .input-item > input {
-    padding: 0;
-}
-.button-zone {
-    width: 80%;
-    margin:30px auto;
-    display: flex;
-    justify-content: center;
-    gap: 30px;
+.account-info span:first-child {
 }
 
-/* UserEditForm.jsx*/
-/* 비밀번호 변경 스타일 (Join 스타일과 일치시킴) */
-.pwChg-section {
-  width: 400px;
-  margin: 0 auto;
-  align-self: center;
+.account-info > div {
+    margin-bottom: 10px;
+}
+.passwordChg span {
+    padding-left: 70%;
+    font-size: 14px;
+    color: white;
 }
 
-.pwChg-section .input-wrap {
-  padding: 10px 30px;
+.account-info > div > span:hover {
+    cursor : pointer;
 }
 
-.pwChg-section .join-button-box {
-  padding: 20px 30px;
+.my-info label {
+    color:white;
 }
 
-.pwChg-section .join-button-box > button {
-  width: 100%;
-}
-
-.input-msg {
-  font-size: 13px;
-  padding-left: 5px;
-  margin-top: 5px;
-}
-
-.input-msg.valid {
-  color: green;
-}
-
-.input-msg.invalid {
-  color: red;
-}

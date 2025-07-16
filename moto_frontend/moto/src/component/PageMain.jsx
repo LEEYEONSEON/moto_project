@@ -14,9 +14,8 @@ export default function PageMain(){
     return (
         <>
          <section className="section" style={{width:"100%", backgroundColor:"black", display:"flex"}}>
-           <div className="main-content" style={{width:"700px"}}>
+           <div className="main-content" style={{width:"800px", boxSizing: "border-box"}}>
            <PostWrite />
-           <hr />
            <PostView/>
             
            

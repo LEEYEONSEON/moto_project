@@ -70,6 +70,7 @@ export default function PostView() {
   function openModal(post) {
 
     setModalState({ open: true, post: post });
+
   }
 
   return (
@@ -86,18 +87,17 @@ export default function PostView() {
             return (
               <div key={post.postNo} className="post-item">
                 <div className="post-header">
-                  <span className="post-title">{post.userNickname}</span>
+                  <span className="post-title">{post.userNickname}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                  <span className="post-content">{post.postContent != "undefined" ? '"' + post.postContent + '"' : ""}</span>
+                  <span>
                   {member != null && member.userNo == post.userNo ? (
                     <button className="post-edit-button" onClick={function () { openModal(post); }}>
                       <span className="material-icons" style={{color:"white"}}>edit</span>
                     </button>
                   ) : null}
+                  </span>
                 </div>
-
-                <div className="post-body">
-                  <span className="post-content">{post.postContent != "undefined" ? post.postContent : ""}</span>
-                </div>
-
+                <div className="post-item-image">
                 {postFiles.length > 0 && (
                   <div className="image-slider">
                     <img
@@ -111,13 +111,17 @@ export default function PostView() {
                       alt="post attachment"
                       className="post-image"
                     />
-                    <div className="slider-buttons">
-                      <button onClick={function () { prevImage(post.postNo); }} disabled={currentImageIndex == 0}>이전</button>
-                      <span className="slider-index">{currentImageIndex + 1} / {postFiles.length}</span>
-                      <button onClick={function () { nextImage(post.postNo); }} disabled={currentImageIndex == postFiles.length - 1}>다음</button>
-                    </div>
+                     
                   </div>
+                  
                 )}
+                <div className="slider-buttons">
+                      <button onClick={function () { prevImage(post.postNo); }} disabled={currentImageIndex == 0}>◀</button>
+                      <span className="slider-index">{currentImageIndex + 1} / {postFiles.length}</span>
+                      <button onClick={function () { nextImage(post.postNo); }} disabled={currentImageIndex == postFiles.length - 1}>▶</button>
+                    </div>
+                </div>
+                
                 <CommentItem postNo={post.postNo} />
               </div>
             );
@@ -258,7 +262,16 @@ function PostUpdateModal(props) {
 
     axiosInstance(options)
       .then(function (res) {
-
+        Swal.fire({
+          title : "알림",
+          text : res.data.clientMsg,
+          icon : res.data.alertIcon,
+          confirmButtonText : "확인"
+        }).then(function(res){
+          if(res.isConfirmed){
+            window.location.reload();
+          }
+        })
       })
       .catch(function (err) {});
   }

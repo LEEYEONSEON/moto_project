@@ -10,7 +10,7 @@
   background-color: #121212;
   z-index: 99;
   overflow: visible;
-  box-shadow: 0 2px 4px rgb(0, 0, 0); /* 👈 그림자 추가 */
+  box-shadow: 0px 3px 10px #1d239da3 !important; /* 👈 그림자 추가 */
   
 }
 

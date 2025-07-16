@@ -261,7 +261,7 @@ export default function Watchlist() {
             </section>
         ) : (
         <section className="section asset-list">
-            <div className="page-title">워치리스트</div>
+            <div className="page-title watchlist-title">관심 종목</div>
         
         {
         loading
@@ -272,12 +272,12 @@ export default function Watchlist() {
             <table className="tbl asset-table asset-list">
                 <thead>
                     <tr>
-                        <th></th>
-                        <th style={{width:"25%"}}>종목명</th>
-                        <th style={{width:"15%"}}>현재가</th>
-                        <th style={{width: "30%"}}>52주 최저 최고가</th>
-                        <th style={{width:"15%"}}>변동률(%)</th>
-                        <th style={{width:"15%"}}>매수</th>
+                        <th style={{ width: "5%" , textAlign : "center"  }}></th>
+                        <th style={{ width: "15%" , textAlign : "center" }}>종목명</th>
+                        <th style={{ width: "15%", textAlign : "center"  }}>현재가</th>
+                        <th style={{ width: "30%", textAlign : "center" }}>52주 최저 최고가</th>
+                        <th style={{ width: "15%", textAlign : "center"  }}>변동률(%)</th>
+                        <th style={{ width: "15%", textAlign : "center"  }}>매수</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -285,7 +285,7 @@ export default function Watchlist() {
 
                     return (
                     <tr key={"asset" + index}>
-                        <td>
+                        <td style={{textAlign : "center"  }}>
                             
                            <span
                                 className="favorite-star"
@@ -297,10 +297,10 @@ export default function Watchlist() {
                             </span>
 
                         </td>
-                        <td><Link to={"/asset/" + asset.assetCode}>{asset.assetName}</Link></td>
-                        <td className={asset.currentPrice != null ? asset.currentPrice == 0 ? "zero" : parseFloat(asset.currentPrice).toFixed(0) : ""}>
+                        <td style={{textAlign : "center"  }}><Link to={"/asset/" + asset.assetCode}>{asset.assetName}</Link></td>
+                        <td style={{textAlign : "center"  }} className={asset.currentPrice != null ? asset.currentPrice == 0 ? "zero" : parseFloat(asset.currentPrice).toFixed(0) : ""}>
                             {asset.currentPrice != null ? asset.currentPrice == 0 ? "로딩 중..." : parseFloat(asset.currentPrice).toFixed(0) : ""}</td>
-                        <td>
+                        <td  style={{  textAlign : "right", paddingRight : "80px"  }}>
 
                             
                             <div className="range-cell">
@@ -346,7 +346,7 @@ export default function Watchlist() {
            
 
                         </td>
-                        <td className={
+                        <td style={{textAlign : "center"  }} className={
                             asset.priceChangeRate != null && parseFloat(asset.priceChangeRate) > 0 
                                 ? 'positive' 
                                 : asset.priceChangeRate != null && parseFloat(asset.priceChangeRate) === 0 
@@ -360,8 +360,8 @@ export default function Watchlist() {
                             }
                         </td>
 
-                        <td>
-                      <button
+                        <td style={{textAlign : "center"  }}>
+                      <button className="trade-button buy-button"
                         onClick={function () {
                           setSelectedAsset(asset);
                           setTradeType("BUY");

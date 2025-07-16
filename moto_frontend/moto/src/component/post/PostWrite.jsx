@@ -110,7 +110,7 @@ function PostWrite() {
                                     src={
                                         member
                                             ? member.userProfileImg
-                                                ? serverUrl + "/user/profile" + member.userProfileImg.substring(0, 8) + loginMember.userProfileImg
+                                                ? serverUrl  + loginMember.userProfileImg
                                                 : "/images/default_img.png"
                                             : "/images/default_img.png"
                                     }
@@ -139,7 +139,7 @@ function PostWrite() {
                                                 value={content}
                                                 onChange={chgContent}
                                             ></textarea>
-                                            <hr />
+                                        
                                             <div className="file-upload-wrap">
                                                 <svg
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -154,7 +154,7 @@ function PostWrite() {
                                                 >
                                                     <path d="M720-330q0 104-73 177T470-80q-104 0-177-73t-73-177v-370q0-75 52.5-127.5T400-880q75 0 127.5 52.5T580-700v350q0 46-32 78t-78 32q-46 0-78-32t-32-78v-370h80v370q0 13 8.5 21.5T470-320q13 0 21.5-8.5T500-350v-350q-1-42-29.5-71T400-800q-42 0-71 29t-29 71v370q-1 71 49 120.5T470-160q70 0 119-49.5T640-330v-390h80v390Z" />
                                                 </svg>
-                                                <label htmlFor="inputFile" style={{color:"white"}}>파일선택</label>
+                                                <label htmlFor="inputFile" style={{color:"white"}}>업로드 이미지</label>
                                                 <input
                                                     type="file"
                                                     id="inputFile"
@@ -194,38 +194,7 @@ function PostWrite() {
                             </td>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div className="file-upload-wrap">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        height="24px"
-                                        viewBox="0 -960 960 960"
-                                        width="24px"
-                                        fill="#e3e3e3"
-                                        className="file-icon"
-                                        onClick={function () {
-                                            uploadFileEl.current.click();
-                                        }}
-                                    >
-                                        <path d="M720-330q0 104-73 177T470-80q-104 0-177-73t-73-177v-370q0-75 52.5-127.5T400-880q75 0 127.5 52.5T580-700v350q0 46-32 78t-78 32q-46 0-78-32t-32-78v-370h80v370q0 13 8.5 21.5T470-320q13 0 21.5-8.5T500-350v-350q-1-42-29.5-71T400-800q-42 0-71 29t-29 71v370q-1 71 49 120.5T470-160q70 0 119-49.5T640-330v-390h80v390Z" />
-                                    </svg>
-                                    <label htmlFor="inputFile">파일선택</label>
-                                </div>
-                            </td>
-                            <td>
-                                <input
-                                    type="file"
-                                    id="inputFile"
-                                    multiple
-                                    ref={uploadFileEl}
-                                    onChange={chgPostFile}
-                                    style={{ display: "none" }}
-                                />
-                            </td>
-                        </tr>
-                    </tbody>
+
                 </table>
             </form>
 

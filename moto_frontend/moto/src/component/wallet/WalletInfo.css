@@ -2,7 +2,7 @@
   
   padding: 24px;
   margin-top: 100px !important;
-  margin-bottom: 10px !important;
+  margin-bottom: 50px !important;
   
   max-width: 600px;
   background-color: black;
@@ -19,7 +19,7 @@
 }
 
 .wallet-container > div {
-  margin-left: 400px !important;
+  margin-left: 500px !important;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
   padding: 44px;
   background-color: #121212;

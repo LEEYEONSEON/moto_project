@@ -225,17 +225,17 @@ export default function Portfolio() {
 
   return (
     <section className="section asset-list">
-        <div className="page-title">내 포트폴리오</div>
+        <div className="page-title portfolio-title">내 포트폴리오</div>
         <table className="tbl asset-table asset-list">
         <thead>
             <tr>
-            <th>자산명</th>
-            <th>현재가₩</th>
-            <th>보유수량</th>
-            <th>평균단가₩</th>
-            <th>손익(P/L)₩</th>
-            <th>손익률(%)</th>
-            <th>매수/매도</th>
+            <th style={{ textAlign : "center", width : "10%"  }}>종목명</th>
+            <th style={{ textAlign : "center", width : "10%"  }}>현재가 <span className="wallet-currency">KRW</span></th>
+            <th style={{ textAlign : "center", width : "6%"  }}>보유수량 </th>
+            <th style={{ textAlign : "center", width : "10%"  }}>평균단가 <span className="wallet-currency">KRW</span></th>
+            <th style={{ textAlign : "center", width : "10%"  }}>손익(P/L) <span className="wallet-currency">KRW</span></th>
+            <th style={{ textAlign : "center", width : "10%"  }}>손익률(%)</th>
+            <th style={{ textAlign : "center", width: "10%" }}>매수/매도</th>
             </tr>
         </thead>
         <tbody>
@@ -260,17 +260,17 @@ export default function Portfolio() {
 
             return (
                 <tr key={item.assetCode}>
-                <td>{item.assetName}</td>
-                <td className={item.currentPrice ? "" : "zero"}>{item.currentPrice ? item.currentPrice.toLocaleString() : "로딩 중..."}</td>
-                <td>{item.quantity}</td>
-                <td>{item.avgBuyPrice.toLocaleString()}</td>
-                <td className={className}>
+                <td style={{ textAlign : "center"  }}>{item.assetName}</td>
+                <td  style={{ textAlign : "right", paddingRight : "80px" }}className={item.currentPrice ? "" : "zero"}>{item.currentPrice ? item.currentPrice.toLocaleString() : "로딩 중..."}</td>
+                <td style={{ textAlign : "center"  }}>{item.quantity}</td>
+                <td style={{ textAlign : "right", paddingRight : "80px" }}>{item.avgBuyPrice.toLocaleString()}</td>
+                <td style={{ textAlign : "right", paddingRight : "80px"  }} className={className}>
                     {item.currentPrice 
                     ?
                     profit.toLocaleString()
                     : "로딩 중..."}
                 </td>
-                <td className={className}>
+                <td style={{ textAlign : "center"  }} className={className}>
                     {item.currentPrice 
                     ?
                     profitRate + "%"
@@ -278,8 +278,8 @@ export default function Portfolio() {
                     }
                     
                 </td>
-                <td>
-                      <button
+                <td style={{ textAlign : "center"  }}>
+                      <button className='trade-button buy-button'
                         onClick={function () {
                           setSelectedAsset(item);
                           setTradeType("BUY");
@@ -288,7 +288,7 @@ export default function Portfolio() {
                       >
                         매수
                       </button>
-                      <button
+                      <button className='trade-button sell-button'
                         onClick={function () {
                           setSelectedAsset(item);
                           setTradeType("SELL");

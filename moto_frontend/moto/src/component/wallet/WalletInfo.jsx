@@ -6,6 +6,8 @@ import createInstance from "../../axios/Interceptor";
 import useUserStore from "../../store/useUserStore";
 
 import "./WalletInfo.css";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function WalletInfo() {
 
@@ -16,13 +18,27 @@ export default function WalletInfo() {
   const [error, setError] = useState(null);
 
   const userNo = loginMember?.userNo || kakaoMember?.userNo;
-
+  const navigate = useNavigate();
 
   useEffect(function () {
+    
+    if(!userNo) {
 
+    
+    Swal.fire({
+            title : "알림",
+            text:"로그인후 이용 가능합니다.",
+            icon: "warning",
+            confirmButtonText:"확인"
+        });
+
+    navigate("/login");
+    }
+
+    
     if (!userNo) return;
-
     axiosInstance
+
       .get(`${import.meta.env.VITE_BACK_SERVER}/wallet/${userNo}`)
       .then(function (res) {
         setWallet(res.data.resData);

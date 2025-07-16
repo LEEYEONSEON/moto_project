@@ -232,6 +232,7 @@ export default function Join() {
 
     return (
         <section className="section join-wrap">
+            <div>
             <div className="page-title">회원가입</div>
             <form onSubmit={function(e){
                 e.preventDefault();    //기본 submit 이벤트 제어
@@ -311,11 +312,12 @@ export default function Join() {
                     </p>
                 </div>
                 <div className="join-button-box">
-                    <button type="submit" className="btn-primary lg">
+                    <button type="submit" className="btn-primary lg join-button">
                         회원가입
                     </button>
                 </div>
             </form>
+            </div>
         </section>
     );
 }

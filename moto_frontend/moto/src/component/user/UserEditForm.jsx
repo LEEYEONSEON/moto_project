@@ -155,7 +155,7 @@ export default function UserEditForm() {
 
   return (
     <section className="section pwChg-section">
-      <div className="page-title">비밀번호 변경</div>
+      <div className="page-title" id="pwChg-title">비밀번호 변경</div>
       <form
         onSubmit={function (e) {
           e.preventDefault();
@@ -174,7 +174,7 @@ export default function UserEditForm() {
               <div className="input-title">
                 <label htmlFor="userPassword">새 비밀번호 입력</label>
               </div>
-              <div className="input-item">
+              <div className="input-item pwChg-wrap">
                 <input
                   type="password"
                   id="userPassword"
@@ -208,7 +208,7 @@ export default function UserEditForm() {
               </p>
             </div>
 
-            <div className="input-wrap">
+            <div className="input-wrap pwChg-wrap">
               <div className="input-title">
                 <label htmlFor="userPwRe">새 비밀번호 확인</label>
               </div>
@@ -237,11 +237,11 @@ export default function UserEditForm() {
           </>
         ) : (
           // 기존 비밀번호 입력 폼 (인증 전)
-          <div className="input-wrap">
+          <div className="input-wrap pwChg-wrap">
             <div className="input-title">
               <label htmlFor="userPassword">기존 비밀번호 입력</label>
             </div>
-            <div className="input-item">
+            <div className="input-item pwChg">
               <input
                 type="password"
                 id="userPassword"
