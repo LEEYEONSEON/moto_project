@@ -127,7 +127,9 @@ export default function Watchlist() {
                                 ...asset,
                                 currentPrice : priceData.currentPrice, //실시간 가격 반영
                                 priceChange: priceData.priceChange,
-                                priceChangeRate: priceData.changeRate
+                                priceChangeRate: priceData.changeRate,
+                                low52: priceData.currentPrice < asset.low52 ? priceData.currentPrice : asset.low52,
+                                high52: priceData.currentPrice > asset.high52 ? priceData.currentPrice : asset.high52
                             };
                        }else {
                         return asset; //나머지는 그대로

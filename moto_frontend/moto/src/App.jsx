@@ -33,7 +33,7 @@ function App() {
     const serverUrl = import.meta.env.VITE_BACK_SERVER;
     const [isSidebarOpen, setIsSidebarOpen] = useState(false); // 기본은 닫힘
 
-    useEffect(() => {
+    useEffect(function () {
       if (!wsStarted) {
         fetch(serverUrl + "/asset/ws-start")
           .then(res => {

@@ -98,6 +98,8 @@ export default function AssetList() {
               currentPrice: priceData.currentPrice,
               priceChange: priceData.priceChange,
               priceChangeRate: priceData.changeRate,
+              low52: priceData.currentPrice < asset.low52 ? priceData.currentPrice : asset.low52,
+              high52: priceData.currentPrice > asset.high52 ? priceData.currentPrice : asset.high52
             };
           }
           return asset;
@@ -373,7 +375,8 @@ export default function AssetList() {
                           </div>
                         </div>
                         <div className="range-labels">
-                          <span className="low">{asset.low52}</span>
+                          <span className="low">
+                            {asset.low52}</span>
                           <span className="high">{asset.high52}</span>
                         </div>
                       </div>
