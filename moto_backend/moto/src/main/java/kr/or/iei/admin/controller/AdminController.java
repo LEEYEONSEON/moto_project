@@ -49,7 +49,7 @@ public class AdminController {
 	@PatchMapping("/user")
 	public ResponseEntity<ResponseDTO> updateUserRole(@RequestBody User user){
 		ResponseDTO res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "회원 등급 변경 중, 오류가 발생하였습니다.", false, "error");
-		System.out.println(user);
+		
 		try {
 			
 			int result = service.updateUserRole(user);

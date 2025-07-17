@@ -75,10 +75,10 @@ public class WalletController {
         int result = service.updateWallet(wallet);
         //지갑 수정이 되지 않았을 때
         if(result == 0) {
-        	System.out.println("지갑 수정되지 않음");
+        
         	return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus());
         }
-        System.out.println("지갑 수정됨");
+        
     	res = new ResponseDTO(HttpStatus.OK, null, null, null);
 
         return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus());

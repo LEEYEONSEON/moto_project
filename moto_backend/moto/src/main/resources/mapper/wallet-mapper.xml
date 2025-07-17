@@ -24,7 +24,6 @@
 			100000000
 		)
 		
-			
 	</insert>
 	<update id="updateWallet" parameterType="Wallet">
 		update tbl_wallet

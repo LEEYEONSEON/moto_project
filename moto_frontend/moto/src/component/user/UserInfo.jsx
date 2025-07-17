@@ -256,7 +256,9 @@ function getImageSrc() {
               <th><label htmlFor="userRole">등급</label></th>
               <td className="left">
                 <div className="input-item">
-                  <input type="text" id="userRole" value={user.userRole ?? ""} readOnly />
+                  <input type="text" id="userRole" value={
+                    user.userRole == 1 ? '관리자' : '회원'
+                  } readOnly />
                 </div>
               </td>
             </tr>
