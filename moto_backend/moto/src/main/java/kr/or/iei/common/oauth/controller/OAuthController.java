@@ -84,7 +84,7 @@ public class OAuthController {
             @PathVariable String provider,
             @RequestParam String code) {
     	//인가코드 정상발급 테스트 코드
-        System.out.println("인가 코드 정상 발급 : " + code);
+        
     	ResponseDTO res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "로그인 중, 오류가 발생하였습니다.", null, "error");
     	if(code == null) {
     		return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus());
@@ -96,7 +96,7 @@ public class OAuthController {
         try {
         	switch (ProviderType.valueOf(provider.toUpperCase())) {
         	case KAKAO:  tokens = kakao.getAccessToken(code);  
-        		System.out.println(tokens.toString());
+        
         		break;
         	default: 
         		throw new IllegalArgumentException("Unknown provider: " + provider);
@@ -111,15 +111,15 @@ public class OAuthController {
         }
         //받은 토큰 보낼 객체에 저장
         loginUser.setTokens(tokens);
-        System.out.println(tokens);
+        
         //db에 사용자 정보 등록 후, 클라이언트에게 넘길 사용자 정보 
         User user = kakao.processLoginWithToken(tokens.getAccessToken());
-        System.out.println("회원조회 : "+user.getUserJoinDate());
+        
         if(user == null) {
         	return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus());
         }
-        //test 코드
-        System.out.println(user.getUserEmail());
+        
+        
         loginUser.setUser(user);
         res = new ResponseDTO(HttpStatus.OK, "", loginUser, "");
         
@@ -149,7 +149,7 @@ public class OAuthController {
     @NoTokenCheck
     @GetMapping("/{provider}/logout")
     public void redirectToKakaoLogout(HttpServletResponse res) throws IOException{
-    	System.out.println("kakaoLogout백엔드 들어옴");
+    	
     	String uri = kakao.getLogoutUri();
     	
     	res.sendRedirect(uri);

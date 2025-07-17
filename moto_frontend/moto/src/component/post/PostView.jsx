@@ -221,7 +221,16 @@ function PostUpdateModal(props) {
         };
         axiosInstance(options)
         .then(function (res) {
-          window.location.reload();
+          Swal.fire({
+            title : "알림",
+            text : res.data.clientMsg,
+            icon : res.data.alertIcon,
+            confirmButtonText :"확인"
+          }).then(function(res){
+            if(res.isConfirmed){
+              window.location.reload();
+            }
+          })
         });
       }
     });
@@ -273,7 +282,7 @@ function PostUpdateModal(props) {
           }
         })
       })
-      .catch(function (err) {});
+      
   }
 
   return (

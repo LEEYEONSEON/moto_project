@@ -63,7 +63,7 @@ public class ValidateAOP {
 			String token = uri.endsWith("refresh") //access 토큰이 만료되어,refresh 토큰을 이용해 accessToken 재발급 요청 
 					? request.getHeader("refreshToken")
 							: request.getHeader("Authorization");//access 토큰이 만료되지 않아, access 토큰을 보냈다면 확인 
-			System.out.println("local User token : " + auth);
+			
 			//토큰 검증 메소드 호출
 			Object resObj = jwtUtils.validateToken(token);
 			
@@ -76,7 +76,7 @@ public class ValidateAOP {
 		}else {
 			//소셜 로그인인 경우, accessToken을 뽑아 검증 api 요청 후, 만료됐으면 갱신
 			String token = parts[1];
-			System.out.println(token);
+			
 			Object resObj = kakaoTokenUtils.validateKakaoToken(token);
 			
 			if(resObj instanceof HttpStatus httpStatus) {

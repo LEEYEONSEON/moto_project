@@ -111,7 +111,7 @@ public class PostController {
 	@DeleteMapping("/delete/{postNo}")
 	public ResponseEntity<ResponseDTO> deletePost(@PathVariable int postNo){
 		ResponseDTO res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "게시글 삭제 중, 오류가 발생하였습니다.", false, "error");
-		System.out.println(postNo);
+		
 		try {
 			int result = service.deletePost(postNo);
 			if(result > 0) {
@@ -120,7 +120,7 @@ public class PostController {
 				res = new ResponseDTO(HttpStatus.OK, "게시글 삭제 중, 오류가 발생하였습니다. ", false, "warning");
 			}
 		} catch (Exception e) {
-			
+			e.printStackTrace();
 		}
 		return new ResponseEntity<ResponseDTO>(res, res.getHttpStatus());
 	}

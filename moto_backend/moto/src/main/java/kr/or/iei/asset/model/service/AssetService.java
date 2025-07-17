@@ -31,8 +31,8 @@ public class AssetService {
 		
 		// 1. 매수
 		int result = dao.insertBuyAsset(trade);
-		System.out.println(trade);
-		System.out.println(result);
+		
+		
 		
 		dao.mergePortfolio(trade);
 	
@@ -53,7 +53,7 @@ public class AssetService {
 		trade.setAssetNo(assetNo);
 		int result = dao.watchListSellAsset(trade);
 		
-		System.out.println(result);
+		
 		if(result > 0) {
 			dao.resultSellPayWalletStep1(trade);
 			dao.resultSellPayWalletStep2(trade);

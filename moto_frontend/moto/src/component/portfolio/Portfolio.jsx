@@ -308,7 +308,7 @@ export default function Portfolio() {
             })}
         </tbody>
         </table>
-        {selectedAsset != null  &&(
+        {selectedAsset != null  && selectedAsset.currentPrice != 0 &&(
           <div className="modal">
             <div className="modal-content">
               <h3>{tradeType === "BUY" ? "매수" : "매도"} 확인</h3>

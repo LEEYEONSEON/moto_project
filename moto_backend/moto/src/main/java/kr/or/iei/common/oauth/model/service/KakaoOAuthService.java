@@ -183,21 +183,15 @@ public class KakaoOAuthService implements OAuthService {
         kakaoUser.setUserNickname(profile.getProperties().getNickname());
         kakaoUser.setUserEmail(profile.getKakao_account().getEmail());
         
-        //카카오로부터 사용자 정보 조회 테스트코드
-        System.out.println(kakaoUser.getUserId());
-        System.out.println(kakaoUser.getUserNickname());
-        System.out.println(kakaoUser.getUserEmail());
-        
-        
         // (d) DB upate || insert
         //이메일로 모든 정보를 조회해 온다. 
         User existing = userDao.findByEmail(kakaoUser.getUserEmail());
         if (existing != null) {
-        	System.out.println(existing.getUserJoinDate());
+        	
             //이메일로 조회시, 기존정보가 존재한다면, id와 소셜회원을 식별하는 email을 제외한 닉네임을 변경해준다.  
             existing.setUserNickname(kakaoUser.getUserNickname());
             result = userDao.updateUser(existing);
-            System.out.println("수정 결과"+result);
+            
             if(result == 0) {
             	return null;
             }else {

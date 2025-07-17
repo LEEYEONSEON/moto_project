@@ -34,11 +34,11 @@ public class PortfolioController {
 		
 	    ResponseDTO res = new ResponseDTO(HttpStatus.INTERNAL_SERVER_ERROR, "", false, "error");
 		
-	    //System.out.println("userNo : " + userNo);
+
 	    try {
 			
 	    	List<Portfolio> list = service.getPortfolioByUserNo(userNo); // <-- 유저 번호로 포트폴리오 조회
-	    	System.out.println("list: " + list);
+
 	    	
 	            res = new ResponseDTO(HttpStatus.OK, "", list, "success");
 	        

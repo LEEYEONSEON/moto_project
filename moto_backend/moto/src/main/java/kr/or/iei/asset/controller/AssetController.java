@@ -48,7 +48,7 @@ public class AssetController {
 	@NoTokenCheck
 	public List<Asset> getAssetList() {
 		List<Asset> allAssetList = service.selectAllAsset();
-		//System.out.println(allAssetList);
+
 		
 		return allAssetList;
 	}
@@ -68,8 +68,8 @@ public class AssetController {
 		int result = service.insertBuyAsset(trade);
 		
 		if(result > 0) {
-			System.out.println(result);
-			System.out.println("결과값 : " + result);
+
+
 			res = new ResponseDTO(HttpStatus.OK, "주식 매수가 완료되었습니다.", true, "success");
 		}else {
 			res = new ResponseDTO(HttpStatus.OK, "주식 매수 중, 오류가 발생하였습니다.", false, "warning");
