@@ -25,8 +25,9 @@
 }
 
 .login-wrap >div {
-    margin-left: 1250px !important;
-    margin-top: 100px !important;
+    margin-left: 1400px !important;
+    margin-top: 175px !important;
+    margin-bottom: 155px !important;
 
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
     padding: 44px;
@@ -36,7 +37,6 @@
 
 .join-wrap {
     width: 1200px;
-    max-height: 800px;
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.4);
     display: flex;
@@ -50,21 +50,22 @@
 
 
 .join-wrap >div {
-    margin-left: 460px !important;
-    margin-top: 50px !important;
+    margin-left: 670px !important;
+    margin-top: 150px !important;
+    margin-bottom: 150px !important;
     width: 500px;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
     padding: 44px;
     background: white;
     border-radius: 12px;
-    justify-content: center;
+    margin: 0 auto;
 }
 
 .mypage-wrap {
     width: 1800px;
-    max-height: 620px;
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    margin: 0 auto !important;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -76,6 +77,7 @@
 
 .mypage-div {
     margin-top: 80px !important;
+    margin-bottom: 78px !important;
     width: 800px;
     height: 600px;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
@@ -143,6 +145,7 @@
 .login-wrap .input-wrap {
     padding: 30px;
 }
+
 
 .pwChg-wrap {
     width: 50%;

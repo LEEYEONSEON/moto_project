@@ -3,8 +3,9 @@ import { Link } from "react-router-dom";
 //화면 하단 푸터
 export default function Footer () {
     return (
+
         <footer className="footer">
-            <div>
+            <div className="footer-div" >
                 <ul>
                     <li>
                         <Link to="#">이용약관</Link>
@@ -26,5 +27,6 @@ export default function Footer () {
                 <p>무단복제 허용하지 않습니다.</p>
             </div>
         </footer>
+
     );
 }

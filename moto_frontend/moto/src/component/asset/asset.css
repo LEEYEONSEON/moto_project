@@ -2,12 +2,25 @@
     color: white;
 }
 
+.asset-list,
+.asset-table th, td { 
+  background: black !important;
+  color : white !important;
+  width: 1200px;
+}
+
 .section.asset-list {
-  padding-left: 16%;
+  padding-left: 18%;
+  padding-bottom: 6%;
   display: flex;
   flex-direction: column;
   min-height: 630px;
 
+
+}
+
+td.asset-table {
+    height: 50px !important;
 }
 
 .asset-list,
@@ -16,11 +29,6 @@
   color : white !important;
   width: 1200px;
 }
-
-td.asset-table {
-    height: 50px !important;
-}
-
 
 
 .buy-button { 
@@ -33,17 +41,30 @@ td.asset-table {
   color: white;
 }
 
-.asset-table{
 
+button.trade-button {
+  width: 40% !important;
+  height: 70% !important;
+  padding: 0px, 0px !important;
 
 }
+
+
 
 .asset-title, .watchlist-title, .portfolio-title {
   color: white !important;
   margin: 40px auto;
 }
 
+td.asset-table {
+    height: 50px !important;
+}
 
+
+
+td {
+    padding: 20px;
+}
 
 .range-cell {
   display: flex;
@@ -75,14 +96,6 @@ td.asset-table {
 .zero {
     color: gray !important;
 }
-
-button.trade-button {
-  width: 40% !important;
-  height: 70% !important;
-  padding: 0px, 0px !important;
-
-}
-
 
 button {
     width: 40%;

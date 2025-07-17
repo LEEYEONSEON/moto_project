@@ -72,7 +72,7 @@ export default function Sidebar({ onToggleSidebar }) {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                paddingTop: "120px",
+                paddingTop: "190px",
                 gap: "10px"
             }}
             >
@@ -153,6 +153,8 @@ export default function Sidebar({ onToggleSidebar }) {
                     </svg>
                 </Link>
             </div>
+            
+            {user != null ? 
 
             <div className="menu-item" style={{ paddingBottom: "40px" }}>
                 <Link to={"/users/me"}>
@@ -162,7 +164,7 @@ export default function Sidebar({ onToggleSidebar }) {
                 </Link>
             </div>
 
-
+            : ""}
 
 
             <div

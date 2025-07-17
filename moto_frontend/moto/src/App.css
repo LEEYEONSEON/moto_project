@@ -2,7 +2,7 @@
   margin: 0 auto;
   text-align: center;
   box-sizing: border-box;
-  padding-left: 60px;
+
   
 
 }
@@ -48,6 +48,7 @@
   display: flex;
   width: 100%;
   min-height: 100vh;
+  
 }
 
 
@@ -71,12 +72,13 @@
 
 
 .main-content {
-  padding-top: 64px;       /* 헤더 높이 */
-  padding-bottom: 100px;   /* 푸터 공간 확보 */
+  padding-top: 54px;       /* 헤더 높이 */
+  padding-bottom: 10px;   /* 푸터 공간 확보 */
   min-height: fit-content;
   width: 100%;
   box-sizing: border-box;
   margin: 0 auto;
+
 
 
   transition: padding-left 0.3s; /* 애니메이션 효과 optional */
@@ -94,7 +96,8 @@
 .layout.shifted .wallet-container,
 .layout.shifted .login-wrap, 
 .layout.shifted .mypage-div,
-.layout-shifted .footer {
+.layout.shifted .footer,
+.layout.shifted .portfolio-summary {
   margin-left: 130px; 
   transition: margin-left 0.3s ease;
 }
@@ -111,7 +114,6 @@
   align-items: center;
   background-color: #121212;
   z-index: 99;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
   transition: margin-left 0.3s ease;
 }
 
@@ -122,6 +124,7 @@
   height: 150px;
   display: flex;
   align-items: center;
+  justify-content: center;
   z-index: 99;
   box-shadow: 0 2px 4px rgba(0,0,0,0.3);
   transition: margin-left 0.3s ease;
@@ -144,7 +147,19 @@
 }
 
 
-
+.swal2-confirm.swal2-styled,
+.swal2-cancel.swal2-styled {
+  padding: 10px 24px !important;          /* 위아래 여백도 다시 줌 */
+  font-size: 14px !important;
+  min-width: 100px;
+  height: auto !important;                /* height 직접 지정 X */
+  line-height: normal !important;         /* 필수: 텍스트 정렬 깨짐 방지 */
+  display: inline-block !important;       /* flex 대신 inline-block이 안정적 */
+  text-align: center;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-weight: 500;
+}
 
 
 

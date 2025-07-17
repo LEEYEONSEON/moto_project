@@ -176,6 +176,8 @@ a {
   background-color: var(--gray1);
 }
 
+
+
 .footer > div {
   max-width: 1400px;
   padding: 20px 10px;
@@ -559,13 +561,4 @@ section.section.bg-section {
 .pagination .page-item.active-page {
   background-color: var(--main2);
   color: #fff;
-}
-
-
-.swal2-confirm {
-  padding: 10px 24px !important;
-  font-size: 16px !important;
-  min-width: 80px;
-  height: auto;
-  line-height: 1.4;
 }

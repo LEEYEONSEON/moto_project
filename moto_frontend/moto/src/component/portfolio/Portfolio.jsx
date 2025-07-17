@@ -222,9 +222,14 @@ export default function Portfolio() {
       })      
     }
         }
+  const totalInvested = myAsset.reduce((acc, cur) => acc + cur.avgBuyPrice * cur.quantity, 0);
+  const totalProfit = myAsset.reduce((acc, cur) => acc + cur.profit, 0);
+  const virtualPortfolioValue = walletCash + totalInvested + totalProfit;
+
 
   return (
-    <section className="section asset-list">
+    <>
+    <section className="section asset-list portfolio">
         <div className="page-title portfolio-title">내 포트폴리오</div>
         <table className="tbl asset-table asset-list">
         <thead>
@@ -341,7 +346,32 @@ export default function Portfolio() {
             </div>
           </div>
         )}
+        <div className="portfolio-summary">
+          <div className="summary-item">
+            <div className="label">가상 보유 현금</div>
+            <div className="value">{walletCash.toLocaleString()} 원</div>
+          </div>
+          <div className="summary-item operator">+</div>
+          <div className="summary-item">
+            <div className="label">총 투자 금액</div>
+            <div className="value">{totalInvested.toLocaleString()} 원</div>
+          </div>
+          <div className="summary-item operator" >+</div>
+          <div className="summary-item">
+            <div className="label">손익</div>
+            <div className={`value ${totalProfit >= 0 ? "positive" : "negative"}`}>
+              {totalProfit.toLocaleString()} 원
+            </div>
+          </div>
+          <div className="summary-item operator">=</div>
+          <div className="summary-item">
+            <div className="label">가상 포트폴리오 총액</div>
+            <div className="value total">{virtualPortfolioValue.toLocaleString()} 원</div>
+          </div>
+        </div>
     </section>
+        
+    </>
     );
 
 }

@@ -6,13 +6,14 @@
   .notice-write {
   display: flex;
   background-color: #111111;
+
   padding-top: 30px;
   padding-left: 30px;
   font-family: "Helvetica Neue", sans-serif;
   height: 160px;
   border: none !important;
   box-sizing: border-box;
-  width: 95%;
+  width: 94%;
   margin: 0 auto;
   border-radius: 12px;
 }
@@ -104,6 +105,7 @@ label[for="inputFile"] {
 .write-table td:first-child {
   width: 60px;
 }
+
 
 /* ================================
    📌 모달 영역 (Post Modal)

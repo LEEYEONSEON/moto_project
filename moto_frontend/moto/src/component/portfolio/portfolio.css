@@ -2,6 +2,7 @@
     color: white;
 }
 
+
 .asset-list,
 .asset-table th, td { 
   background: black !important;
@@ -134,3 +135,77 @@ span.wallet-currency {
   margin-left: 5px;
 }
 
+
+.portfolio-summary {
+  position:absolute;
+  top: 700px; /* 원하는 만큼 아래로 내리기 */
+  left: -52%;
+  z-index: 100;
+  margin-bottom: 20px; /* 푸터 위 여백 */
+  margin-top: 0px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 15px !important;
+  flex-wrap: wrap;
+  padding: 20px 0;
+  margin-left: 0px;
+  width: 200% !important;
+  background-color: black;
+  box-shadow: 0px -3px 5px #ffffff3f !important;
+  
+}
+
+div.portfolio-summary div{
+  width : 150px;  
+}
+
+.portfolio-summary label, .value {
+  color: white !important;
+}
+
+.positive {
+  color: red !important;
+}
+
+.negative {
+  color: blue !important;
+}
+
+.summary-item {
+  text-align: center;
+  font-size: 16px;
+}
+
+.summary-item .label {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.587);
+  margin-bottom: 4px;
+}
+
+.summary-item .value {
+  font-size: 18px;
+  font-weight: bold;
+  color: #222;
+}
+
+.summary-item .value.positive {
+  color: #1976d2; /* 파란색 */
+}
+
+.summary-item .value.negative {
+  color: #d32f2f; /* 빨간색 */
+}
+
+.summary-item .value.total {
+  color: #000;
+  font-size: 20px;
+}
+
+.summary-item.operator {
+  font-size: 24px;
+  line-height: 48px;
+  font-weight: bold;
+  color: #555;
+  padding: 0 4px;
+}

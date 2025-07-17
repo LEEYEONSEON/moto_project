@@ -5,6 +5,8 @@ td.comment-table {
     padding-top: 5px !important;
     padding-bottom: 5px !important;
     background-color: transparent !important;
+    
+   
 }
 
 
@@ -17,6 +19,7 @@ td.comment-table {
 
 .comment-list {
     border: none !important;
+    
 }
 
 .comment-table {
@@ -25,6 +28,10 @@ td.comment-table {
     table-layout: fixed !important;
     margin-bottom: 10px;
     padding-bottom: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.731);
+    border-radius: 12px !important;
+   
+    
 }
 
 

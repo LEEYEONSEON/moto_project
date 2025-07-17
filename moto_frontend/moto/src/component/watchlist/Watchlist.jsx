@@ -300,7 +300,7 @@ export default function Watchlist() {
                         <td style={{textAlign : "center"  }}><Link to={"/asset/" + asset.assetCode}>{asset.assetName}</Link></td>
                         <td style={{textAlign : "center"  }} className={asset.currentPrice != null ? asset.currentPrice == 0 ? "zero" : parseFloat(asset.currentPrice).toFixed(0) : ""}>
                             {asset.currentPrice != null ? asset.currentPrice == 0 ? "로딩 중..." : parseFloat(asset.currentPrice).toFixed(0) : ""}</td>
-                        <td  style={{  textAlign : "right", paddingRight : "80px"  }}>
+                        <td  style={{  textAlign : "right"}}>
 
                             
                             <div className="range-cell">
@@ -322,7 +322,7 @@ export default function Watchlist() {
                             </div>
 
                                 {/* 화살표 표시용 */}
-                                <div
+                                <div 
                                     className="range-indicator"
                                     style={{
                                     left:

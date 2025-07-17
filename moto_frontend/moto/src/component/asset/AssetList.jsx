@@ -378,7 +378,7 @@ export default function AssetList() {
                         </div>
                       </div>
                     </td>
-                    <th style={{ textAlign : "center"  }}
+                    <td style={{ textAlign : "center"  }}
                       className={
                         asset.priceChangeRate != null && parseFloat(asset.priceChangeRate) > 0
                           ? "positive"
@@ -396,7 +396,7 @@ export default function AssetList() {
                         : asset.priceChangeRate != null
                         ? parseFloat(asset.priceChangeRate).toFixed(2) + "%"
                         : ""}
-                    </th>
+                    </td>
                     
                    <th style={{ textAlign : "center"  }}>
                       <button className='trade-button buy-button'
