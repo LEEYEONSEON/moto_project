@@ -55,26 +55,16 @@
 	
 <insert id="mergePortfolio" parameterType="TradeDto">
     MERGE INTO tbl_portfolio p
-    USING (
-        SELECT 
-            #{userNo} AS user_no,
-            (SELECT user_nickname || 'portfolio' FROM tbl_user WHERE user_no = #{userNo}) AS portfolio_name
-        FROM dual
-    ) src
-    ON (
-        p.user_no = src.user_no AND 
-        p.portfolio_name = src.portfolio_name
-    )
+    USING dual
+    ON (p.user_no = #{userNo})
     WHEN NOT MATCHED THEN
-    INSERT (
-        portfolio_no, user_no, portfolio_name
-    )
-    VALUES (
+      INSERT (portfolio_no, user_no, portfolio_name)
+      VALUES (
         seq_portfolio_no.nextval,
-        src.user_no,
-        src.portfolio_name
-    )
-</insert>
+        #{userNo},
+        (SELECT user_nickname || 'portfolio' FROM tbl_user WHERE user_no = #{userNo})
+      )
+	</insert>
 	
 <update id="mergeHolding" parameterType="TradeDto">
   MERGE INTO tbl_holding h
