@@ -96,12 +96,10 @@
 .layout.shifted .wallet-container,
 .layout.shifted .login-wrap, 
 .layout.shifted .mypage-div,
-.layout.shifted .footer,
-.layout.shifted .portfolio-summary {
+.layout.shifted .footer {
   margin-left: 130px; 
   transition: margin-left 0.3s ease;
 }
-
 
 
 .header {

@@ -137,14 +137,12 @@ span.wallet-currency {
 
 
 .portfolio-summary {
-  position:absolute;
-  top: 700px; /* 원하는 만큼 아래로 내리기 */
-  left: -52%;
-  z-index: 100;
-  margin-bottom: 20px; /* 푸터 위 여백 */
-  margin-top: 0px !important;
+  position:relative;
+  left: -620px;
+  z-index: 99;
+  margin-bottom: -120px; /* 푸터 위 여백 */
+  margin-top: 130px !important;
   display: flex;
-  align-items: center;
   justify-content: center;
   padding-left: 15px !important;
   flex-wrap: wrap;

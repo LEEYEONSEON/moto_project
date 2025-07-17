@@ -286,7 +286,17 @@ export default function AssetList() {
               confirmButtonText : "확인"
             }).then(function(res){
               if(res.isConfirmed){
-                window.location.reload();
+                // 🎯 지갑 잔액 다시 조회
+                const walletOptions = {
+                  url: serverUrl + "/wallet/" + userNo,
+                  method: "get"
+                };
+                axiosInstance(walletOptions).then(function (res) {
+                  setWalletCash(res.data.resData.walletCashBalance);
+                });
+
+                // 모달 닫기
+                setSelectedAsset(null);
               }
             })
           })
